@@ -10,15 +10,15 @@ public:
     Result();
     ~Result();
 
-    vector<MatchableInterface *> getMatched();
-    vector<MatchableInterface *> getNotMatched();
+    vector<MatchableInterface *> getConsumed();
+    vector<MatchableInterface *> getPending();
     map<string, vector<MatchableInterface *>> getOutputs();
 
-    void setMatched(const vector<MatchableInterface *> &matches);
-    void setNotMatched(const vector<MatchableInterface *> &matches);
+    void setConsumed(const vector<MatchableInterface *> &matches);
+    void setPending(const vector<MatchableInterface *> &matches);
     void setOutputs(const map<string, vector<MatchableInterface *>> &outputs);
 
 protected:
-    vector<MatchableInterface *> matched, notMatched;
-    map<string, vector<MatchableInterface *>> outputs;
+    vector<MatchableInterface*> consumed, pending;
+    map<string, vector<MatchableInterface*> > outputs;
 };

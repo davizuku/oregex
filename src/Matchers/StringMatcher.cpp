@@ -31,7 +31,7 @@ Result StringMatcher::match(vector<MatchableInterface *> matchables)
         }
     }
     Result r;
-    r.setMatched(consumed);
-    r.setNotMatched(pending);
+    r.setConsumed(consumed);
+    r.setPending(pending);
     return r;
 }

@@ -12,14 +12,14 @@ Result::~Result()
 {
 }
 
-vector<MatchableInterface*> Result::getMatched()
+vector<MatchableInterface*> Result::getConsumed()
 {
-    return matched;
+    return consumed;
 }
 
-vector<MatchableInterface*> Result::getNotMatched()
+vector<MatchableInterface*> Result::getPending()
 {
-    return notMatched;
+    return pending;
 }
 
 map<string, vector<MatchableInterface*> > Result::getOutputs()
@@ -27,14 +27,14 @@ map<string, vector<MatchableInterface*> > Result::getOutputs()
     return outputs;
 }
 
-void Result::setMatched(const vector<MatchableInterface*> &matches)
+void Result::setConsumed(const vector<MatchableInterface*> &matches)
 {
-    matched = matches;
+    consumed = matches;
 }
 
-void Result::setNotMatched(const vector<MatchableInterface*> &matches)
+void Result::setPending(const vector<MatchableInterface*> &matches)
 {
-    notMatched = matches;
+    pending = matches;
 }
 
 void Result::setOutputs(const map<string, vector<MatchableInterface*> > &outs)

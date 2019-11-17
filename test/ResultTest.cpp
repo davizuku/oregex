@@ -12,14 +12,14 @@ TEST_CASE("Results contain two lists of matched and not matched elements and out
 {
     Result res;
     StringMatchable a("a"), b("b"), c("c"), d("d"), e("e"), f("f");
-    vector<MatchableInterface*> matched{&a, &b, &c}, notMatched {&d, &e,&f};
+    vector<MatchableInterface*> consumed{&a, &b, &c}, pending {&d, &e,&f};
     map<string, vector<MatchableInterface*> > outputs;
     outputs["first"] = vector<MatchableInterface*>{&a, &b};
     outputs["second"] = vector<MatchableInterface*>{&c};
-    res.setMatched(matched);
-    res.setNotMatched(notMatched);
+    res.setConsumed(consumed);
+    res.setPending(pending);
     res.setOutputs(outputs);
-    REQUIRE(res.getMatched() == matched);
-    REQUIRE(res.getNotMatched() == notMatched);
+    REQUIRE(res.getConsumed() == consumed);
+    REQUIRE(res.getPending() == pending);
     REQUIRE(res.getOutputs() == outputs);
 }

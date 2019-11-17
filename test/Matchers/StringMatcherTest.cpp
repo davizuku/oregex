@@ -21,13 +21,13 @@ TEST_CASE("StringMatcher matches only with same strings")
     Result r2 = m2.match(input);
     Result r3 = m3.match(input);
 
-    REQUIRE(r1.getMatched() == expectedMatchedM1);
-    REQUIRE(r1.getNotMatched() == expectedNotMatchedM1);
+    REQUIRE(r1.getConsumed() == expectedMatchedM1);
+    REQUIRE(r1.getPending() == expectedNotMatchedM1);
     REQUIRE(r1.getOutputs() == expectedOutputs);
-    REQUIRE(r2.getMatched() == expectedMatchedM2);
-    REQUIRE(r2.getNotMatched() == expectedNotMatchedM2);
+    REQUIRE(r2.getConsumed() == expectedMatchedM2);
+    REQUIRE(r2.getPending() == expectedNotMatchedM2);
     REQUIRE(r2.getOutputs() == expectedOutputs);
-    REQUIRE(r3.getMatched() == expectedMatchedM3);
-    REQUIRE(r3.getNotMatched() == expectedNotMatchedM3);
+    REQUIRE(r3.getConsumed() == expectedMatchedM3);
+    REQUIRE(r3.getPending() == expectedNotMatchedM3);
     REQUIRE(r3.getOutputs() == expectedOutputs);
 }
