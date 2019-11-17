@@ -58,11 +58,8 @@ POSTCOMPILE = mv -f $(DEPDIR)/$*.Td $(DEPDIR)/$*.d
 
 all: $(BIN)
 
-debug:
-	@echo $(SRCS)
-
 test: $(BIN)
-	@$(BIN)
+	$(BIN)
 
 dist: $(DISTFILES)
 	$(TAR) -cvzf $(DISTOUTPUT) $^

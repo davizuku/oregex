@@ -8,7 +8,7 @@
 
 using namespace std;
 
-TEST_CASE("Results contain two lists of matched and not matched elements and outputs")
+TEST_CASE("Results contain two lists of consumed and pending elements and outputs")
 {
     Result res;
     StringMatchable a("a"), b("b"), c("c"), d("d"), e("e"), f("f");
