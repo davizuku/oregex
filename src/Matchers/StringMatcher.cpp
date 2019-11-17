@@ -18,15 +18,15 @@ StringMatcher::~StringMatcher()
 Result StringMatcher::match(forward_list<MatchableInterface*> matchables)
 {
     forward_list<MatchableInterface*> consumed = {};
+    auto iter = consumed.before_begin();
     while (not matchables.empty()) {
         MatchableInterface* m = matchables.front();
-        consumed.push_front(m);
+        iter = consumed.insert_after(iter, m);
         matchables.pop_front();
         if (m->getValue() == value) {
             break;
         }
     }
-    consumed.reverse();
     Result r;
     r.setConsumed(consumed);
     r.setPending(matchables);
