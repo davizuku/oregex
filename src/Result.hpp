@@ -1,5 +1,5 @@
 #pragma once
-#include <vector>
+#include <forward_list>
 #include <map>
 #include <string>
 #include "Matchables/MatchableInterface.hpp"
@@ -10,15 +10,15 @@ public:
     Result();
     ~Result();
 
-    vector<MatchableInterface *> getConsumed();
-    vector<MatchableInterface *> getPending();
-    map<string, vector<MatchableInterface *>> getOutputs();
+    forward_list<MatchableInterface *> getConsumed();
+    forward_list<MatchableInterface *> getPending();
+    map<string, forward_list<MatchableInterface *>> getOutputs();
 
-    void setConsumed(const vector<MatchableInterface *> &matches);
-    void setPending(const vector<MatchableInterface *> &matches);
-    void setOutputs(const map<string, vector<MatchableInterface *>> &outputs);
+    void setConsumed(const forward_list<MatchableInterface *> &matches);
+    void setPending(const forward_list<MatchableInterface *> &matches);
+    void setOutputs(const map<string, forward_list<MatchableInterface *>> &outputs);
 
 protected:
-    vector<MatchableInterface*> consumed, pending;
-    map<string, vector<MatchableInterface*> > outputs;
+    forward_list<MatchableInterface*> consumed, pending;
+    map<string, forward_list<MatchableInterface*> > outputs;
 };

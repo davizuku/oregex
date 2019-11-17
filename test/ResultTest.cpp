@@ -1,4 +1,4 @@
-#include <vector>
+#include <forward_list>
 #include <map>
 #include <string>
 #include "catch.hpp"
@@ -12,10 +12,10 @@ TEST_CASE("Results contain two lists of matched and not matched elements and out
 {
     Result res;
     StringMatchable a("a"), b("b"), c("c"), d("d"), e("e"), f("f");
-    vector<MatchableInterface*> consumed{&a, &b, &c}, pending {&d, &e,&f};
-    map<string, vector<MatchableInterface*> > outputs;
-    outputs["first"] = vector<MatchableInterface*>{&a, &b};
-    outputs["second"] = vector<MatchableInterface*>{&c};
+    forward_list<MatchableInterface*> consumed{&a, &b, &c}, pending {&d, &e,&f};
+    map<string, forward_list<MatchableInterface*> > outputs;
+    outputs["first"] = forward_list<MatchableInterface*>{&a, &b};
+    outputs["second"] = forward_list<MatchableInterface*>{&c};
     res.setConsumed(consumed);
     res.setPending(pending);
     res.setOutputs(outputs);

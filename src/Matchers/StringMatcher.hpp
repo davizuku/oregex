@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include <vector>
+#include <forward_list>
 #include "../Result.hpp"
 #include "../Matchables/MatchableInterface.hpp"
 #include "MatcherInterface.hpp"
@@ -13,7 +13,7 @@ class StringMatcher: public MatcherInterface
         StringMatcher(string s);
         ~StringMatcher();
 
-        Result match(vector<MatchableInterface *> matchables);
+        Result match(forward_list<MatchableInterface *> matchables);
 
     protected:
         string value;
