@@ -8,5 +8,5 @@ using namespace std;
 class MatcherInterface
 {
     public:
-        virtual Result match(forward_list<MatchableInterface*> matchables) = 0;
+        virtual forward_list<Result> match(forward_list<MatchableInterface*> matchables) = 0;
 };

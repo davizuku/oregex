@@ -15,7 +15,7 @@ StringMatcher::~StringMatcher()
 {
 }
 
-Result StringMatcher::match(forward_list<MatchableInterface*> matchables)
+forward_list<Result> StringMatcher::match(forward_list<MatchableInterface*> matchables)
 {
     forward_list<MatchableInterface*> consumed = {};
     auto iter = consumed.before_begin();
@@ -30,5 +30,5 @@ Result StringMatcher::match(forward_list<MatchableInterface*> matchables)
     Result r;
     r.setConsumed(consumed);
     r.setPending(matchables);
-    return r;
+    return forward_list<Result>{r};
 }

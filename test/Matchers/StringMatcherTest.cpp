@@ -17,17 +17,17 @@ TEST_CASE("StringMatcher matches only with same strings")
         expectedNotMatchedM3{};
     map<string, forward_list<MatchableInterface*> > expectedOutputs;
 
-    Result r1 = m1.match(input);
+    Result r1 = m1.match(input).front();
     REQUIRE(r1.getConsumed() == expectedMatchedM1);
     REQUIRE(r1.getPending() == expectedNotMatchedM1);
     REQUIRE(r1.getOutputs() == expectedOutputs);
 
-    Result r2 = m2.match(input);
+    Result r2 = m2.match(input).front();
     REQUIRE(r2.getConsumed() == expectedMatchedM2);
     REQUIRE(r2.getPending() == expectedNotMatchedM2);
     REQUIRE(r2.getOutputs() == expectedOutputs);
 
-    Result r3 = m3.match(input);
+    Result r3 = m3.match(input).front();
     REQUIRE(r3.getConsumed() == expectedMatchedM3);
     REQUIRE(r3.getPending() == expectedNotMatchedM3);
     REQUIRE(r3.getOutputs() == expectedOutputs);

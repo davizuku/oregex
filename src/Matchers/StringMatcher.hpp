@@ -13,7 +13,7 @@ class StringMatcher: public MatcherInterface
         StringMatcher(string s);
         ~StringMatcher();
 
-        Result match(forward_list<MatchableInterface *> matchables);
+        forward_list<Result> match(forward_list<MatchableInterface *> matchables);
 
     protected:
         string value;
