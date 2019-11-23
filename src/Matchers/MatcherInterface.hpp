@@ -7,6 +7,9 @@ using namespace std;
 
 class MatcherInterface
 {
-    public:
-        virtual forward_list<Result> match(forward_list<MatchableInterface*> matchables) = 0;
+public:
+    virtual forward_list<Result> match(
+        vector<MatchableInterface *> matchables,
+        int start
+    ) = 0;
 };

@@ -1,43 +1,36 @@
-#include <forward_list>
-#include <map>
-#include <string>
-#include "Matchables/MatchableInterface.hpp"
 #include "Result.hpp"
 
-Result::Result()
+Result::Result(int index)
 {
+    lastMatchedIndex = index;
+    setOutputs(map<string, forward_list<MatchableInterface *>>());
 }
 
 Result::~Result()
 {
 }
 
-forward_list<MatchableInterface*> Result::getConsumed()
+bool Result::operator!=(const Result &other) const
 {
-    return consumed;
+    return getLastMatchedIndex() != other.getLastMatchedIndex();
 }
 
-forward_list<MatchableInterface*> Result::getPending()
+bool Result::operator==(const Result &other) const
 {
-    return pending;
+    return getLastMatchedIndex() == other.getLastMatchedIndex();
 }
 
-map<string, forward_list<MatchableInterface*> > Result::getOutputs()
+int Result::getLastMatchedIndex() const
+{
+    return lastMatchedIndex;
+}
+
+map<string, forward_list<MatchableInterface *>> Result::getOutputs()
 {
     return outputs;
 }
 
-void Result::setConsumed(const forward_list<MatchableInterface*> &matches)
-{
-    consumed = matches;
-}
-
-void Result::setPending(const forward_list<MatchableInterface*> &matches)
-{
-    pending = matches;
-}
-
-void Result::setOutputs(const map<string, forward_list<MatchableInterface*> > &outs)
+void Result::setOutputs(const map<string, forward_list<MatchableInterface *>> &outs)
 {
     outputs = outs;
 }

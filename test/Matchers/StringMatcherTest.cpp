@@ -1,34 +1,40 @@
-#include <forward_list>
 #include "../catch.hpp"
 #include "../../src/Matchers/StringMatcher.hpp"
 #include "../../src/Matchables/StringMatchable.hpp"
 
 TEST_CASE("StringMatcher matches only with same strings")
 {
-    StringMatchable a("a"), b("b"), c("c"), d("d");
-    StringMatcher m1("a"), m2("b"), m3("x");
-    forward_list<MatchableInterface*>
-        input{&a, &b, &c},
-        expectedConsumedM1{&a},
-        expectedPendingM1{&b, &c},
-        expectedConsumedM2{&a, &b},
-        expectedPendingM2{&c},
-        expectedConsumedM3{&a, &b, &c},
-        expectedPendingM3{};
-    map<string, forward_list<MatchableInterface*> > expectedOutputs;
+    StringMatchable a("a"), b("b"), c("c");
+    StringMatcher m1("a"), m2("b"), m3("x"), m4("c");
+    vector<MatchableInterface *> input{&a, &b, &c, &c};
 
-    Result r1 = m1.match(input).front();
-    REQUIRE(r1.getConsumed() == expectedConsumedM1);
-    REQUIRE(r1.getPending() == expectedPendingM1);
-    REQUIRE(r1.getOutputs() == expectedOutputs);
+    SECTION("Result of matching the first element")
+    {
+        forward_list<Result> expected{Result(0)};
+        REQUIRE(m1.match(input, 0) == expected);
+    }
 
-    Result r2 = m2.match(input).front();
-    REQUIRE(r2.getConsumed() == expectedConsumedM2);
-    REQUIRE(r2.getPending() == expectedPendingM2);
-    REQUIRE(r2.getOutputs() == expectedOutputs);
+    SECTION("Result of matching the second element from the beginning")
+    {
+        forward_list<Result> expected{Result(1)};
+        REQUIRE(m2.match(input, 0) == expected);
+    }
 
-    Result r3 = m3.match(input).front();
-    REQUIRE(r3.getConsumed() == expectedConsumedM3);
-    REQUIRE(r3.getPending() == expectedPendingM3);
-    REQUIRE(r3.getOutputs() == expectedOutputs);
+    SECTION("Result of matching the second element from the element")
+    {
+        forward_list<Result> expected{Result(1)};
+        REQUIRE(m2.match(input, 1) == expected);
+    }
+
+    SECTION("Result of not matching any element")
+    {
+        forward_list<Result> expected;
+        REQUIRE(m3.match(input, 0) == expected);
+    }
+
+    SECTION("Result of matching only first of repeated elements")
+    {
+        forward_list<Result> expected{Result(2)};
+        REQUIRE(m4.match(input, 0) == expected);
+    }
 }

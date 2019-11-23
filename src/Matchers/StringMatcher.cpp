@@ -15,20 +15,18 @@ StringMatcher::~StringMatcher()
 {
 }
 
-forward_list<Result> StringMatcher::match(forward_list<MatchableInterface*> matchables)
-{
-    forward_list<MatchableInterface*> consumed = {};
-    auto iter = consumed.before_begin();
-    while (not matchables.empty()) {
-        MatchableInterface* m = matchables.front();
-        iter = consumed.insert_after(iter, m);
-        matchables.pop_front();
+forward_list<Result> StringMatcher::match(
+    vector<MatchableInterface *> matchables,
+    int start
+) {
+    forward_list<Result> results;
+    int n = matchables.size();
+    for (int i = start; i < n; ++i) {
+        MatchableInterface *m = matchables[i];
         if (m->getValue() == value) {
+            results.push_front(Result(i));
             break;
         }
     }
-    Result r;
-    r.setConsumed(consumed);
-    r.setPending(matchables);
-    return forward_list<Result>{r};
+    return results;
 }
