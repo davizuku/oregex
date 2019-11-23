@@ -16,7 +16,7 @@ class StringMatcher: public MatcherInterface
         forward_list<Result> match(
             const vector<MatchableInterface *> &matchables,
             int start,
-            const forward_list<Result> & previousResults
+            const forward_list<Result> &previousResults
         );
 
         forward_list<Result> match(
