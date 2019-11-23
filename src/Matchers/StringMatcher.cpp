@@ -1,4 +1,3 @@
-#include "../Result.hpp"
 #include "StringMatcher.hpp"
 
 StringMatcher::StringMatcher(string s)
