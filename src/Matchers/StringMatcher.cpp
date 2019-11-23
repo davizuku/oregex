@@ -11,7 +11,8 @@ StringMatcher::~StringMatcher()
 
 forward_list<Result> StringMatcher::match(
     vector<MatchableInterface *> matchables,
-    int start
+    int start,
+    forward_list<Result> previousResults
 ) {
     forward_list<Result> results;
     int n = matchables.size();
@@ -23,4 +24,11 @@ forward_list<Result> StringMatcher::match(
         }
     }
     return results;
+}
+
+forward_list<Result> StringMatcher::match(
+    vector<MatchableInterface *> matchables,
+    int start
+) {
+    return match(matchables, start, forward_list<Result>{});
 }

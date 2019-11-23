@@ -15,6 +15,12 @@ class StringMatcher: public MatcherInterface
 
         forward_list<Result> match(
             vector<MatchableInterface *> matchables,
+            int start,
+            forward_list<Result> previousResults
+        );
+
+        forward_list<Result> match(
+            vector<MatchableInterface *> matchables,
             int start
         );
 
