@@ -1,10 +1,5 @@
-#include <string>
-#include <forward_list>
 #include "../Result.hpp"
-#include "../Matchables/MatchableInterface.hpp"
 #include "StringMatcher.hpp"
-
-using namespace std;
 
 StringMatcher::StringMatcher(string s)
 {
