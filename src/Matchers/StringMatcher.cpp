@@ -10,9 +10,9 @@ StringMatcher::~StringMatcher()
 }
 
 forward_list<Result> StringMatcher::match(
-    vector<MatchableInterface *> matchables,
+    const vector<MatchableInterface *> &matchables,
     int start,
-    forward_list<Result> previousResults
+    const forward_list<Result> &previousResults
 ) {
     forward_list<Result> results;
     int n = matchables.size();
@@ -27,7 +27,7 @@ forward_list<Result> StringMatcher::match(
 }
 
 forward_list<Result> StringMatcher::match(
-    vector<MatchableInterface *> matchables,
+    const vector<MatchableInterface *> &matchables,
     int start
 ) {
     return match(matchables, start, forward_list<Result>{});

@@ -14,13 +14,13 @@ class StringMatcher: public MatcherInterface
         ~StringMatcher();
 
         forward_list<Result> match(
-            vector<MatchableInterface *> matchables,
+            const vector<MatchableInterface *> &matchables,
             int start,
-            forward_list<Result> previousResults
+            const forward_list<Result> & previousResults
         );
 
         forward_list<Result> match(
-            vector<MatchableInterface *> matchables,
+            const vector<MatchableInterface *> &matchables,
             int start
         );
 
