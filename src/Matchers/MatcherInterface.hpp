@@ -16,6 +16,9 @@ public:
      * Previous results are needed because some matchers may need to reference
      * previous matched results.
      * For example: recursive conditional statement, backreference /('|")\w+\1/
+     *
+     * Returns all the possible Results ordered from the most greedy to the most
+     * ungreedy. Results are considered starting in matchables[start].
      */
     virtual forward_list<Result> match(
         const vector<MatchableInterface *> &matchables,

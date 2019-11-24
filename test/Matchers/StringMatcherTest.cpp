@@ -16,7 +16,7 @@ TEST_CASE("StringMatcher matches only with same strings")
 
     SECTION("Result of matching the second element from the beginning")
     {
-        forward_list<Result> expected{Result(1)};
+        forward_list<Result> expected{};
         REQUIRE(m2.match(input, 0) == expected);
     }
 
@@ -35,6 +35,6 @@ TEST_CASE("StringMatcher matches only with same strings")
     SECTION("Result of matching only first of repeated elements")
     {
         forward_list<Result> expected{Result(2)};
-        REQUIRE(m4.match(input, 0) == expected);
+        REQUIRE(m4.match(input, 2) == expected);
     }
 }
