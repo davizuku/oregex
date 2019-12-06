@@ -8,7 +8,7 @@
 class GroupMatcher: public MatcherInterface
 {
     public:
-        GroupMatcher(vector<MatcherInterface *> &matchers);
+        GroupMatcher(const vector<MatcherInterface *> &matchers);
         ~GroupMatcher();
 
         forward_list<Result> match(

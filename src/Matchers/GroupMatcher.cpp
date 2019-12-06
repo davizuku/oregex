@@ -1,6 +1,6 @@
 #include "GroupMatcher.hpp"
 
-GroupMatcher::GroupMatcher(vector<MatcherInterface *> &m)
+GroupMatcher::GroupMatcher(const vector<MatcherInterface *> &m)
 {
     matchers = m;
 }

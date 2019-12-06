@@ -17,40 +17,35 @@ TEST_CASE("GroupMatcher is built from Matchers and is executed on Matchables")
 
     SECTION("Matches sequence in the beginning (/abc/ -> abccded)")
     {
-        auto group = vector<MatcherInterface *>{&m1, &m2, &m4};
-        GroupMatcher gm(group);
+        GroupMatcher gm(vector<MatcherInterface *>{&m1, &m2, &m4});
         forward_list<Result> expected{Result(2)};
         REQUIRE(gm.match(input, 0) == expected);
     }
 
     SECTION("Matches sequence in the middle (/c*/ -> abccded)")
     {
-        auto group = vector<MatcherInterface *>{&s4};
-        GroupMatcher gm(group);
+        GroupMatcher gm(vector<MatcherInterface *>{&s4});
         forward_list<Result> expected{Result(3), Result(2), Result(1)};
         REQUIRE(gm.match(input, 2) == expected);
     }
 
     SECTION("Matches sequence in the middle (/cc/ -> abccded)")
     {
-        auto group = vector<MatcherInterface *>{&m4, &m4};
-        GroupMatcher gm(group);
+        GroupMatcher gm(vector<MatcherInterface *>{&m4, &m4});
         forward_list<Result> expected{Result(3)};
         REQUIRE(gm.match(input, 2) == expected);
     }
 
     SECTION("Matches sequence in the end (/ded/ -> abccded)")
     {
-        auto group = vector<MatcherInterface *>{&m5, &m6, &m5};
-        GroupMatcher gm(group);
+        GroupMatcher gm(vector<MatcherInterface *>{&m5, &m6, &m5});
         forward_list<Result> expected{Result(6)};
         REQUIRE(gm.match(input, 4) == expected);
     }
 
     SECTION("Not matches sequence (/x/ -> abccded)")
     {
-        auto group = vector<MatcherInterface *>{&m3};
-        GroupMatcher gm(group);
+        GroupMatcher gm(vector<MatcherInterface *>{&m3});
         forward_list<Result> expected{};
         REQUIRE(gm.match(input, 0) == expected);
     }
