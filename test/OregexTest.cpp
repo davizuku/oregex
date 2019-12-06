@@ -4,6 +4,8 @@
 #include "../src/Oregex.hpp"
 #include "../src/Matchers/StringMatcher.hpp"
 #include "../src/Matchers/StarMatcher.hpp"
+#include "../src/Matchers/GroupMatcher.hpp"
+#include "../src/Matchers/NamedGroupMatcher.hpp"
 #include "../src/Matchers/MatcherInterface.hpp"
 #include "../src/Matchables/StringMatchable.hpp"
 #include "../src/Matchables/MatchableInterface.hpp"
@@ -37,5 +39,27 @@ TEST_CASE("Oregex is built from Matchers and is executed on Matchables")
     {
         Oregex r(vector<MatcherInterface *>{&m3});
         REQUIRE(r.match(input) == false);
+    }
+
+    SECTION("Nested outputs /(?<all>ab(?<some>c*)d(?<end>ed)*)/ -> abccded")
+    {
+        Oregex r(vector<MatcherInterface *>{
+            new NamedGroupMatcher(
+                "all",
+                new GroupMatcher(vector<MatcherInterface *>{
+                    &m1,
+                    &m2,
+                    new NamedGroupMatcher("some", &s4),
+                    &m5,
+                    new NamedGroupMatcher(
+                        "end",
+                        new StarMatcher(
+                            new GroupMatcher(vector<MatcherInterface *>{&m6, &m5})
+                        )
+                    )
+                })
+            )
+        });
+        REQUIRE(r.match(input) == true);
     }
 }

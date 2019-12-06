@@ -12,5 +12,5 @@ public:
     bool match(vector<MatchableInterface *> &matchables);
 
 protected:
-    vector<MatcherInterface *> matchers;
+    MatcherInterface* matcher;
 };
