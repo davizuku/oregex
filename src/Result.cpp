@@ -25,7 +25,7 @@ int Result::getLastMatchedIndex() const
     return lastMatchedIndex;
 }
 
-map<string, forward_list<MatchableInterface *>> Result::getOutputs()
+map<string, forward_list<MatchableInterface *>> Result::getOutputs() const
 {
     return outputs;
 }

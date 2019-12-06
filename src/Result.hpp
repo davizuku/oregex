@@ -16,7 +16,7 @@ public:
     bool operator==(const Result& other) const;
 
     int getLastMatchedIndex() const;
-    map<string, forward_list<MatchableInterface *>> getOutputs();
+    map<string, forward_list<MatchableInterface *>> getOutputs() const;
 
     void setOutputs(const map<string, forward_list<MatchableInterface *>> &outputs);
 
