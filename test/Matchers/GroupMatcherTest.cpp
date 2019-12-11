@@ -56,16 +56,43 @@ TEST_CASE("GroupMatcher joins the results of the specified elements")
 {
     StringMatcher o("o");
     GroupMatcher matcher(vector<MatcherInterface *>{
-        new NamedGroupMatcher("output", new StarMatcher(&o)),
+        new NamedGroupMatcher("outputs", new StarMatcher(&o)),
         &o,
         &o
     });
+    StringMatchable o1("o"), o2("o"), o3("o");
 
     SECTION("Only mandatory input does not return output")
     {
-        forward_list<Result> expected{Result(1)};
-        StringMatchable o1("o"), o2("o");
+        forward_list<Result> expected{
+            Result(
+                1,
+                map<string, forward_list<MatchableInterface *>>{
+                    {"outputs", forward_list<MatchableInterface *>{}}
+                }
+            )
+        };
         vector<MatchableInterface *> input{&o1, &o2};
+        REQUIRE(matcher.match(input, 0) == expected);
+    }
+
+    SECTION("Not mandatory input is returned as output")
+    {
+        forward_list<Result> expected{
+            Result(
+                2,
+                map<string, forward_list<MatchableInterface *>>{
+                    {"outputs", forward_list<MatchableInterface *>{&o1}}
+                }
+            ),
+            Result(
+                1,
+                map<string, forward_list<MatchableInterface *>>{
+                    {"outputs", forward_list<MatchableInterface *>{}}
+                }
+            ),
+        };
+        vector<MatchableInterface *> input{&o1, &o2, &o3};
         REQUIRE(matcher.match(input, 0) == expected);
     }
 }

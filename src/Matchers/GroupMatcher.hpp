@@ -30,6 +30,7 @@ class GroupMatcher: public MatcherInterface
             int matcherIndex,
             const vector<MatchableInterface *> &matchables,
             int matchableIndex,
-            const forward_list<Result> &previousResults
+            forward_list<Result> &previousResults,
+            forward_list<Result> &recursiveResults
         );
 };
