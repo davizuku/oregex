@@ -45,15 +45,15 @@ void Result::setOutputs(const map<string, forward_list<MatchableInterface *>> &o
 
 ostream& operator<<(ostream &out, const Result &r)
 {
-    out << "Result(" << r.getLastMatchedIndex() << ", {" << endl;
+    out << "Result(" << r.getLastMatchedIndex() << ", {";
     auto outputs = r.getOutputs();
     for (auto it = outputs.begin(); it != outputs.end(); ++it) {
-        out << "\t\"" << it->first << "\": [";
+        out << "\"" << it->first << "\": [";
         for (MatchableInterface* m: it->second) {
-            out << m->getValue() << ", ";
+            out << "'" << m->getValue() << "', ";
         }
-        out << "]" << endl;
+        out << "]";
     }
-    out << "})" << endl;
+    out << "})";
     return out;
 }
