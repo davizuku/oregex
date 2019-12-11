@@ -20,12 +20,14 @@ Result::~Result()
 
 bool Result::operator!=(const Result &other) const
 {
-    return getLastMatchedIndex() != other.getLastMatchedIndex();
+    return getLastMatchedIndex() != other.getLastMatchedIndex() and
+        getOutputs() != other.getOutputs();
 }
 
 bool Result::operator==(const Result &other) const
 {
-    return getLastMatchedIndex() == other.getLastMatchedIndex();
+    return getLastMatchedIndex() == other.getLastMatchedIndex() and
+        getOutputs() == other.getOutputs();
 }
 
 int Result::getLastMatchedIndex() const

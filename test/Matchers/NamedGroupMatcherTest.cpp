@@ -30,7 +30,7 @@ TEST_CASE("NamedGroupMatcher returns the elements matched grouped as outputs")
     {
         Result r0(-1);
         r0.setOutputs(map<string, forward_list<MatchableInterface *>>{
-            {"one", {}},
+            {"two", {}},
         });
         forward_list<Result> expected{r0};
         REQUIRE(g2.match(input, 0) == expected);
