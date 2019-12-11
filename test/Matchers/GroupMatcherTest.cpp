@@ -2,6 +2,7 @@
 #include <vector>
 #include "../../src/Result.hpp"
 #include "../../src/Matchers/GroupMatcher.hpp"
+#include "../../src/Matchers/NamedGroupMatcher.hpp"
 #include "../../src/Matchers/StringMatcher.hpp"
 #include "../../src/Matchers/StarMatcher.hpp"
 #include "../../src/Matchers/MatcherInterface.hpp"
@@ -48,5 +49,23 @@ TEST_CASE("GroupMatcher is built from Matchers and is executed on Matchables")
         GroupMatcher gm(vector<MatcherInterface *>{&m3});
         forward_list<Result> expected{};
         REQUIRE(gm.match(input, 0) == expected);
+    }
+}
+
+TEST_CASE("GroupMatcher joins the results of the specified elements")
+{
+    StringMatcher o("o");
+    GroupMatcher matcher(vector<MatcherInterface *>{
+        new NamedGroupMatcher("output", new StarMatcher(&o)),
+        &o,
+        &o
+    });
+
+    SECTION("Only mandatory input does not return output")
+    {
+        forward_list<Result> expected{Result(1)};
+        StringMatchable o1("o"), o2("o");
+        vector<MatchableInterface *> input{&o1, &o2};
+        REQUIRE(matcher.match(input, 0) == expected);
     }
 }
