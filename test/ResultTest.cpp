@@ -23,4 +23,10 @@ TEST_CASE("Results contain a pointer to the last matched  and outputs")
         res.setOutputs(outputs);
         REQUIRE(res.getOutputs() == outputs);
     }
+
+    SECTION("Setting outputs in constructor")
+    {
+        Result res(0, outputs);
+        REQUIRE(res.getOutputs() == outputs);
+    }
 }

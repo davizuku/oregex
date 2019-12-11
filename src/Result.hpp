@@ -13,6 +13,7 @@ class Result
 public:
     Result();
     Result(int index);
+    Result(int index, const map<string, forward_list<MatchableInterface *>> &outputs);
     ~Result();
 
     bool operator!=(const Result& other) const;

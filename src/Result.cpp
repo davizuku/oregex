@@ -8,6 +8,12 @@ Result::Result(int index)
     setOutputs(map<string, forward_list<MatchableInterface *>>());
 }
 
+Result::Result(int index, const map<string, forward_list<MatchableInterface *>> &outputs)
+{
+    lastMatchedIndex = index;
+    setOutputs(outputs);
+}
+
 Result::~Result()
 {
 }
