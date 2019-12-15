@@ -54,7 +54,7 @@ ostream& operator<<(ostream &out, const Result &r)
         for (MatchableInterface* m: it->second) {
             out << "'" << m->getValue() << "', ";
         }
-        out << "]";
+        out << "], ";
     }
     out << "})";
     return out;
