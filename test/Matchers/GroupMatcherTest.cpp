@@ -60,7 +60,7 @@ TEST_CASE("GroupMatcher joins the results of the specified elements")
         &o,
         &o
     });
-    StringMatchable o1("o"), o2("o"), o3("o");
+    StringMatchable o1("o"), o2("o"), o3("o"), o4("o"), o5("o"), o6("o");
 
     SECTION("Only mandatory input does not return output")
     {
@@ -93,6 +93,44 @@ TEST_CASE("GroupMatcher joins the results of the specified elements")
             ),
         };
         vector<MatchableInterface *> input{&o1, &o2, &o3};
+        REQUIRE(matcher.match(input, 0) == expected);
+    }
+
+    SECTION("Greediness from optional part")
+    {
+        forward_list<Result> expected{
+            Result(
+                5,
+                map<string, forward_list<MatchableInterface *>>{
+                    {"outputs", forward_list<MatchableInterface *>{&o1, &o2, &o3, &o4}}
+                }
+            ),
+            Result(
+                4,
+                map<string, forward_list<MatchableInterface *>>{
+                    {"outputs", forward_list<MatchableInterface *>{&o1, &o2, &o3}}
+                }
+            ),
+            Result(
+                3,
+                map<string, forward_list<MatchableInterface *>>{
+                    {"outputs", forward_list<MatchableInterface *>{&o1, &o2}}
+                }
+            ),
+            Result(
+                2,
+                map<string, forward_list<MatchableInterface *>>{
+                    {"outputs", forward_list<MatchableInterface *>{&o1}}
+                }
+            ),
+            Result(
+                1,
+                map<string, forward_list<MatchableInterface *>>{
+                    {"outputs", forward_list<MatchableInterface *>{}}
+                }
+            ),
+        };
+        vector<MatchableInterface *> input{&o1, &o2, &o3, &o4, &o5, &o6};
         REQUIRE(matcher.match(input, 0) == expected);
     }
 }
