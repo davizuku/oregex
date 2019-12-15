@@ -22,6 +22,7 @@ forward_list<Result> NamedGroupMatcher::match(
     );
     for (auto it = subResults.begin(); it != subResults.end(); it++) {
         int end = it->getLastMatchedIndex();
+        auto subOutputs = it->getOutputs();
         Result r(end);
         forward_list<MatchableInterface *> outputList;
         outputList.insert_after(
@@ -29,9 +30,8 @@ forward_list<Result> NamedGroupMatcher::match(
             matchables.begin() + start,
             matchables.begin() + end + 1
         );
-        r.setOutputs(map<string, forward_list<MatchableInterface *>>{
-            {name, outputList}
-        });
+        subOutputs[name] = outputList;
+        r.setOutputs(subOutputs);
         results.push_front(r);
     }
     results.reverse();

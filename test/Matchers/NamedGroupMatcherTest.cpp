@@ -65,3 +65,21 @@ TEST_CASE("NamedGroupMatcher returns the elements matched grouped as outputs")
         REQUIRE(g3.match(input, 6) == expected);
     }
 }
+
+TEST_CASE("NamedGroupMatcher propagates the outpus of internal matcher")
+{
+    StringMatchable a("a");
+    StringMatcher m1("a");
+    NamedGroupMatcher n1("one", &m1), n2("two", &n1);
+    vector<MatchableInterface *> input{&a};
+    forward_list<Result> expected{
+        Result(
+            0,
+            map<string, forward_list<MatchableInterface *>>{
+                {"one", forward_list<MatchableInterface *>{&a}},
+                {"two", forward_list<MatchableInterface *>{&a}},
+            }
+        ),
+    };
+    REQUIRE(n2.match(input, 0) == expected);
+}
