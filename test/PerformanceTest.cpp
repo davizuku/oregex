@@ -30,6 +30,13 @@ TEST_CASE("Given the same set of strings how much faster is regex module")
 
     auto testProvider = vector<TestArgs>{
         TestArgs{
+            "String 'a' into regex '/a/' (3 steps)",
+            "a",
+            regex("a"),
+            vector<MatchableInterface *>{&a},
+            Oregex(vector<MatcherInterface *>{&m1})
+        },
+        TestArgs{
             "String 'abccded' into regex '/ab(c*)d((ed)*)/' (14 steps)",
             "abccded",
             regex("ab(c*)d((ed)*)"),
