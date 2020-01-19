@@ -45,7 +45,14 @@ TEST_CASE("Given the same set of strings how much faster is regex module")
                     )
                 })
             })
-        }
+        },
+        TestArgs{
+            "String 'aaaaaaacaaaaaacb' into regex '/a*c*b/'",
+            "aaaaaaacaaaaaacb",
+            regex("a*c*b"),
+            vector<MatchableInterface *>{&a, &a, &a, &a, &a, &a, &a, &c, &a, &a, &a, &a, &a, &a, &c, &b},
+            Oregex(vector<MatcherInterface *>{&s1, &s4, &m2})
+        },
     };
 
     for (TestArgs &testCase : testProvider) {
