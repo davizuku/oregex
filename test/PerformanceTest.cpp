@@ -53,7 +53,7 @@ TEST_CASE("Given the same set of strings how much faster is regex module")
         unsigned int nIterations = 100;
         for (unsigned i = 0; i < nIterations; ++i) {
             clock_t t0 = clock();
-            bool r1 = regex_match(testCase.strInput, testCase.strRegex);
+            bool r1 = regex_search(testCase.strInput, testCase.strRegex);
             clock_t t1 = clock();
             bool r2 = testCase.oRegex.match(testCase.oInput);
             clock_t t2 = clock();
