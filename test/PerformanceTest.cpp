@@ -96,7 +96,11 @@ TEST_CASE("Given the same set of strings how much faster is regex module")
             tOregex += (float)(t2 - t1) / CLOCKS_PER_SEC;
         }
         cout << endl << "Test: " << testCase.name << endl;
-        cout << "\tAverage time std regex: " << tRegex / nIterations << "s" << endl;
-        cout << "\tAverage time oregex: " << tOregex / nIterations << "s" << endl;
+        float avgRegex = tRegex / nIterations,
+            avgOregex = tOregex / nIterations,
+            ratio = 100 * avgOregex / avgRegex;
+        cout << "\tAverage time std regex: " << avgRegex << "s" << endl;
+        cout << "\tAverage time oregex: " << avgOregex << "s" << endl;
+        cout << "\tRatio (oregex/std): " << ratio << "%" << endl;
     }
 }
