@@ -22,21 +22,15 @@ TEST_CASE("Given the same set of strings how much faster is regex module")
     StarMatcher s1(&m1), s2(&m2), s3(&m3), s4(&m4), s5(&m5);
     vector<MatchableInterface *> matchableInput{&a, &b, &c, &c, &d, &e, &d};
     Oregex oRegex(vector<MatcherInterface *>{
-        new NamedGroupMatcher(
-            "all",
-            new GroupMatcher(vector<MatcherInterface *>{
-                &m1,
-                &m2,
-                new NamedGroupMatcher("some", &s4),
-                &m5,
-                new NamedGroupMatcher(
-                    "end",
-                    new StarMatcher(
-                        new GroupMatcher(vector<MatcherInterface *>{&m6, &m5})
-                    )
-                )
-            })
-        )
+        &m1,
+        &m2,
+        new GroupMatcher(vector<MatcherInterface *>{&s4}),
+        &m5,
+        new GroupMatcher(vector<MatcherInterface *>{
+            new StarMatcher(
+                new GroupMatcher(vector<MatcherInterface *>{&m6, &m5})
+            )
+        })
     });
     float tRegex = 0, tOregex = 0;
     unsigned int nIterations = 100;
