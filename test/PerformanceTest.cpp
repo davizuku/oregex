@@ -53,6 +53,13 @@ TEST_CASE("Given the same set of strings how much faster is regex module")
             vector<MatchableInterface *>{&a, &a, &a, &a, &a, &a, &a, &c, &a, &a, &a, &a, &a, &a, &c, &b},
             Oregex(vector<MatcherInterface *>{&s1, &s4, &m2})
         },
+        TestArgs{
+            "String 'aaacaaac' into regex '/a*c*b/' (no match)",
+            "aaacaaac",
+            regex("a*c*b"),
+            vector<MatchableInterface *>{&a, &a, &a, &c, &a, &a, &a, &c},
+            Oregex(vector<MatcherInterface *>{&s1, &s4, &m2})
+        },
     };
 
     for (TestArgs &testCase : testProvider) {
