@@ -30,7 +30,7 @@ TEST_CASE("Given the same set of strings how much faster is regex module")
 
     auto testProvider = vector<TestArgs>{
         TestArgs{
-            "String 'abccded' into regex '/ab(c*)d((ed)*)/'",
+            "String 'abccded' into regex '/ab(c*)d((ed)*)/' (14 steps)",
             "abccded",
             regex("ab(c*)d((ed)*)"),
             vector<MatchableInterface *>{&a, &b, &c, &c, &d, &e, &d},
@@ -47,7 +47,7 @@ TEST_CASE("Given the same set of strings how much faster is regex module")
             })
         },
         TestArgs{
-            "String 'aaaaaaacaaaaaacb' into regex '/a*c*b/'",
+            "String 'aaaaaaacaaaaaacb' into regex '/a*c*b/' (28 steps)",
             "aaaaaaacaaaaaacb",
             regex("a*c*b"),
             vector<MatchableInterface *>{&a, &a, &a, &a, &a, &a, &a, &c, &a, &a, &a, &a, &a, &a, &c, &b},
