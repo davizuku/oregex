@@ -6,5 +6,5 @@ using namespace std;
 class MatchableInterface
 {
 public:
-    virtual string getValue() = 0;
+    virtual string getValue() const = 0;
 };

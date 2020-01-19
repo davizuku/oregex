@@ -10,7 +10,7 @@ class StringMatchable: public MatchableInterface
         StringMatchable(string s);
         ~StringMatchable();
 
-        string getValue();
+        string getValue() const;
 
     protected:
         string value;

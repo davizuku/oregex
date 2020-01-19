@@ -12,7 +12,7 @@ StringMatchable::~StringMatchable()
 {
 }
 
-string StringMatchable::getValue()
+string StringMatchable::getValue() const
 {
     return value;
 }
