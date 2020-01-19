@@ -42,7 +42,7 @@ CFLAGS := -std=c17
 # C++ flags
 CXXFLAGS := -std=c++17
 # C/C++ flags
-CPPFLAGS := -g -Wall -Wextra -pedantic -fPIC
+CPPFLAGS := -g -O2 -Wall -Wextra -pedantic -fPIC
 # linker flags
 LDFLAGS :=-L$(LIBRARY_PATH) -l$(LIBRARY_NAME)
 # flags required for dependency generation; passed to compilers
