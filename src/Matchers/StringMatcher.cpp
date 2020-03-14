@@ -14,12 +14,10 @@ Result* StringMatcher::match(
     int start,
     const forward_list<Result> &previousResults
 ) {
-    results = forward_list<Result>{};
     if (matchables[start]->getValue() == value) {
-        results.push_front(Result(start));
+        return new Result(start);
     }
-    lastResultIterator = results.before_begin();
-    return next();
+    return NULL;
 }
 
 Result* StringMatcher::match(
@@ -31,9 +29,5 @@ Result* StringMatcher::match(
 
 Result* StringMatcher::next()
 {
-    ++lastResultIterator;
-    if (lastResultIterator == results.end()) {
-        return NULL;
-    }
-    return &(*lastResultIterator);
+    return NULL;
 }

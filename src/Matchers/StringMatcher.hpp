@@ -27,7 +27,5 @@ class StringMatcher: public MatcherInterface
         Result* next();
 
     protected:
-        forward_list<Result> results;
-        forward_list<Result>::iterator lastResultIterator;
         string value;
 };
