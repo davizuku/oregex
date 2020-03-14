@@ -11,17 +11,21 @@ class StarMatcher: public MatcherInterface
         StarMatcher(MatcherInterface *m);
         ~StarMatcher();
 
-        forward_list<Result> match(
+        Result* match(
             const vector<MatchableInterface *> &matchables,
             int start,
             const forward_list<Result> &previousResults
         );
 
-        forward_list<Result> match(
+        Result* match(
             const vector<MatchableInterface *> &matchables,
             int start
         );
 
+        Result* next();
+
     protected:
         MatcherInterface *matcher;
+        forward_list<Result> results;
+        forward_list<Result>::iterator lastResultIterator;
 };

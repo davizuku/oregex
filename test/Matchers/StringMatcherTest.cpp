@@ -10,31 +10,26 @@ TEST_CASE("StringMatcher matches only with same strings")
 
     SECTION("Result of matching the first element")
     {
-        forward_list<Result> expected{Result(0)};
-        REQUIRE(m1.match(input, 0) == expected);
+        REQUIRE(*(m1.match(input, 0)) == Result(0));
     }
 
     SECTION("Result of matching the second element from the beginning")
     {
-        forward_list<Result> expected{};
-        REQUIRE(m2.match(input, 0) == expected);
+        REQUIRE(m2.match(input, 0) == NULL);
     }
 
     SECTION("Result of matching the second element from the element")
     {
-        forward_list<Result> expected{Result(1)};
-        REQUIRE(m2.match(input, 1) == expected);
+        REQUIRE(*(m2.match(input, 1)) == Result(1));
     }
 
     SECTION("Result of not matching any element")
     {
-        forward_list<Result> expected;
-        REQUIRE(m3.match(input, 0) == expected);
+        REQUIRE(m3.match(input, 0) == NULL);
     }
 
     SECTION("Result of matching only first of repeated elements")
     {
-        forward_list<Result> expected{Result(2)};
-        REQUIRE(m4.match(input, 2) == expected);
+        REQUIRE(*(m4.match(input, 2)) == Result(2));
     }
 }

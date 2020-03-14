@@ -9,15 +9,21 @@ StarMatcher::~StarMatcher()
 {
 }
 
-forward_list<Result> StarMatcher::match(
+Result* StarMatcher::match(
     const vector<MatchableInterface *> &matchables,
     int start,
     const forward_list<Result> &previousResults
 ) {
-    forward_list<Result> results{Result(start-1)};
+    results = forward_list<Result>{Result(start - 1)};
     int n = matchables.size();
     for (int i = start; i < n; ++i) {
-        auto subResults = matcher->match(matchables, i);
+        forward_list<Result> subResults{};
+        Result* r = matcher->match(matchables, i);
+        while (r != NULL) {
+            subResults.push_front(*r);
+            r = matcher->next();
+        }
+        subResults.reverse();
         for (Result r: subResults) {
             results.push_front(r);
         }
@@ -25,12 +31,22 @@ forward_list<Result> StarMatcher::match(
             break;
         }
     }
-    return results;
+    lastResultIterator = results.before_begin();
+    return next();
 }
 
-forward_list<Result> StarMatcher::match(
+Result* StarMatcher::match(
     const vector<MatchableInterface *> &matchables,
     int start
 ) {
     return match(matchables, start, forward_list<Result>{});
+}
+
+Result* StarMatcher::next()
+{
+    ++lastResultIterator;
+    if (lastResultIterator == results.end()) {
+        return NULL;
+    }
+    return &(*lastResultIterator);
 }

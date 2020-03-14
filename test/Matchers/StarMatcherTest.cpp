@@ -13,49 +13,46 @@ TEST_CASE("StarMatcher matches zero or more elements")
 
     SECTION("Result of matching the first element")
     {
-        forward_list<Result> expected{Result(0), Result(-1)};
-        REQUIRE(s1.match(input, 0) == expected);
+        REQUIRE(*(s1.match(input, 0)) == Result(0));
+        REQUIRE(*(s1.next()) == Result(-1));
     }
 
     SECTION("Result of matching the second element from the beginning")
     {
-        forward_list<Result> expected{Result(-1)};
-        REQUIRE(s2.match(input, 0) == expected);
+        REQUIRE(*(s2.match(input, 0)) == Result(-1));
     }
 
     SECTION("Result of matching the second element from the element")
     {
-        forward_list<Result> expected{Result(1), Result(0)};
-        REQUIRE(s2.match(input, 1) == expected);
+        REQUIRE(*(s2.match(input, 1)) == Result(1));
+        REQUIRE(*(s2.next()) == Result(0));
     }
 
     SECTION("Result of not matching any element from the beginning")
     {
-        forward_list<Result> expected{Result(-1)};
-        REQUIRE(s3.match(input, 0) == expected);
+        REQUIRE(*(s3.match(input, 0)) == Result(-1));
     }
 
     SECTION("Result of not matching any element from position")
     {
-        forward_list<Result> expected{Result(1)};
-        REQUIRE(s3.match(input, 2) == expected);
+        REQUIRE(*(s3.match(input, 2)) == Result(1));
     }
 
     SECTION("Result of matching repeated elements from position")
     {
-        forward_list<Result> expected{Result(3), Result(2), Result(1)};
-        REQUIRE(s4.match(input, 2) == expected);
+        REQUIRE(*(s4.match(input, 2)) == Result(3));
+        REQUIRE(*(s4.next()) == Result(2));
+        REQUIRE(*(s4.next()) == Result(1));
     }
 
     SECTION("Result of matching separated elements from beginning")
     {
-        forward_list<Result> expected{Result(-1)};
-        REQUIRE(s5.match(input, 0) == expected);
+        REQUIRE(*(s5.match(input, 0)) == Result(-1));
     }
 
     SECTION("Result of matching separated elements from position")
     {
-        forward_list<Result> expected{Result(4), Result(3)};
-        REQUIRE(s5.match(input, 4) == expected);
+        REQUIRE(*(s5.match(input, 4)) == Result(4));
+        REQUIRE(*(s5.next()) == Result(3));
     }
 }

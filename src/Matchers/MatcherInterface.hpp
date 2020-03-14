@@ -17,17 +17,23 @@ public:
      * previous matched results.
      * For example: recursive conditional statement, backreference /('|")\w+\1/
      *
-     * Returns all the possible Results ordered from the most greedy to the most
-     * ungreedy. Results are considered starting in matchables[start].
+     * Returns the greediest Result.
      */
-    virtual forward_list<Result> match(
+    virtual Result* match(
         const vector<MatchableInterface *> &matchables,
         int start,
         const forward_list<Result> &previousResults
     ) = 0;
 
-    virtual forward_list<Result> match(
+    virtual Result* match(
         const vector<MatchableInterface *> &matchables,
         int start
     ) = 0;
+
+    /**
+     * To be used after a call to match(...).
+     * Every call to next() returns the next Result ordered from the most greedy
+     * to the most ungreedy. Each Result is considered starting in matchables[start].
+     */
+    virtual Result* next() = 0;
 };

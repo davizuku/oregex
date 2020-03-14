@@ -22,8 +22,8 @@ TEST_CASE("NamedGroupMatcher returns the elements matched grouped as outputs")
         r1.setOutputs(map<string, forward_list<MatchableInterface *>>{
             {"one", {}},
         });
-        forward_list<Result> expected{r0, r1};
-        REQUIRE(g1.match(input, 0) == expected);
+        REQUIRE(*(g1.match(input, 0)) == r0);
+        REQUIRE(*(g1.next()) == r1);
     }
 
     SECTION("Result of matching the second element from the beginning")
@@ -32,8 +32,7 @@ TEST_CASE("NamedGroupMatcher returns the elements matched grouped as outputs")
         r0.setOutputs(map<string, forward_list<MatchableInterface *>>{
             {"two", {}},
         });
-        forward_list<Result> expected{r0};
-        REQUIRE(g2.match(input, 0) == expected);
+        REQUIRE(*(g2.match(input, 0)) == r0);
     }
 
     SECTION("Result of matching the multiple elements")
@@ -48,8 +47,9 @@ TEST_CASE("NamedGroupMatcher returns the elements matched grouped as outputs")
         r2.setOutputs(map<string, forward_list<MatchableInterface *>>{
             {"two", {}},
         });
-        forward_list<Result> expected{r0, r1, r2};
-        REQUIRE(g2.match(input, 2) == expected);
+        REQUIRE(*(g2.match(input, 2)) == r0);
+        REQUIRE(*(g2.next()) == r1);
+        REQUIRE(*(g2.next()) == r2);
     }
 
     SECTION("Result of matching last element")
@@ -61,8 +61,8 @@ TEST_CASE("NamedGroupMatcher returns the elements matched grouped as outputs")
         r1.setOutputs(map<string, forward_list<MatchableInterface *>>{
             {"three", {}},
         });
-        forward_list<Result> expected{r0, r1};
-        REQUIRE(g3.match(input, 6) == expected);
+        REQUIRE(*(g3.match(input, 6)) == r0);
+        REQUIRE(*(g3.next()) == r1);
     }
 }
 
@@ -72,14 +72,12 @@ TEST_CASE("NamedGroupMatcher propagates the outpus of internal matcher")
     StringMatcher m1("a");
     NamedGroupMatcher n1("one", &m1), n2("two", &n1);
     vector<MatchableInterface *> input{&a};
-    forward_list<Result> expected{
-        Result(
-            0,
-            map<string, forward_list<MatchableInterface *>>{
-                {"one", forward_list<MatchableInterface *>{&a}},
-                {"two", forward_list<MatchableInterface *>{&a}},
-            }
-        ),
-    };
-    REQUIRE(n2.match(input, 0) == expected);
+    Result expected = Result(
+        0,
+        map<string, forward_list<MatchableInterface *>>{
+            {"one", forward_list<MatchableInterface *>{&a}},
+            {"two", forward_list<MatchableInterface *>{&a}},
+        }
+    );
+    REQUIRE(*(n2.match(input, 0)) == expected);
 }

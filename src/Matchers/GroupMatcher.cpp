@@ -9,7 +9,7 @@ GroupMatcher::~GroupMatcher()
 {
 }
 
-forward_list<Result> GroupMatcher::match(
+Result* GroupMatcher::match(
     const vector<MatchableInterface *> &matchables,
     int start,
     const forward_list<Result> &previousResults
@@ -25,14 +25,24 @@ forward_list<Result> GroupMatcher::match(
         recursiveResults
     );
     results.reverse();
-    return results;
+    lastResultIterator = results.before_begin();
+    return next();
 }
 
-forward_list<Result> GroupMatcher::match(
+Result* GroupMatcher::match(
     const vector<MatchableInterface *> &matchables,
     int start
 ) {
     return match(matchables, start, forward_list<Result>{});
+}
+
+Result* GroupMatcher::next()
+{
+    ++lastResultIterator;
+    if (lastResultIterator == results.end()) {
+        return NULL;
+    }
+    return &(*lastResultIterator);
 }
 
 Result mergeOutputs(forward_list<Result> &results)
@@ -57,11 +67,17 @@ void GroupMatcher::recursiveMatch(
     if (matcherIndex >= matchers.size() or matchableIndex >= matchables.size()) {
         return;
     }
-    forward_list<Result> subResults = matchers[matcherIndex]->match(
+    forward_list<Result> subResults{};
+    Result* r = matchers[matcherIndex]->match(
         matchables,
         matchableIndex,
         previousResults
     );
+    while (r != NULL) {
+        subResults.push_front(*r);
+        r = matchers[matcherIndex]->next();
+    }
+    subResults.reverse();
     for (Result &r : subResults) {
         recursiveResults.push_front(r);
         previousResults.push_front(r);

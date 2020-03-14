@@ -13,17 +13,21 @@ class StringMatcher: public MatcherInterface
         StringMatcher(string s);
         ~StringMatcher();
 
-        forward_list<Result> match(
+        Result* match(
             const vector<MatchableInterface *> &matchables,
             int start,
             const forward_list<Result> &previousResults
         );
 
-        forward_list<Result> match(
+        Result* match(
             const vector<MatchableInterface *> &matchables,
             int start
         );
 
+        Result* next();
+
     protected:
+        forward_list<Result> results;
+        forward_list<Result>::iterator lastResultIterator;
         string value;
 };

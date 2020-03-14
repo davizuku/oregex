@@ -9,21 +9,31 @@ StringMatcher::~StringMatcher()
 {
 }
 
-forward_list<Result> StringMatcher::match(
+Result* StringMatcher::match(
     const vector<MatchableInterface *> &matchables,
     int start,
     const forward_list<Result> &previousResults
 ) {
-    forward_list<Result> results;
+    results = forward_list<Result>{};
     if (matchables[start]->getValue() == value) {
         results.push_front(Result(start));
     }
-    return results;
+    lastResultIterator = results.before_begin();
+    return next();
 }
 
-forward_list<Result> StringMatcher::match(
+Result* StringMatcher::match(
     const vector<MatchableInterface *> &matchables,
     int start
 ) {
     return match(matchables, start, forward_list<Result>{});
+}
+
+Result* StringMatcher::next()
+{
+    ++lastResultIterator;
+    if (lastResultIterator == results.end()) {
+        return NULL;
+    }
+    return &(*lastResultIterator);
 }

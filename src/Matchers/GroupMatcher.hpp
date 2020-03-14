@@ -11,20 +11,23 @@ class GroupMatcher: public MatcherInterface
         GroupMatcher(const vector<MatcherInterface *> &matchers);
         ~GroupMatcher();
 
-        forward_list<Result> match(
+        Result* match(
             const vector<MatchableInterface *> &matchables,
             int start,
             const forward_list<Result> &previousResults
         );
 
-        forward_list<Result> match(
+        Result* match(
             const vector<MatchableInterface *> &matchables,
             int start
         );
 
+        Result* next();
+
     protected:
         vector<MatcherInterface *> matchers;
         forward_list<Result> results;
+        forward_list<Result>::iterator lastResultIterator;
 
         void recursiveMatch(
             int matcherIndex,

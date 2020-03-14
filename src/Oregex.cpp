@@ -37,7 +37,13 @@ bool Oregex::match(
     map<string, forward_list<MatchableInterface *>> &outputs
 ) {
     for (int i = 0; i < matchables.size(); ++i) {
-        auto results = matcher->match(matchables, i);
+        forward_list<Result> results;
+        Result* r = matcher->match(matchables, i);
+        while (r != NULL) {
+            results.push_front(*r);
+            r = matcher->next();
+        }
+        results.reverse();
         if (not results.empty()) {
             buildOutputs(outputs, results);
             return true;
