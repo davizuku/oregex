@@ -17,18 +17,13 @@ Result* StarMatcher::match(
     results = forward_list<Result>{Result(start - 1)};
     int n = matchables.size();
     for (int i = start; i < n; ++i) {
-        forward_list<Result> subResults{};
         Result* r = matcher->match(matchables, i);
-        while (r != NULL) {
-            subResults.push_front(*r);
-            r = matcher->next();
-        }
-        subResults.reverse();
-        for (Result r: subResults) {
-            results.push_front(r);
-        }
-        if (subResults.empty()) {
+        if (r == NULL) {
             break;
+        }
+        while (r != NULL) {
+            results.push_front(*r);
+            r = matcher->next();
         }
     }
     lastResultIterator = results.before_begin();
