@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <forward_list>
+#include <stack>
 #include "../Result.hpp"
 #include "../Matchables/MatchableInterface.hpp"
 #include "MatcherInterface.hpp"
@@ -26,6 +27,5 @@ class StarMatcher: public MatcherInterface
 
     protected:
         MatcherInterface *matcher;
-        forward_list<Result> results;
-        forward_list<Result>::iterator lastResultIterator;
+        stack<Result*> results;
 };

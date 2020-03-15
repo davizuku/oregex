@@ -14,7 +14,8 @@ Result* StarMatcher::match(
     int start,
     const forward_list<Result> &previousResults
 ) {
-    results = forward_list<Result>{Result(start - 1)};
+    results = stack<Result*>();
+    results.push(new Result(start - 1));
     int n = matchables.size();
     for (int i = start; i < n; ++i) {
         Result* r = matcher->match(matchables, i, previousResults);
@@ -22,11 +23,10 @@ Result* StarMatcher::match(
             break;
         }
         while (r != NULL) {
-            results.push_front(*r);
+            results.push(r);
             r = matcher->next();
         }
     }
-    lastResultIterator = results.before_begin();
     return next();
 }
 
@@ -39,9 +39,10 @@ Result* StarMatcher::match(
 
 Result* StarMatcher::next()
 {
-    ++lastResultIterator;
-    if (lastResultIterator == results.end()) {
+    if (results.empty()) {
         return NULL;
     }
-    return &(*lastResultIterator);
+    Result* r = results.top();
+    results.pop();
+    return r;
 }
