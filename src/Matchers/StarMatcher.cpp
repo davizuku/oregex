@@ -17,7 +17,7 @@ Result* StarMatcher::match(
     results = forward_list<Result>{Result(start - 1)};
     int n = matchables.size();
     for (int i = start; i < n; ++i) {
-        Result* r = matcher->match(matchables, i);
+        Result* r = matcher->match(matchables, i, previousResults);
         if (r == NULL) {
             break;
         }
