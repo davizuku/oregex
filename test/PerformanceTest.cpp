@@ -90,6 +90,7 @@ TEST_CASE("Given the same set of strings how much faster is regex module")
     };
 
     for (TestArgs &testCase : testProvider) {
+        cout << endl << "Test: " << testCase.name << endl;
         float tRegex = 0, tOregex = 0;
         unsigned int nIterations = 100;
         for (unsigned i = 0; i < nIterations; ++i) {
@@ -102,7 +103,6 @@ TEST_CASE("Given the same set of strings how much faster is regex module")
             tRegex += (float)(t1 - t0) / CLOCKS_PER_SEC;
             tOregex += (float)(t2 - t1) / CLOCKS_PER_SEC;
         }
-        cout << endl << "Test: " << testCase.name << endl;
         float avgRegex = tRegex / nIterations,
             avgOregex = tOregex / nIterations,
             ratio = avgOregex / avgRegex;
