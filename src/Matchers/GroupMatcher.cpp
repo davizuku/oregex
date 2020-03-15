@@ -1,4 +1,5 @@
 #include "GroupMatcher.hpp"
+#include <list>
 
 GroupMatcher::GroupMatcher(const vector<MatcherInterface *> &m)
 {
@@ -68,20 +69,19 @@ void GroupMatcher::recursiveMatch(
     ) {
         return;
     }
-    forward_list<Result> subResults{};
+    list<Result*> subResults{};
     Result* r = matchers[matcherIndex]->match(
         matchables,
         matchableIndex,
         previousResults
     );
     while (r != NULL) {
-        subResults.push_front(*r);
+        subResults.push_back(r);
         r = matchers[matcherIndex]->next();
     }
-    subResults.reverse();
-    for (Result &r : subResults) {
-        recursiveResults.push_front(r);
-        previousResults.push_front(r);
+    for (Result* r : subResults) {
+        recursiveResults.push_front(*r);
+        previousResults.push_front(*r);
         if (matcherIndex == (int)matchers.size() - 1) {
             Result* finalRes = mergeOutputs(recursiveResults);
             results.push(finalRes);
@@ -89,7 +89,7 @@ void GroupMatcher::recursiveMatch(
             recursiveMatch(
                 matcherIndex + 1,
                 matchables,
-                r.getLastMatchedIndex() + 1,
+                r->getLastMatchedIndex() + 1,
                 previousResults,
                 recursiveResults
             );
