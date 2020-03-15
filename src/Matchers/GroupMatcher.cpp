@@ -16,7 +16,7 @@ Result* GroupMatcher::match(
 ) {
     auto copyPrevResults = previousResults;
     auto recursiveResults = forward_list<Result>{};
-    results = forward_list<Result>{};
+    results = queue<Result*>();
     recursiveMatch(
         0,
         matchables,
@@ -24,8 +24,6 @@ Result* GroupMatcher::match(
         copyPrevResults,
         recursiveResults
     );
-    results.reverse();
-    lastResultIterator = results.before_begin();
     return next();
 }
 
@@ -38,14 +36,15 @@ Result* GroupMatcher::match(
 
 Result* GroupMatcher::next()
 {
-    ++lastResultIterator;
-    if (lastResultIterator == results.end()) {
+    if (results.empty()) {
         return NULL;
     }
-    return &(*lastResultIterator);
+    Result* r = results.front();
+    results.pop();
+    return r;
 }
 
-Result mergeOutputs(forward_list<Result> &results)
+Result* mergeOutputs(forward_list<Result> &results)
 {
     int index = -1;
     map<string, forward_list<MatchableInterface *>> outputs{};
@@ -54,7 +53,7 @@ Result mergeOutputs(forward_list<Result> &results)
         auto rOuts = r.getOutputs();
         outputs.insert(rOuts.begin(), rOuts.end());
     }
-    return Result(index, outputs);
+    return new Result(index, outputs);
 }
 
 void GroupMatcher::recursiveMatch(
@@ -64,7 +63,9 @@ void GroupMatcher::recursiveMatch(
     forward_list<Result> &previousResults,
     forward_list<Result> &recursiveResults
 ) {
-    if (matcherIndex >= matchers.size() or matchableIndex >= matchables.size()) {
+    if (matcherIndex >= (int)matchers.size() or
+        matchableIndex >= (int)matchables.size()
+    ) {
         return;
     }
     forward_list<Result> subResults{};
@@ -81,9 +82,9 @@ void GroupMatcher::recursiveMatch(
     for (Result &r : subResults) {
         recursiveResults.push_front(r);
         previousResults.push_front(r);
-        if (matcherIndex == matchers.size() - 1) {
-            Result finalRes = mergeOutputs(recursiveResults);
-            results.push_front(finalRes);
+        if (matcherIndex == (int)matchers.size() - 1) {
+            Result* finalRes = mergeOutputs(recursiveResults);
+            results.push(finalRes);
         } else {
             recursiveMatch(
                 matcherIndex + 1,

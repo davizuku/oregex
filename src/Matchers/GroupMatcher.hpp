@@ -1,6 +1,6 @@
 #pragma once
-#include <string>
 #include <forward_list>
+#include <queue>
 #include "../Result.hpp"
 #include "../Matchables/MatchableInterface.hpp"
 #include "MatcherInterface.hpp"
@@ -26,8 +26,7 @@ class GroupMatcher: public MatcherInterface
 
     protected:
         vector<MatcherInterface *> matchers;
-        forward_list<Result> results;
-        forward_list<Result>::iterator lastResultIterator;
+        queue<Result*> results;
 
         void recursiveMatch(
             int matcherIndex,
