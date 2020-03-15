@@ -69,17 +69,12 @@ void GroupMatcher::recursiveMatch(
     ) {
         return;
     }
-    list<Result*> subResults{};
     Result* r = matchers[matcherIndex]->match(
         matchables,
         matchableIndex,
         previousResults
     );
     while (r != NULL) {
-        subResults.push_back(r);
-        r = matchers[matcherIndex]->next();
-    }
-    for (Result* r : subResults) {
         recursiveResults.push_front(*r);
         previousResults.push_front(*r);
         if (matcherIndex == (int)matchers.size() - 1) {
@@ -96,5 +91,6 @@ void GroupMatcher::recursiveMatch(
         }
         recursiveResults.pop_front();
         previousResults.pop_front();
+        r = matchers[matcherIndex]->next();
     }
 }
