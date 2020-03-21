@@ -16,14 +16,13 @@ Result* GroupMatcher::match(
     const forward_list<Result> &previousResults
 ) {
     auto copyPrevResults = previousResults;
-    auto recursiveResults = forward_list<Result*>{};
     results = queue<Result*>();
     recursiveMatch(
         0,
         matchables,
         start,
         copyPrevResults,
-        recursiveResults
+        NULL
     );
     return next();
 }
@@ -45,16 +44,20 @@ Result* GroupMatcher::next()
     return r;
 }
 
-Result* mergeOutputs(forward_list<Result*> &results)
+Result* mergeResults(Result* a, Result* b)
 {
-    int index = -1;
-    map<string, forward_list<MatchableInterface *>> outputs{};
-    for (Result* r: results) {
-        index = max(index, r->getLastMatchedIndex());
-        auto rOuts = r->getOutputs();
-        outputs.insert(rOuts.begin(), rOuts.end());
+    if (a != NULL and b != NULL) {
+        map<string, forward_list<MatchableInterface *>> outputs{};
+        auto outA = a->getOutputs();
+        auto outB = b->getOutputs();
+        outputs.insert(outA.begin(), outA.end());
+        outputs.insert(outB.begin(), outB.end());
+        return new Result(
+            max(a->getLastMatchedIndex(), b->getLastMatchedIndex()),
+            outputs
+        );
     }
-    return new Result(index, outputs);
+    return a == NULL ? b : a;
 }
 
 void GroupMatcher::recursiveMatch(
@@ -62,7 +65,7 @@ void GroupMatcher::recursiveMatch(
     const vector<MatchableInterface *> &matchables,
     int matchableIndex,
     forward_list<Result> &previousResults,
-    forward_list<Result*> &recursiveResults
+    Result* accResult
 ) {
     if (matcherIndex >= (int)matchers.size() or
         matchableIndex >= (int)matchables.size()
@@ -75,10 +78,9 @@ void GroupMatcher::recursiveMatch(
         previousResults
     );
     while (r != NULL) {
-        recursiveResults.push_front(r);
         previousResults.push_front(*r);
+        Result* finalRes = mergeResults(accResult, r);
         if (matcherIndex == (int)matchers.size() - 1) {
-            Result* finalRes = mergeOutputs(recursiveResults);
             results.push(finalRes);
         } else {
             recursiveMatch(
@@ -86,10 +88,9 @@ void GroupMatcher::recursiveMatch(
                 matchables,
                 r->getLastMatchedIndex() + 1,
                 previousResults,
-                recursiveResults
+                finalRes
             );
         }
-        recursiveResults.pop_front();
         previousResults.pop_front();
         r = matchers[matcherIndex]->next();
     }
