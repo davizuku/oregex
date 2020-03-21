@@ -44,6 +44,13 @@ TEST_CASE("Given the same set of strings how much faster is regex module")
             Oregex(vector<MatcherInterface *>{&m1})
         },
         TestArgs{
+            "String 'abcçdefghijklmnñopqrstuvwxyz0123456789' into literal regex (39 steps)",
+            "abcçdefghijklmnñopqrstuvwxyz0123456789",
+            regex("abcçdefghijklmnñopqrstuvwxyz0123456789"),
+            vector<MatchableInterface *>{new StringMatchable("abcçdefghijklmnñopqrstuvwxyz0123456789")},
+            Oregex(vector<MatcherInterface *>{new StringMatcher("abcçdefghijklmnñopqrstuvwxyz0123456789")})
+        },
+        TestArgs{
             "String 'abcabcabc' into regex '/(abc)*/ naive' (25 steps)",
             "abcabcabc",
             regex("(abc)*"),
