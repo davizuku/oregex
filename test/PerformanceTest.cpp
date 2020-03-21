@@ -150,7 +150,7 @@ TEST_CASE("Given the same set of strings how much faster is regex module")
     for (TestArgs &testCase : testProvider) {
         cout << endl << "Test: " << testCase.name << endl;
         float tRegex = 0, tOregex = 0;
-        unsigned int nIterations = 100;
+        unsigned int nIterations = 1000;
         for (unsigned i = 0; i < nIterations; ++i) {
             clock_t t0 = clock();
             bool r1 = regex_search(testCase.strInput, testCase.strRegex);
