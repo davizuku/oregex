@@ -48,10 +48,8 @@ Result* GroupMatcher::next()
 Result* mergeResults(Result* a, Result* b)
 {
     if (a != NULL and b != NULL) {
-        unordered_map<string, forward_list<MatchableInterface *>> outputs{};
-        auto outA = a->getOutputs();
+        unordered_map<string, forward_list<MatchableInterface *>> outputs{a->getOutputs()};
         auto outB = b->getOutputs();
-        outputs.insert(outA.begin(), outA.end());
         outputs.insert(outB.begin(), outB.end());
         return new Result(
             max(a->getLastMatchedIndex(), b->getLastMatchedIndex()),
