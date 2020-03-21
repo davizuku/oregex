@@ -27,6 +27,6 @@ class StringMatcher: public MatcherInterface
         Result* next();
 
     protected:
-        const char* value;
+        char* value;
         size_t valueSize;
 };

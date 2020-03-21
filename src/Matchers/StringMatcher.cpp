@@ -2,8 +2,9 @@
 
 StringMatcher::StringMatcher(string s)
 {
-    value = s.c_str();
     valueSize = s.length();
+    value = new char[valueSize+1];
+    strcpy(value, s.c_str());
 }
 
 StringMatcher::~StringMatcher()
