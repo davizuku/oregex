@@ -29,9 +29,9 @@ class GroupMatcher: public MatcherInterface
         queue<Result*> results;
 
         void recursiveMatch(
-            int matcherIndex,
+            size_t matcherIndex,
             const vector<MatchableInterface *> &matchables,
-            int matchableIndex,
+            size_t matchableIndex,
             forward_list<Result> &previousResults,
             Result* accResult
         );

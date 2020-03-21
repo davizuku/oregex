@@ -61,14 +61,14 @@ Result* mergeResults(Result* a, Result* b)
 }
 
 void GroupMatcher::recursiveMatch(
-    int matcherIndex,
+    size_t matcherIndex,
     const vector<MatchableInterface *> &matchables,
-    int matchableIndex,
+    size_t matchableIndex,
     forward_list<Result> &previousResults,
     Result* accResult
 ) {
-    if (matcherIndex >= (int)matchers.size() or
-        matchableIndex >= (int)matchables.size()
+    if (matcherIndex >= matchers.size() or
+        matchableIndex >= matchables.size()
     ) {
         return;
     }
@@ -80,7 +80,7 @@ void GroupMatcher::recursiveMatch(
     while (r != NULL) {
         previousResults.push_front(*r);
         Result* finalRes = mergeResults(accResult, r);
-        if (matcherIndex == (int)matchers.size() - 1) {
+        if (matcherIndex == matchers.size() - 1) {
             results.push(finalRes);
         } else {
             recursiveMatch(
