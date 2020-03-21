@@ -63,7 +63,7 @@ TEST_CASE("GroupMatcher joins the results of the specified elements")
     {
         Result expected = Result(
             1,
-            map<string, forward_list<MatchableInterface *>>{
+            unordered_map<string, forward_list<MatchableInterface *>>{
                 {"outputs", forward_list<MatchableInterface *>{}}
             }
         );
@@ -75,13 +75,13 @@ TEST_CASE("GroupMatcher joins the results of the specified elements")
     {
         Result r1 = Result(
             2,
-            map<string, forward_list<MatchableInterface *>>{
+            unordered_map<string, forward_list<MatchableInterface *>>{
                 {"outputs", forward_list<MatchableInterface *>{&o1}}
             }
         );
         Result r2 = Result(
             1,
-            map<string, forward_list<MatchableInterface *>>{
+            unordered_map<string, forward_list<MatchableInterface *>>{
                 {"outputs", forward_list<MatchableInterface *>{}}
             }
         );
@@ -94,31 +94,31 @@ TEST_CASE("GroupMatcher joins the results of the specified elements")
     {
         Result r1 = Result(
             5,
-            map<string, forward_list<MatchableInterface *>>{
+            unordered_map<string, forward_list<MatchableInterface *>>{
                 {"outputs", forward_list<MatchableInterface *>{&o1, &o2, &o3, &o4}}
             }
         );
         Result r2 = Result(
             4,
-            map<string, forward_list<MatchableInterface *>>{
+            unordered_map<string, forward_list<MatchableInterface *>>{
                 {"outputs", forward_list<MatchableInterface *>{&o1, &o2, &o3}}
             }
         );
         Result r3 = Result(
             3,
-            map<string, forward_list<MatchableInterface *>>{
+            unordered_map<string, forward_list<MatchableInterface *>>{
                 {"outputs", forward_list<MatchableInterface *>{&o1, &o2}}
             }
         );
         Result r4 = Result(
             2,
-            map<string, forward_list<MatchableInterface *>>{
+            unordered_map<string, forward_list<MatchableInterface *>>{
                 {"outputs", forward_list<MatchableInterface *>{&o1}}
             }
         );
         Result r5 = Result(
             1,
-            map<string, forward_list<MatchableInterface *>>{
+            unordered_map<string, forward_list<MatchableInterface *>>{
                 {"outputs", forward_list<MatchableInterface *>{}}
             }
         );

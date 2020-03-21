@@ -47,7 +47,7 @@ Result* GroupMatcher::next()
 Result* mergeResults(Result* a, Result* b)
 {
     if (a != NULL and b != NULL) {
-        map<string, forward_list<MatchableInterface *>> outputs{};
+        unordered_map<string, forward_list<MatchableInterface *>> outputs{};
         auto outA = a->getOutputs();
         auto outB = b->getOutputs();
         outputs.insert(outA.begin(), outA.end());

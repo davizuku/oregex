@@ -13,12 +13,12 @@ Oregex::~Oregex()
 
 bool Oregex::match(vector<MatchableInterface *> &matchables)
 {
-    map<string, forward_list<MatchableInterface *>> outputs;
+    unordered_map<string, forward_list<MatchableInterface *>> outputs;
     return match(matchables, outputs);
 }
 
 void buildOutputs(
-    map<string, forward_list<MatchableInterface *>> &outputs,
+    unordered_map<string, forward_list<MatchableInterface *>> &outputs,
     const forward_list<Result> &results
 ) {
     for (const Result &r: results) {
@@ -34,7 +34,7 @@ void buildOutputs(
 
 bool Oregex::match(
     vector<MatchableInterface *> &matchables,
-    map<string, forward_list<MatchableInterface *>> &outputs
+    unordered_map<string, forward_list<MatchableInterface *>> &outputs
 ) {
     for (size_t i = 0; i < matchables.size(); ++i) {
         forward_list<Result> results;
