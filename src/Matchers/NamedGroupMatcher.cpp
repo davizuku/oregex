@@ -12,7 +12,7 @@ NamedGroupMatcher::~NamedGroupMatcher()
 
 Result* NamedGroupMatcher::match(
     const vector<MatchableInterface *> &matchables,
-    int start,
+    size_t start,
     const forward_list<Result> &previousResults
 ) {
     results = forward_list<Result>{};
@@ -44,7 +44,7 @@ Result* NamedGroupMatcher::match(
 
 Result* NamedGroupMatcher::match(
     const vector<MatchableInterface *> &matchables,
-    int start
+    size_t start
 ) {
     return match(matchables, start, forward_list<Result>{});
 }

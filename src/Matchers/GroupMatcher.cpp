@@ -12,7 +12,7 @@ GroupMatcher::~GroupMatcher()
 
 Result* GroupMatcher::match(
     const vector<MatchableInterface *> &matchables,
-    int start,
+    size_t start,
     const forward_list<Result> &previousResults
 ) {
     auto copyPrevResults = previousResults;
@@ -29,7 +29,7 @@ Result* GroupMatcher::match(
 
 Result* GroupMatcher::match(
     const vector<MatchableInterface *> &matchables,
-    int start
+    size_t start
 ) {
     return match(matchables, start, forward_list<Result>{});
 }

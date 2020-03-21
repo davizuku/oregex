@@ -21,13 +21,13 @@ public:
      */
     virtual Result* match(
         const vector<MatchableInterface *> &matchables,
-        int start,
+        size_t start,
         const forward_list<Result> &previousResults
     ) = 0;
 
     virtual Result* match(
         const vector<MatchableInterface *> &matchables,
-        int start
+        size_t start
     ) = 0;
 
     /**

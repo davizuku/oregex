@@ -13,13 +13,13 @@ class NamedGroupMatcher: public MatcherInterface
 
         Result* match(
             const vector<MatchableInterface *> &matchables,
-            int start,
+            size_t start,
             const forward_list<Result> &previousResults
         );
 
         Result* match(
             const vector<MatchableInterface *> &matchables,
-            int start
+            size_t start
         );
 
         Result* next();

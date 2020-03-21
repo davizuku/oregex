@@ -12,7 +12,7 @@ StringMatcher::~StringMatcher()
 
 Result* StringMatcher::match(
     const vector<MatchableInterface *> &matchables,
-    int start,
+    size_t start,
     const forward_list<Result> &previousResults
 ) {
     string input = matchables[start]->getValue();
@@ -27,7 +27,7 @@ Result* StringMatcher::match(
 
 Result* StringMatcher::match(
     const vector<MatchableInterface *> &matchables,
-    int start
+    size_t start
 ) {
     return match(matchables, start, forward_list<Result>{});
 }

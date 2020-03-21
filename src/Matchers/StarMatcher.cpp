@@ -11,7 +11,7 @@ StarMatcher::~StarMatcher()
 
 Result* StarMatcher::match(
     const vector<MatchableInterface *> &matchables,
-    int start,
+    size_t start,
     const forward_list<Result> &previousResults
 ) {
     results = stack<Result*>();
@@ -31,7 +31,7 @@ Result* StarMatcher::match(
 
 Result* StarMatcher::match(
     const vector<MatchableInterface *> &matchables,
-    int start
+    size_t start
 ) {
     return match(matchables, start, forward_list<Result>{});
 }
