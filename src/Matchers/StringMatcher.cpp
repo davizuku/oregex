@@ -14,7 +14,8 @@ Result* StringMatcher::match(
     int start,
     const forward_list<Result> &previousResults
 ) {
-    if (matchables[start]->getValue() == value) {
+    string input = matchables[start]->getValue();
+    if (input[0] == value[0] and input == value) {
         return new Result(start);
     }
     return NULL;
