@@ -16,7 +16,7 @@ Result* GroupMatcher::match(
     const forward_list<Result> &previousResults
 ) {
     auto copyPrevResults = previousResults;
-    results = queue<Result*>();
+    results = list<Result*>();
     recursiveMatch(
         0,
         matchables,
@@ -24,6 +24,7 @@ Result* GroupMatcher::match(
         copyPrevResults,
         NULL
     );
+    resultIt = results.begin();
     return next();
 }
 
@@ -36,11 +37,11 @@ Result* GroupMatcher::match(
 
 Result* GroupMatcher::next()
 {
-    if (results.empty()) {
+    if (resultIt == results.end()) {
         return NULL;
     }
-    Result* r = results.front();
-    results.pop();
+    Result* r = *resultIt;
+    resultIt++;
     return r;
 }
 
@@ -81,7 +82,7 @@ void GroupMatcher::recursiveMatch(
         previousResults.push_front(*r);
         Result* finalRes = mergeResults(accResult, r);
         if (matcherIndex == matchers.size() - 1) {
-            results.push(finalRes);
+            results.push_back(finalRes);
         } else {
             recursiveMatch(
                 matcherIndex + 1,
