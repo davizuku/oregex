@@ -2,7 +2,8 @@
 
 StringMatcher::StringMatcher(string s)
 {
-    value = s;
+    value = s.c_str();
+    valueSize = s.length();
 }
 
 StringMatcher::~StringMatcher()
@@ -15,7 +16,10 @@ Result* StringMatcher::match(
     const forward_list<Result> &previousResults
 ) {
     string input = matchables[start]->getValue();
-    if (input[0] == value[0] and input == value) {
+    if (input.length() == valueSize and
+        input[0] == value[0] and
+        memcmp(input.c_str(), value, valueSize) == 0
+    ) {
         return new Result(start);
     }
     return NULL;
