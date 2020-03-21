@@ -16,8 +16,7 @@ Result* StarMatcher::match(
 ) {
     results = stack<Result*>();
     results.push(new Result(start - 1));
-    int n = matchables.size();
-    for (int i = start; i < n; ++i) {
+    for (size_t i = start; i < matchables.size(); ++i) {
         Result* r = matcher->match(matchables, i, previousResults);
         if (r == NULL) {
             break;

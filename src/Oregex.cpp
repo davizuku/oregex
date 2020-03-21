@@ -36,7 +36,7 @@ bool Oregex::match(
     vector<MatchableInterface *> &matchables,
     map<string, forward_list<MatchableInterface *>> &outputs
 ) {
-    for (int i = 0; i < (int)matchables.size(); ++i) {
+    for (size_t i = 0; i < matchables.size(); ++i) {
         forward_list<Result> results;
         Result* r = matcher->match(matchables, i);
         while (r != NULL) {
