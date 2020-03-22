@@ -19,10 +19,10 @@ bool Oregex::match(vector<MatchableInterface *> &matchables)
 
 void buildOutputs(
     unordered_map<string, forward_list<MatchableInterface *>> &outputs,
-    const forward_list<Result> &results
+    const list<Result*> &results
 ) {
-    for (const Result &r: results) {
-        auto rOuts = r.getOutputs();
+    for (const Result* r: results) {
+        auto rOuts = r->getOutputs();
         for (auto it = rOuts.begin(); it != rOuts.end(); ++it) {
             bool hasKey = outputs.find(it->first) != outputs.end();
             if (not hasKey) {
@@ -37,13 +37,12 @@ bool Oregex::match(
     unordered_map<string, forward_list<MatchableInterface *>> &outputs
 ) {
     for (size_t i = 0; i < matchables.size(); ++i) {
-        forward_list<Result> results;
+        list<Result*> results;
         Result* r = matcher->match(matchables, i);
         while (r != NULL) {
-            results.push_front(*r);
+            results.push_back(r);
             r = matcher->next();
         }
-        results.reverse();
         if (not results.empty()) {
             buildOutputs(outputs, results);
             return true;
