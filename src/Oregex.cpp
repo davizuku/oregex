@@ -22,7 +22,6 @@ bool Oregex::match(
     unordered_map<string, forward_list<MatchableInterface *>> &outputs
 ) {
     for (size_t i = 0; i < matchables.size(); ++i) {
-        list<Result*> results;
         Result* r = matcher->match(matchables, i);
         if (r != NULL) {
             outputs = r->getOutputs();
