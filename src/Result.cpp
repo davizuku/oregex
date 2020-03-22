@@ -2,13 +2,13 @@
 
 using namespace std;
 
-Result::Result(int index)
+Result::Result(size_t index)
 {
     lastMatchedIndex = index;
-    setOutputs(map<string, forward_list<MatchableInterface *>>());
+    setOutputs(unordered_map<string, forward_list<MatchableInterface *>>());
 }
 
-Result::Result(int index, const map<string, forward_list<MatchableInterface *>> &outputs)
+Result::Result(size_t index, const unordered_map<string, forward_list<MatchableInterface *>> &outputs)
 {
     lastMatchedIndex = index;
     setOutputs(outputs);
@@ -35,12 +35,12 @@ int Result::getLastMatchedIndex() const
     return lastMatchedIndex;
 }
 
-map<string, forward_list<MatchableInterface *>> Result::getOutputs() const
+unordered_map<string, forward_list<MatchableInterface *>> Result::getOutputs() const
 {
     return outputs;
 }
 
-void Result::setOutputs(const map<string, forward_list<MatchableInterface *>> &outs)
+void Result::setOutputs(const unordered_map<string, forward_list<MatchableInterface *>> &outs)
 {
     outputs = outs;
 }

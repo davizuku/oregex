@@ -12,7 +12,7 @@ public:
     bool match(vector<MatchableInterface *> &matchables);
     bool match(
         vector<MatchableInterface *> &matchables,
-        map<string, forward_list<MatchableInterface *>> &outputs
+        unordered_map<string, forward_list<MatchableInterface *>> &outputs
     );
 
 protected:

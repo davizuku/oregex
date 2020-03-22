@@ -10,16 +10,19 @@ NamedGroupMatcher::~NamedGroupMatcher()
 {
 }
 
-forward_list<Result> NamedGroupMatcher::match(
+Result* NamedGroupMatcher::match(
     const vector<MatchableInterface *> &matchables,
-    int start,
+    size_t start,
     const forward_list<Result> &previousResults
 ) {
-    forward_list<Result> results, subResults = matcher->match(
-        matchables,
-        start,
-        previousResults
-    );
+    results = forward_list<Result>{};
+    forward_list<Result> subResults;
+    Result* r = matcher->match(matchables, start, previousResults);
+    while (r != NULL) {
+        subResults.push_front(*r);
+        r = matcher->next();
+    }
+    subResults.reverse();
     for (auto it = subResults.begin(); it != subResults.end(); it++) {
         int end = it->getLastMatchedIndex();
         auto subOutputs = it->getOutputs();
@@ -35,12 +38,22 @@ forward_list<Result> NamedGroupMatcher::match(
         results.push_front(r);
     }
     results.reverse();
-    return results;
+    lastResultIterator = results.before_begin();
+    return next();
 }
 
-forward_list<Result> NamedGroupMatcher::match(
+Result* NamedGroupMatcher::match(
     const vector<MatchableInterface *> &matchables,
-    int start
+    size_t start
 ) {
     return match(matchables, start, forward_list<Result>{});
+}
+
+Result* NamedGroupMatcher::next()
+{
+    ++lastResultIterator;
+    if (lastResultIterator == results.end()) {
+        return NULL;
+    }
+    return &(*lastResultIterator);
 }

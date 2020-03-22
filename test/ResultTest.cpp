@@ -7,7 +7,7 @@ TEST_CASE("Results contain a pointer to the last matched  and outputs")
 {
     StringMatchable a("a"), b("b"), c("c");
     vector<MatchableInterface *> input{&a, &b, &c};
-    map<string, forward_list<MatchableInterface *>> outputs;
+    unordered_map<string, forward_list<MatchableInterface *>> outputs;
     outputs["first"] = forward_list<MatchableInterface *>{&a, &b};
     outputs["second"] = forward_list<MatchableInterface *>{&c};
 

@@ -43,7 +43,7 @@ TEST_CASE("Oregex is built from Matchers and is executed on Matchables")
 
     SECTION("Nested outputs /(?<all>ab(?<some>c*)d(?<end>ed)*)/ -> abccded")
     {
-        map<string, forward_list<MatchableInterface *>> outputs, expected;
+        unordered_map<string, forward_list<MatchableInterface *>> outputs, expected;
         expected["all"] = forward_list<MatchableInterface *>{&a, &b, &c, &c, &d, &e, &d};
         expected["some"] = forward_list<MatchableInterface *>{&c, &c};
         expected["end"] = forward_list<MatchableInterface *>{&e, &d};

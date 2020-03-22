@@ -11,18 +11,22 @@ class NamedGroupMatcher: public MatcherInterface
         NamedGroupMatcher(string name, MatcherInterface *m);
         ~NamedGroupMatcher();
 
-        forward_list<Result> match(
+        Result* match(
             const vector<MatchableInterface *> &matchables,
-            int start,
+            size_t start,
             const forward_list<Result> &previousResults
         );
 
-        forward_list<Result> match(
+        Result* match(
             const vector<MatchableInterface *> &matchables,
-            int start
+            size_t start
         );
+
+        Result* next();
 
     protected:
         MatcherInterface *matcher;
+        forward_list<Result> results;
+        forward_list<Result>::iterator lastResultIterator;
         string name;
 };

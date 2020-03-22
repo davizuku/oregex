@@ -1,4 +1,5 @@
 #include "GroupMatcher.hpp"
+#include <list>
 
 GroupMatcher::GroupMatcher(const vector<MatcherInterface *> &m)
 {
@@ -9,75 +10,87 @@ GroupMatcher::~GroupMatcher()
 {
 }
 
-forward_list<Result> GroupMatcher::match(
+Result* GroupMatcher::match(
     const vector<MatchableInterface *> &matchables,
-    int start,
+    size_t start,
     const forward_list<Result> &previousResults
 ) {
     auto copyPrevResults = previousResults;
-    auto recursiveResults = forward_list<Result>{};
-    results = forward_list<Result>{};
+    results = list<Result*>();
     recursiveMatch(
         0,
         matchables,
         start,
         copyPrevResults,
-        recursiveResults
+        NULL
     );
-    results.reverse();
-    return results;
+    resultIt = results.begin();
+    return next();
 }
 
-forward_list<Result> GroupMatcher::match(
+Result* GroupMatcher::match(
     const vector<MatchableInterface *> &matchables,
-    int start
+    size_t start
 ) {
     return match(matchables, start, forward_list<Result>{});
 }
 
-Result mergeOutputs(forward_list<Result> &results)
+Result* GroupMatcher::next()
 {
-    int index = -1;
-    map<string, forward_list<MatchableInterface *>> outputs{};
-    for (Result &r: results) {
-        index = max(index, r.getLastMatchedIndex());
-        auto rOuts = r.getOutputs();
-        outputs.insert(rOuts.begin(), rOuts.end());
+    if (resultIt == results.end()) {
+        return NULL;
     }
-    return Result(index, outputs);
+    Result* r = *resultIt;
+    resultIt++;
+    return r;
+}
+
+Result* mergeResults(Result* a, Result* b)
+{
+    if (a != NULL and b != NULL) {
+        unordered_map<string, forward_list<MatchableInterface *>> outputs{a->getOutputs()};
+        auto outB = b->getOutputs();
+        outputs.insert(outB.begin(), outB.end());
+        return new Result(
+            max(a->getLastMatchedIndex(), b->getLastMatchedIndex()),
+            outputs
+        );
+    }
+    return a == NULL ? b : a;
 }
 
 void GroupMatcher::recursiveMatch(
-    int matcherIndex,
+    size_t matcherIndex,
     const vector<MatchableInterface *> &matchables,
-    int matchableIndex,
+    size_t matchableIndex,
     forward_list<Result> &previousResults,
-    forward_list<Result> &recursiveResults
+    Result* accResult
 ) {
-    if (matcherIndex >= matchers.size() or matchableIndex >= matchables.size()) {
+    if (matcherIndex >= matchers.size() or
+        matchableIndex >= matchables.size()
+    ) {
         return;
     }
-    forward_list<Result> subResults = matchers[matcherIndex]->match(
+    Result* r = matchers[matcherIndex]->match(
         matchables,
         matchableIndex,
         previousResults
     );
-    for (Result &r : subResults) {
-        recursiveResults.push_front(r);
-        previousResults.push_front(r);
+    while (r != NULL) {
+        previousResults.push_front(*r);
+        Result* finalRes = mergeResults(accResult, r);
         if (matcherIndex == matchers.size() - 1) {
-            Result finalRes = mergeOutputs(recursiveResults);
-            results.push_front(finalRes);
+            results.push_back(finalRes);
         } else {
             recursiveMatch(
                 matcherIndex + 1,
                 matchables,
-                r.getLastMatchedIndex() + 1,
+                r->getLastMatchedIndex() + 1,
                 previousResults,
-                recursiveResults
+                finalRes
             );
         }
-        recursiveResults.pop_front();
         previousResults.pop_front();
+        r = matchers[matcherIndex]->next();
     }
 }
