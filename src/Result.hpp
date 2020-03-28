@@ -11,8 +11,8 @@ using namespace std;
 class Result
 {
 public:
-    Result();
-    Result(size_t start, size_t end);
+    Result(): Result(-1, -1){};
+    Result(size_t start, size_t end): Result(start, end, {}){};
     Result(
         size_t start,
         size_t end,

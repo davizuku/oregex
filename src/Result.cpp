@@ -2,13 +2,6 @@
 
 using namespace std;
 
-Result::Result(size_t start, size_t end)
-{
-    firstMatchedIndex = start;
-    lastMatchedIndex = end;
-    setOutputs(unordered_map<string, forward_list<MatchableInterface *>> {});
-}
-
 Result::Result(
     size_t start,
     size_t end,
