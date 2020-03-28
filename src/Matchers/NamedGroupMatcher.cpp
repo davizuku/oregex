@@ -24,9 +24,9 @@ Result* NamedGroupMatcher::match(
     }
     subResults.reverse();
     for (auto it = subResults.begin(); it != subResults.end(); it++) {
-        int end = it->getLastMatchedIndex();
+        size_t end = it->getLastMatchedIndex();
         auto subOutputs = it->getOutputs();
-        Result r(-1, end);
+        Result r(it->getFirstMatchedIndex(), end);
         forward_list<MatchableInterface *> outputList;
         outputList.insert_after(
             outputList.before_begin(),
