@@ -49,7 +49,8 @@ void Result::setOutputs(const unordered_map<string, forward_list<MatchableInterf
 
 ostream& operator<<(ostream &out, const Result &r)
 {
-    out << "Result(" << r.getLastMatchedIndex() << ", {";
+    out << "Result(" << r.getFirstMatchedIndex() << ", ";
+    out << r.getLastMatchedIndex() << ", {";
     auto outputs = r.getOutputs();
     for (auto it = outputs.begin(); it != outputs.end(); ++it) {
         out << "\"" << it->first << "\": [";
