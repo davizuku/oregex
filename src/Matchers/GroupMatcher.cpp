@@ -52,6 +52,7 @@ Result* mergeResults(Result* a, Result* b)
         auto outB = b->getOutputs();
         outputs.insert(outB.begin(), outB.end());
         return new Result(
+            -1,
             max(a->getLastMatchedIndex(), b->getLastMatchedIndex()),
             outputs
         );

@@ -13,20 +13,21 @@ TEST_CASE("Results contain a pointer to the last matched  and outputs")
 
     SECTION("Setting iterator in constructor")
     {
-        Result res(0);
-        REQUIRE(res.getLastMatchedIndex() == 0);
+        Result res(0, 1);
+        REQUIRE(res.getFirstMatchedIndex() == 0);
+        REQUIRE(res.getLastMatchedIndex() == 1);
     }
 
     SECTION("Setting outputs in setter")
     {
-        Result res(0);
+        Result res(0, 1);
         res.setOutputs(outputs);
         REQUIRE(res.getOutputs() == outputs);
     }
 
     SECTION("Setting outputs in constructor")
     {
-        Result res(0, outputs);
+        Result res(0, 1, outputs);
         REQUIRE(res.getOutputs() == outputs);
     }
 }

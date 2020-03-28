@@ -13,46 +13,46 @@ TEST_CASE("StarMatcher matches zero or more elements")
 
     SECTION("Result of matching the first element")
     {
-        REQUIRE(*(s1.match(input, 0)) == Result(0));
-        REQUIRE(*(s1.next()) == Result(-1));
+        REQUIRE(*(s1.match(input, 0)) == Result(-1, 0));
+        REQUIRE(*(s1.next()) == Result(-1, -1));
     }
 
     SECTION("Result of matching the second element from the beginning")
     {
-        REQUIRE(*(s2.match(input, 0)) == Result(-1));
+        REQUIRE(*(s2.match(input, 0)) == Result(-1, -1));
     }
 
     SECTION("Result of matching the second element from the element")
     {
-        REQUIRE(*(s2.match(input, 1)) == Result(1));
-        REQUIRE(*(s2.next()) == Result(0));
+        REQUIRE(*(s2.match(input, 1)) == Result(-1, 1));
+        REQUIRE(*(s2.next()) == Result(-1, 0));
     }
 
     SECTION("Result of not matching any element from the beginning")
     {
-        REQUIRE(*(s3.match(input, 0)) == Result(-1));
+        REQUIRE(*(s3.match(input, 0)) == Result(-1, -1));
     }
 
     SECTION("Result of not matching any element from position")
     {
-        REQUIRE(*(s3.match(input, 2)) == Result(1));
+        REQUIRE(*(s3.match(input, 2)) == Result(-1, 1));
     }
 
     SECTION("Result of matching repeated elements from position")
     {
-        REQUIRE(*(s4.match(input, 2)) == Result(3));
-        REQUIRE(*(s4.next()) == Result(2));
-        REQUIRE(*(s4.next()) == Result(1));
+        REQUIRE(*(s4.match(input, 2)) == Result(-1, 3));
+        REQUIRE(*(s4.next()) == Result(-1, 2));
+        REQUIRE(*(s4.next()) == Result(-1, 1));
     }
 
     SECTION("Result of matching separated elements from beginning")
     {
-        REQUIRE(*(s5.match(input, 0)) == Result(-1));
+        REQUIRE(*(s5.match(input, 0)) == Result(-1, -1));
     }
 
     SECTION("Result of matching separated elements from position")
     {
-        REQUIRE(*(s5.match(input, 4)) == Result(4));
-        REQUIRE(*(s5.next()) == Result(3));
+        REQUIRE(*(s5.match(input, 4)) == Result(-1, 4));
+        REQUIRE(*(s5.next()) == Result(-1, 3));
     }
 }

@@ -12,13 +12,18 @@ class Result
 {
 public:
     Result();
-    Result(size_t index);
-    Result(size_t index, const unordered_map<string, forward_list<MatchableInterface *>> &outputs);
+    Result(size_t start, size_t end);
+    Result(
+        size_t start,
+        size_t end,
+        const unordered_map<string, forward_list<MatchableInterface *>> &outputs
+    );
     ~Result();
 
     bool operator!=(const Result& other) const;
     bool operator==(const Result& other) const;
 
+    int getFirstMatchedIndex() const;
     int getLastMatchedIndex() const;
     unordered_map<string, forward_list<MatchableInterface *>> getOutputs() const;
 
@@ -27,6 +32,7 @@ public:
     friend ostream& operator<<(ostream& out, const Result& r);
 
 protected:
+    int firstMatchedIndex;
     int lastMatchedIndex;
     unordered_map<string, forward_list<MatchableInterface *>> outputs;
 };

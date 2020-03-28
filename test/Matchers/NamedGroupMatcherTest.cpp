@@ -15,7 +15,7 @@ TEST_CASE("NamedGroupMatcher returns the elements matched grouped as outputs")
 
     SECTION("Result of matching the first element")
     {
-        Result r0(0), r1(-1);
+        Result r0(-1, 0), r1(-1, -1);
         r0.setOutputs(unordered_map<string, forward_list<MatchableInterface *>>{
             {"one", forward_list<MatchableInterface *>{&a}},
         });
@@ -28,7 +28,7 @@ TEST_CASE("NamedGroupMatcher returns the elements matched grouped as outputs")
 
     SECTION("Result of matching the second element from the beginning")
     {
-        Result r0(-1);
+        Result r0(-1, -1);
         r0.setOutputs(unordered_map<string, forward_list<MatchableInterface *>>{
             {"two", {}},
         });
@@ -37,7 +37,7 @@ TEST_CASE("NamedGroupMatcher returns the elements matched grouped as outputs")
 
     SECTION("Result of matching the multiple elements")
     {
-        Result r0(3), r1(2), r2(1);
+        Result r0(-1, 3), r1(-1, 2), r2(-1, 1);
         r0.setOutputs(unordered_map<string, forward_list<MatchableInterface *>>{
             {"two", forward_list<MatchableInterface *>{&c, &c}},
         });
@@ -54,7 +54,7 @@ TEST_CASE("NamedGroupMatcher returns the elements matched grouped as outputs")
 
     SECTION("Result of matching last element")
     {
-        Result r0(6), r1(5);
+        Result r0(-1, 6), r1(-1, 5);
         r0.setOutputs(unordered_map<string, forward_list<MatchableInterface *>>{
             {"three", forward_list<MatchableInterface *>{&d}},
         });
@@ -73,6 +73,7 @@ TEST_CASE("NamedGroupMatcher propagates the outpus of internal matcher")
     NamedGroupMatcher n1("one", &m1), n2("two", &n1);
     vector<MatchableInterface *> input{&a};
     Result expected = Result(
+        -1,
         0,
         unordered_map<string, forward_list<MatchableInterface *>>{
             {"one", forward_list<MatchableInterface *>{&a}},
