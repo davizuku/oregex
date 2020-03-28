@@ -16,13 +16,14 @@ Result::~Result()
 
 bool Result::operator!=(const Result &other) const
 {
-    return getLastMatchedIndex() != other.getLastMatchedIndex() and
-        getOutputs() != other.getOutputs();
+    return not ((*this) == other);
 }
 
 bool Result::operator==(const Result &other) const
 {
-    return getLastMatchedIndex() == other.getLastMatchedIndex() and
+    return
+        getFirstMatchedIndex() == other.getFirstMatchedIndex() and
+        getLastMatchedIndex() == other.getLastMatchedIndex() and
         getOutputs() == other.getOutputs();
 }
 
