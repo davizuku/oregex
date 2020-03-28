@@ -25,9 +25,12 @@ class GroupMatcher: public MatcherInterface
         Result* next();
 
     protected:
+        size_t start;
         vector<MatcherInterface *> matchers;
         list<Result*> results;
         list<Result*>::iterator resultIt;
+
+        Result* mergeResults(Result* a, Result* b);
 
         void recursiveMatch(
             size_t matcherIndex,

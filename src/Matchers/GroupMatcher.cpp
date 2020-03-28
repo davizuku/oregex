@@ -15,6 +15,7 @@ Result* GroupMatcher::match(
     size_t start,
     const forward_list<Result> &previousResults
 ) {
+    this->start = start;
     auto copyPrevResults = previousResults;
     results = list<Result*>();
     recursiveMatch(
@@ -45,17 +46,14 @@ Result* GroupMatcher::next()
     return r;
 }
 
-Result* mergeResults(Result* a, Result* b)
+Result* GroupMatcher::mergeResults(Result* a, Result* b)
 {
     if (a != NULL and b != NULL) {
         unordered_map<string, forward_list<MatchableInterface *>> outputs{a->getOutputs()};
         auto outB = b->getOutputs();
         outputs.insert(outB.begin(), outB.end());
-        return new Result(
-            -1,
-            max(a->getLastMatchedIndex(), b->getLastMatchedIndex()),
-            outputs
-        );
+        size_t end = max(a->getLastMatchedIndex(), b->getLastMatchedIndex());
+        return new Result(start, end, outputs);
     }
     return a == NULL ? b : a;
 }
