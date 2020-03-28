@@ -1,7 +1,5 @@
 #include "Result.hpp"
 
-using namespace std;
-
 Result::Result(
     size_t start,
     size_t end,
