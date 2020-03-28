@@ -21,7 +21,7 @@ Result* StringMatcher::match(
         input[0] == value[0] and
         memcmp(input.c_str(), value, valueSize) == 0
     ) {
-        return new Result(-1, start);
+        return new Result(start, start);
     }
     return NULL;
 }

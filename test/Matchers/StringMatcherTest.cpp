@@ -10,7 +10,7 @@ TEST_CASE("StringMatcher matches only with same strings")
 
     SECTION("Result of matching the first element")
     {
-        REQUIRE(*(m1.match(input, 0)) == Result(-1, 0));
+        REQUIRE(*(m1.match(input, 0)) == Result(0, 0));
     }
 
     SECTION("Result of matching the second element from the beginning")
@@ -20,7 +20,7 @@ TEST_CASE("StringMatcher matches only with same strings")
 
     SECTION("Result of matching the second element from the element")
     {
-        REQUIRE(*(m2.match(input, 1)) == Result(-1, 1));
+        REQUIRE(*(m2.match(input, 1)) == Result(1, 1));
     }
 
     SECTION("Result of not matching any element")
@@ -30,6 +30,6 @@ TEST_CASE("StringMatcher matches only with same strings")
 
     SECTION("Result of matching only first of repeated elements")
     {
-        REQUIRE(*(m4.match(input, 2)) == Result(-1, 2));
+        REQUIRE(*(m4.match(input, 2)) == Result(2, 2));
     }
 }
