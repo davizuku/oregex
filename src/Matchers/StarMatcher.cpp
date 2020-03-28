@@ -15,14 +15,18 @@ Result* StarMatcher::match(
     const forward_list<Result> &previousResults
 ) {
     results = stack<Result*>();
-    results.push(new Result(-1, start - 1));
+    results.push(new Result(start - 1, start - 1));
     for (size_t i = start; i < matchables.size(); ++i) {
         Result* r = matcher->match(matchables, i, previousResults);
         if (r == NULL) {
             break;
         }
         while (r != NULL) {
-            results.push(r);
+            results.push(new Result(
+                start,
+                r->getLastMatchedIndex(),
+                r->getOutputs()
+            ));
             r = matcher->next();
         }
     }
