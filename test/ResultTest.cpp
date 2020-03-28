@@ -3,7 +3,7 @@
 #include "../src/Matchables/StringMatchable.hpp"
 #include "../src/Matchables/MatchableInterface.hpp"
 
-TEST_CASE("Results contain a pointer to the last matched  and outputs")
+TEST_CASE("Results contain a pointer to the first and last matched index and outputs")
 {
     StringMatchable a("a"), b("b"), c("c");
     vector<MatchableInterface *> input{&a, &b, &c};
