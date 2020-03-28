@@ -15,18 +15,11 @@ Result* NamedGroupMatcher::match(
     size_t start,
     const forward_list<Result> &previousResults
 ) {
-    results = forward_list<Result>{};
-    forward_list<Result> subResults;
+    results = list<Result*>{};
     Result* r = matcher->match(matchables, start, previousResults);
     while (r != NULL) {
-        subResults.push_front(*r);
-        r = matcher->next();
-    }
-    subResults.reverse();
-    for (auto it = subResults.begin(); it != subResults.end(); it++) {
-        size_t end = it->getLastMatchedIndex();
-        auto subOutputs = it->getOutputs();
-        Result r(it->getFirstMatchedIndex(), end);
+        size_t end = r->getLastMatchedIndex();
+        auto subOutputs = r->getOutputs();
         forward_list<MatchableInterface *> outputList;
         outputList.insert_after(
             outputList.before_begin(),
@@ -34,11 +27,14 @@ Result* NamedGroupMatcher::match(
             matchables.begin() + end + 1
         );
         subOutputs[name] = outputList;
-        r.setOutputs(subOutputs);
-        results.push_front(r);
+        results.push_back(new Result(
+            r->getFirstMatchedIndex(),
+            end,
+            subOutputs
+        ));
+        r = matcher->next();
     }
-    results.reverse();
-    lastResultIterator = results.before_begin();
+    resultIt = results.begin();
     return next();
 }
 
@@ -51,9 +47,10 @@ Result* NamedGroupMatcher::match(
 
 Result* NamedGroupMatcher::next()
 {
-    ++lastResultIterator;
-    if (lastResultIterator == results.end()) {
+    if (resultIt == results.end()) {
         return NULL;
     }
-    return &(*lastResultIterator);
+    Result* r = *resultIt;
+    resultIt++;
+    return r;
 }
