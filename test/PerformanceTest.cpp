@@ -4,6 +4,7 @@
 #include <regex>
 #include "../src/Oregex.hpp"
 #include "../src/Matchers/StringMatcher.hpp"
+#include "../src/Matchers/StartMatcher.hpp"
 #include "../src/Matchers/StarMatcher.hpp"
 #include "../src/Matchers/GroupMatcher.hpp"
 #include "../src/Matchers/NamedGroupMatcher.hpp"
@@ -151,6 +152,20 @@ TEST_CASE("Given the same set of strings how much faster is regex module")
             Oregex(vector<MatcherInterface *>{
                 new StarMatcher(new GroupMatcher(vector<MatcherInterface *>{&s1, &s2, &m6, &s4,}))
             })
+        },
+        TestArgs{
+            "String 'abccded' into regex '/^ded/' (2 steps)",
+            "abccded",
+            regex("^ded"),
+            vector<MatchableInterface *>{&a, &b, &c, &c, &d, &e, &d},
+            Oregex(vector<MatcherInterface *>{new StartMatcher(), &m5, &m6, &m5})
+        },
+        TestArgs{
+            "String 'abccded' into regex '/^abc/' (6 steps)",
+            "abccded",
+            regex("^abc"),
+            vector<MatchableInterface *>{&a, &b, &c, &c, &d, &e, &d},
+            Oregex(vector<MatcherInterface *>{new StartMatcher(), &m1, &m2, &m4})
         },
     };
 
