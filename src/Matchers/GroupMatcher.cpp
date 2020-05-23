@@ -66,7 +66,7 @@ void GroupMatcher::recursiveMatch(
     Result* accResult
 ) {
     if (matcherIndex >= matchers.size() or
-        matchableIndex >= matchables.size()
+        matchableIndex > matchables.size() // > strict due to EndMatcher
     ) {
         return;
     }

@@ -4,6 +4,7 @@
 #include "../src/Oregex.hpp"
 #include "../src/Matchers/StringMatcher.hpp"
 #include "../src/Matchers/StartMatcher.hpp"
+#include "../src/Matchers/EndMatcher.hpp"
 #include "../src/Matchers/StarMatcher.hpp"
 #include "../src/Matchers/GroupMatcher.hpp"
 #include "../src/Matchers/NamedGroupMatcher.hpp"
@@ -36,9 +37,21 @@ TEST_CASE("Oregex is built from Matchers and is executed on Matchables")
         REQUIRE(r.match(input) == true);
     }
 
+    SECTION("Matches sequence in the end (/ded$/ -> abccded)")
+    {
+        Oregex r(vector<MatcherInterface *>{&m5, &m6, &m5, new EndMatcher()});
+        REQUIRE(r.match(input) == true);
+    }
+
     SECTION("Not matches sequence in the beginning (/^ded/ -> abccded)")
     {
         Oregex r(vector<MatcherInterface *>{new StartMatcher(), &m5, &m6, &m5});
+        REQUIRE(r.match(input) == false);
+    }
+
+    SECTION("Not matches sequence in the end (/abc$/ -> abccded)")
+    {
+        Oregex r(vector<MatcherInterface *>{&m1, &m2, &m4, new EndMatcher()});
         REQUIRE(r.match(input) == false);
     }
 
