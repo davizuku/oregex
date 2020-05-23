@@ -13,6 +13,16 @@ TEST_CASE("NamedGroupMatcher returns the elements matched grouped as outputs")
     NamedGroupMatcher g1("one", &s1), g2("two", &s4), g3("three", &s5);
     vector<MatchableInterface *> input{&a, &b, &c, &c, &d, &e, &d};
 
+    SECTION("Not matches sequence at the end")
+    {
+        REQUIRE(g1.match(input, input.size()) == NULL);
+    }
+
+    SECTION("Not matches sequence after end")
+    {
+        REQUIRE(g1.match(input, input.size() + 1) == NULL);
+    }
+
     SECTION("Result of matching the first element")
     {
         Result r0(0, 0), r1(-1, -1);

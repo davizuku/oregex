@@ -11,6 +11,16 @@ TEST_CASE("StarMatcher matches zero or more elements")
     StarMatcher s1(&m1), s2(&m2), s3(&m3), s4(&m4), s5(&m5);
     vector<MatchableInterface *> input{&a, &b, &c, &c, &d, &e, &d};
 
+    SECTION("Not matches sequence at the end")
+    {
+        REQUIRE(s1.match(input, input.size()) == NULL);
+    }
+
+    SECTION("Not matches sequence after end")
+    {
+        REQUIRE(s1.match(input, input.size() + 1) == NULL);
+    }
+
     SECTION("Result of matching the first element")
     {
         REQUIRE(*(s1.match(input, 0)) == Result(0, 0));

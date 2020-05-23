@@ -18,4 +18,14 @@ TEST_CASE("StartMatcher matches only with beginning of sequence")
     {
         REQUIRE(m.match(input, 1) == NULL);
     }
+
+    SECTION("Not matches sequence at the end")
+    {
+        REQUIRE(m.match(input, input.size()) == NULL);
+    }
+
+    SECTION("Not matches sequence after end")
+    {
+        REQUIRE(m.match(input, input.size() + 1) == NULL);
+    }
 }

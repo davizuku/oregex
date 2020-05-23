@@ -16,6 +16,9 @@ Result* StringMatcher::match(
     size_t start,
     const forward_list<Result> &previousResults
 ) {
+    if (start >= matchables.size()) {
+        return NULL;
+    }
     string input = matchables[start]->getValue();
     if (input.length() == valueSize and
         input[0] == value[0] and

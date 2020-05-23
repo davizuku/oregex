@@ -8,6 +8,16 @@ TEST_CASE("StringMatcher matches only with same strings")
     StringMatcher m1("a"), m2("b"), m3("x"), m4("c");
     vector<MatchableInterface *> input{&a, &b, &c, &c};
 
+    SECTION("Not matches sequence at the end")
+    {
+        REQUIRE(m1.match(input, input.size()) == NULL);
+    }
+
+    SECTION("Not matches sequence after end")
+    {
+        REQUIRE(m1.match(input, input.size() + 1) == NULL);
+    }
+
     SECTION("Result of matching the first element")
     {
         REQUIRE(*(m1.match(input, 0)) == Result(0, 0));

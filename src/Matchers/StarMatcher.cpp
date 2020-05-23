@@ -14,6 +14,9 @@ Result* StarMatcher::match(
     size_t start,
     const forward_list<Result> &previousResults
 ) {
+    if (start >= matchables.size()) {
+        return NULL;
+    }
     results = stack<Result*>();
     results.push(new Result(start - 1, start - 1));
     for (size_t i = start; i < matchables.size(); ++i) {

@@ -16,6 +16,18 @@ TEST_CASE("GroupMatcher is built from Matchers and is executed on Matchables")
     StarMatcher s1(&m1), s2(&m2), s3(&m3), s4(&m4), s5(&m5);
     vector<MatchableInterface *> input{&a, &b, &c, &c, &d, &e, &d};
 
+    SECTION("Not matches sequence at the end")
+    {
+        GroupMatcher gm(vector<MatcherInterface *>{&m1, &m2, &m4});
+        REQUIRE(gm.match(input, input.size()) == NULL);
+    }
+
+    SECTION("Not matches sequence after end")
+    {
+        GroupMatcher gm(vector<MatcherInterface *>{&m1, &m2, &m4});
+        REQUIRE(gm.match(input, input.size()+1) == NULL);
+    }
+
     SECTION("Matches sequence in the beginning (/abc/ -> abccded)")
     {
         GroupMatcher gm(vector<MatcherInterface *>{&m1, &m2, &m4});
