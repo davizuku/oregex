@@ -154,7 +154,7 @@ TEST_CASE("Given the same set of strings how much faster is regex module")
             })
         },
         TestArgs{
-            "String 'abccded' into regex '/^ded/' (2 steps)",
+            "String 'abccded' into regex '/^ded/' (no match)",
             "abccded",
             regex("^ded"),
             vector<MatchableInterface *>{&a, &b, &c, &c, &d, &e, &d},
