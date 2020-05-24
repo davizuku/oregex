@@ -17,6 +17,8 @@ RangeMatcher::RangeMatcher(MatcherInterface *m, uint min)
 RangeMatcher::RangeMatcher(MatcherInterface *m)
 {
     matcher = m;
+    this->min = 0;
+    this->max = -1;
 }
 
 RangeMatcher::~RangeMatcher()

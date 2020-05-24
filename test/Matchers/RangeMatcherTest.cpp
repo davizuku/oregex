@@ -21,6 +21,17 @@ TEST_CASE("RangeMatcher matches from MIN to MAX elements")
         REQUIRE(sa.match(input, input.size() + 1) == NULL);
     }
 
+    SECTION("Result of matching 0 or more elements from the beginning")
+    {
+        RangeMatcher ra24(&ma);
+        REQUIRE(*(ra24.match(input, 0)) == Result(0, 3));
+        REQUIRE(*(ra24.next()) == Result(0, 2));
+        REQUIRE(*(ra24.next()) == Result(0, 1));
+        REQUIRE(*(ra24.next()) == Result(0, 0));
+        REQUIRE(*(ra24.next()) == Result(-1, -1));
+        REQUIRE(ra24.next() == NULL);
+    }
+
     SECTION("Result of matching at least 1 element from the beginning")
     {
         RangeMatcher ra24(&ma, 1);
