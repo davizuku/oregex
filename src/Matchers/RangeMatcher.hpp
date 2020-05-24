@@ -10,6 +10,7 @@ class RangeMatcher: public MatcherInterface
 {
     public:
         RangeMatcher(MatcherInterface *m, uint min, uint max);
+        RangeMatcher(MatcherInterface *m, uint min);
         RangeMatcher(MatcherInterface *m);
         ~RangeMatcher();
 
