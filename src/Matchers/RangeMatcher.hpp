@@ -9,6 +9,7 @@
 class RangeMatcher: public MatcherInterface
 {
     public:
+        RangeMatcher(MatcherInterface *m, uint min, uint max);
         RangeMatcher(MatcherInterface *m);
         ~RangeMatcher();
 
@@ -26,6 +27,7 @@ class RangeMatcher: public MatcherInterface
         Result* next();
 
     protected:
+        uint min, max;
         MatcherInterface *matcher;
         stack<Result*> results;
 };
