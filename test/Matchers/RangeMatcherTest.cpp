@@ -7,7 +7,7 @@
 TEST_CASE("RangeMatcher matches from MIN to MAX elements")
 {
     StringMatchable a("a"), b("b");
-    StringMatcher ma("a");
+    StringMatcher ma("a"), mb("b");
     RangeMatcher sa(&ma);
     vector<MatchableInterface *> input{&a, &a, &a, &a, &b};
 
@@ -61,5 +61,18 @@ TEST_CASE("RangeMatcher matches from MIN to MAX elements")
     {
         RangeMatcher ra55(&ma, 5, 5);
         REQUIRE(ra55.match(input, 0) == NULL);
+    }
+
+    SECTION("Result of matching at least 0 elements from the beginning")
+    {
+        RangeMatcher rb(&mb);
+        REQUIRE(*(rb.match(input, 0)) == Result(-1, -1));
+        REQUIRE(rb.next() == NULL);
+    }
+
+    SECTION("Result of not matching at least 1 element from the beginning")
+    {
+        RangeMatcher rb1(&mb, 1);
+        REQUIRE(rb1.match(input, 0) == NULL);
     }
 }
