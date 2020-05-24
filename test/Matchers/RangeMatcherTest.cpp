@@ -56,4 +56,10 @@ TEST_CASE("RangeMatcher matches from MIN to MAX elements")
         REQUIRE(*(ra33.match(input, 0)) == Result(0, 2));
         REQUIRE(ra33.next() == NULL);
     }
+
+    SECTION("Result of not matching exactly 5 elements from the beginning")
+    {
+        RangeMatcher ra55(&ma, 5, 5);
+        REQUIRE(ra55.match(input, 0) == NULL);
+    }
 }
