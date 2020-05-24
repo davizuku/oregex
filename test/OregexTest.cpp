@@ -38,6 +38,13 @@ TEST_CASE("Oregex is built from Matchers and is executed on Matchables")
         REQUIRE(r.match(input) == true);
     }
 
+    SECTION("Not matches exactly 3 (/a{3}a/ -> aaa)")
+    {
+        Oregex r(vector<MatcherInterface *>{new RangeMatcher(&m1, 3, 3), &m1});
+        vector<MatchableInterface *> in_aaaa{&a, &a, &a};
+        REQUIRE(r.match(in_aaaa) == false);
+    }
+
     SECTION("Matches sequence in the end (/ded/ -> abccded)")
     {
         Oregex r(vector<MatcherInterface *>{&m5, &m6, &m5});
