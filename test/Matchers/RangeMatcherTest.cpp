@@ -28,6 +28,7 @@ TEST_CASE("RangeMatcher matches from MIN to MAX elements")
         REQUIRE(*(ra24.next()) == Result(0, 2));
         REQUIRE(*(ra24.next()) == Result(0, 1));
         REQUIRE(*(ra24.next()) == Result(0, 0));
+        REQUIRE(ra24.next() == NULL);
     }
 
     SECTION("Result of matching 2 to 4 elements from the beginning")
@@ -36,11 +37,13 @@ TEST_CASE("RangeMatcher matches from MIN to MAX elements")
         REQUIRE(*(ra24.match(input, 0)) == Result(0, 3));
         REQUIRE(*(ra24.next()) == Result(0, 2));
         REQUIRE(*(ra24.next()) == Result(0, 1));
+        REQUIRE(ra24.next() == NULL);
     }
 
     SECTION("Result of matching exactly 3 elements from the beginning")
     {
         RangeMatcher ra24(&ma, 3, 3);
         REQUIRE(*(ra24.match(input, 0)) == Result(0, 2));
+        REQUIRE(ra24.next() == NULL);
     }
 }
