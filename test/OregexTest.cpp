@@ -6,6 +6,7 @@
 #include "../src/Matchers/StartMatcher.hpp"
 #include "../src/Matchers/EndMatcher.hpp"
 #include "../src/Matchers/StarMatcher.hpp"
+#include "../src/Matchers/RangeMatcher.hpp"
 #include "../src/Matchers/GroupMatcher.hpp"
 #include "../src/Matchers/NamedGroupMatcher.hpp"
 #include "../src/Matchers/MatcherInterface.hpp"
@@ -28,6 +29,12 @@ TEST_CASE("Oregex is built from Matchers and is executed on Matchables")
     SECTION("Matches sequence in the middle (/c*/ -> abccded)")
     {
         Oregex r(vector<MatcherInterface *>{&s4});
+        REQUIRE(r.match(input) == true);
+    }
+
+    SECTION("Matches exactly 2 in the middle (/c{2}/ -> abccded)")
+    {
+        Oregex r(vector<MatcherInterface *>{new RangeMatcher(&m4, 2, 2)});
         REQUIRE(r.match(input) == true);
     }
 
