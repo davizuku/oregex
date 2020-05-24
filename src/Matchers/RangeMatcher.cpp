@@ -38,21 +38,21 @@ Result* RangeMatcher::match(
         results.push(new Result(start - 1, start - 1));
     }
     uint nMatched = 0;
-    for (size_t i = start; i < matchables.size(); ++i) {
+    size_t i = start;
+    while (i < matchables.size()) {
         Result *r = matcher->match(matchables, i, previousResults);
         if (r == NULL) {
             break;
         }
         nMatched++;
+        i = std::max(r->getLastMatchedIndex() + 1, int(i + 1));
         if (nMatched >= min and nMatched <= max) {
-            while (r != NULL) {
-                results.push(new Result(
-                    start,
-                    r->getLastMatchedIndex(),
-                    r->getOutputs()
-                ));
-                r = matcher->next();
-            }
+            results.push(new Result(
+                start,
+                r->getLastMatchedIndex(),
+                r->getOutputs()
+            ));
+            // TODO: consider r->next() results somehow
         } else if (nMatched > max) {
             break;
         }

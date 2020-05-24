@@ -7,6 +7,7 @@
 #include "../src/Matchers/EndMatcher.hpp"
 #include "../src/Matchers/StarMatcher.hpp"
 #include "../src/Matchers/RangeMatcher.hpp"
+#include "../src/Matchers/ExactlyMatcher.hpp"
 #include "../src/Matchers/GroupMatcher.hpp"
 #include "../src/Matchers/NamedGroupMatcher.hpp"
 #include "../src/Matchers/MatcherInterface.hpp"
@@ -34,8 +35,20 @@ TEST_CASE("Oregex is built from Matchers and is executed on Matchables")
 
     SECTION("Matches exactly 2 in the middle (/c{2}/ -> abccded)")
     {
-        Oregex r(vector<MatcherInterface *>{new RangeMatcher(&m4, 2, 2)});
+        Oregex r(vector<MatcherInterface *>{new ExactlyMatcher(&m4, 2)});
         REQUIRE(r.match(input) == true);
+    }
+
+    SECTION("Matches exactly 3 times a group (/(abc){3}/ -> abcabcabc)")
+    {
+        Oregex r(vector<MatcherInterface *>{
+            new ExactlyMatcher(
+                new GroupMatcher(vector<MatcherInterface *>{&m1, &m2, &m4}),
+                3
+            )
+        });
+        vector<MatchableInterface *> in_abc3{&a, &b, &c, &a, &b, &c, &a, &b, &c};
+        REQUIRE(r.match(in_abc3) == true);
     }
 
     SECTION("Not matches exactly 3 (/a{3}a/ -> aaa)")

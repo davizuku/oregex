@@ -8,6 +8,7 @@
 #include "../src/Matchers/EndMatcher.hpp"
 #include "../src/Matchers/StarMatcher.hpp"
 #include "../src/Matchers/RangeMatcher.hpp"
+#include "../src/Matchers/ExactlyMatcher.hpp"
 #include "../src/Matchers/GroupMatcher.hpp"
 #include "../src/Matchers/NamedGroupMatcher.hpp"
 #include "../src/Matchers/MatcherInterface.hpp"
@@ -61,6 +62,18 @@ TEST_CASE("Given the same set of strings how much faster is regex module")
             Oregex(vector<MatcherInterface *>{
                 new StarMatcher(
                     new GroupMatcher(vector<MatcherInterface *>{&m1, &m2, &m4})
+                )
+            })
+        },
+        TestArgs{
+            "String 'abcabcabc' into regex '/(abc){3}/' (12 steps)",
+            "abcabcabc",
+            regex("(abc){3}"),
+            vector<MatchableInterface *>{&a, &b, &c, &a, &b, &c, &a, &b, &c},
+            Oregex(vector<MatcherInterface *>{
+                new ExactlyMatcher(
+                    new GroupMatcher(vector<MatcherInterface *>{&m1, &m2, &m4}),
+                    3
                 )
             })
         },
