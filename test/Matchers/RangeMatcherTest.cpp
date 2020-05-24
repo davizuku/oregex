@@ -37,4 +37,10 @@ TEST_CASE("RangeMatcher matches from MIN to MAX elements")
         REQUIRE(*(ra24.next()) == Result(0, 2));
         REQUIRE(*(ra24.next()) == Result(0, 1));
     }
+
+    SECTION("Result of matching exactly 3 elements from the beginning")
+    {
+        RangeMatcher ra24(&ma, 3, 3);
+        REQUIRE(*(ra24.match(input, 0)) == Result(0, 2));
+    }
 }
