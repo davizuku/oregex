@@ -52,7 +52,7 @@ Result* RangeMatcher::match(
                 r->getLastMatchedIndex(),
                 r->getOutputs()
             ));
-            // TODO: consider r->next() results somehow
+            // TODO: consider m->next() results somehow
         } else if (nMatched > max) {
             break;
         }
