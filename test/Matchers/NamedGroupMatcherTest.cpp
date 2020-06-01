@@ -76,7 +76,7 @@ TEST_CASE("NamedGroupMatcher returns the elements matched grouped as outputs")
     }
 }
 
-TEST_CASE("NamedGroupMatcher propagates the outpus of internal matcher")
+TEST_CASE("NamedGroupMatcher propagates the outputs of internal matcher")
 {
     StringMatchable a("a");
     StringMatcher m1("a");
