@@ -12,15 +12,18 @@ TEST_CASE("EndMatcher matches only with end of sequence")
     SECTION("Result of matching the first element")
     {
         REQUIRE(m.match(input, 0) == NULL);
+        REQUIRE(m.next() == NULL);
     }
 
     SECTION("Result of matching the second element")
     {
         REQUIRE(m.match(input, 1) == NULL);
+        REQUIRE(m.next() == NULL);
     }
 
     SECTION("Result of matching the the last")
     {
         REQUIRE(*(m.match(input, 4)) == Result(4, 4));
+        REQUIRE(m.next() == NULL);
     }
 }

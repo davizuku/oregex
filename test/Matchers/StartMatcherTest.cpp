@@ -12,20 +12,24 @@ TEST_CASE("StartMatcher matches only with beginning of sequence")
     SECTION("Result of matching the first element")
     {
         REQUIRE(*(m.match(input, 0)) == Result(-1, -1));
+        REQUIRE(m.next() == NULL);
     }
 
     SECTION("Result of matching the second element")
     {
         REQUIRE(m.match(input, 1) == NULL);
+        REQUIRE(m.next() == NULL);
     }
 
     SECTION("Not matches sequence at the end")
     {
         REQUIRE(m.match(input, input.size()) == NULL);
+        REQUIRE(m.next() == NULL);
     }
 
     SECTION("Not matches sequence after end")
     {
         REQUIRE(m.match(input, input.size() + 1) == NULL);
+        REQUIRE(m.next() == NULL);
     }
 }
