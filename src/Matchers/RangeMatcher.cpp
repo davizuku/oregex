@@ -4,7 +4,7 @@ RangeMatcher::RangeMatcher(MatcherInterface *m, uint min, uint max)
 {
     matcher = m;
     this->min = min;
-    this->max = max;
+    this->max = min == 0 ? max + 1 : max;
 }
 
 RangeMatcher::RangeMatcher(MatcherInterface *m, uint min)
@@ -33,30 +33,17 @@ Result* RangeMatcher::match(
     if (start >= matchables.size()) {
         return NULL;
     }
-    results = stack<Result*>();
+    this->start = start;
+    this->matchables = matchables;
+    this->previousResults = previousResults;
+    matchingStack = stack<queue<Result *>>();
+    visitedIndices = vector<bool>(matchables.size(), false);
     if (min == 0) {
-        results.push(new Result(start - 1, start - 1));
+        auto zeroLevel = queue<Result *>();
+        zeroLevel.push(new Result(start - 1, start - 1));
+        matchingStack.push(zeroLevel);
     }
-    uint nMatched = 0;
-    size_t i = start;
-    while (i < matchables.size()) {
-        Result *r = matcher->match(matchables, i, previousResults);
-        if (r == NULL) {
-            break;
-        }
-        nMatched++;
-        i = std::max(r->getLastMatchedIndex() + 1, int(i + 1));
-        if (nMatched >= min and nMatched <= max) {
-            results.push(new Result(
-                start,
-                r->getLastMatchedIndex(),
-                r->getOutputs()
-            ));
-            // TODO: consider m->next() results somehow
-        } else if (nMatched > max) {
-            break;
-        }
-    }
+    stackNewMatching(start);
     return next();
 }
 
@@ -67,12 +54,49 @@ Result* RangeMatcher::match(
     return match(matchables, start, forward_list<Result>{});
 }
 
-Result* RangeMatcher::next()
+Result *RangeMatcher::next()
 {
-    if (results.empty()) {
+    if (matchingStack.empty()) {
         return NULL;
     }
-    Result* r = results.top();
-    results.pop();
-    return r;
+    if (matchingStack.top().empty()) {
+        matchingStack.pop();
+        return next();
+    }
+    Result* topFront = matchingStack.top().front();
+    size_t stackSize = matchingStack.size();
+    if (stackSize == max) {
+        matchingStack.top().pop();
+        return topFront;
+    } else if (stackSize < min) {
+        matchingStack.top().pop();
+        stackNewMatching(topFront->getLastMatchedIndex() + 1);
+        return next();
+    } else if (stackSize < max) {
+        stackNewMatching(topFront->getLastMatchedIndex() + 1);
+        if (matchingStack.size() == stackSize) {
+            // stackNewMatching did not find any new match
+            matchingStack.top().pop();
+            return topFront;
+        }
+        return next();
+    }
+    return NULL;
+}
+
+void RangeMatcher::stackNewMatching(size_t index)
+{
+    if (index >= visitedIndices.size() or visitedIndices[index]) {
+        return; // This function has already been called with index value.
+    }
+    visitedIndices[index] = true;
+    Result* r = matcher->match(matchables, index, previousResults);
+    if (r != NULL) {
+        auto newLevel = queue<Result*>();
+        while (r != NULL) {
+            newLevel.push(new Result(start, r->getLastMatchedIndex(), r->getOutputs()));
+            r = matcher->next();
+        }
+        matchingStack.push(newLevel);
+    }
 }

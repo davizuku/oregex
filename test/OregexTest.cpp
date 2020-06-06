@@ -51,6 +51,16 @@ TEST_CASE("Oregex is built from Matchers and is executed on Matchables")
         REQUIRE(r.match(in_abc3) == true);
     }
 
+    SECTION("Match needs to backtrack on a RangeMatcher results (/(a{1,2}){2}(abc)/ -> aaabc)")
+    {
+        input = vector<MatchableInterface *>{&a, &a, &a, &b, &c};
+        Oregex r(vector<MatcherInterface *>{
+            new ExactlyMatcher(new RangeMatcher(&m1, 1, 2), 2),
+            new GroupMatcher(vector<MatcherInterface *>{&m1, &m2, &m4}),
+        });
+        REQUIRE(r.match(input) == true);
+    }
+
     SECTION("Not matches exactly 3 (/a{3}a/ -> aaa)")
     {
         Oregex r(vector<MatcherInterface *>{new RangeMatcher(&m1, 3, 3), &m1});

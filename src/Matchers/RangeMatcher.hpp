@@ -2,6 +2,7 @@
 #include <string>
 #include <forward_list>
 #include <stack>
+#include <queue>
 #include "../Result.hpp"
 #include "../Matchables/MatchableInterface.hpp"
 #include "MatcherInterface.hpp"
@@ -29,6 +30,13 @@ class RangeMatcher: public MatcherInterface
 
     protected:
         uint min, max;
-        MatcherInterface *matcher;
-        stack<Result*> results;
+        size_t start;
+        MatcherInterface* matcher;
+        vector<MatchableInterface *> matchables;
+        forward_list<Result> previousResults;
+
+        void stackNewMatching(size_t index);
+
+        stack<queue<Result*>> matchingStack;
+        vector<bool> visitedIndices;
 };
