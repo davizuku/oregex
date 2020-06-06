@@ -7,6 +7,8 @@
 #include "../src/Matchers/StartMatcher.hpp"
 #include "../src/Matchers/EndMatcher.hpp"
 #include "../src/Matchers/StarMatcher.hpp"
+#include "../src/Matchers/RangeMatcher.hpp"
+#include "../src/Matchers/ExactlyMatcher.hpp"
 #include "../src/Matchers/GroupMatcher.hpp"
 #include "../src/Matchers/NamedGroupMatcher.hpp"
 #include "../src/Matchers/MatcherInterface.hpp"
@@ -60,6 +62,18 @@ TEST_CASE("Given the same set of strings how much faster is regex module")
             Oregex(vector<MatcherInterface *>{
                 new StarMatcher(
                     new GroupMatcher(vector<MatcherInterface *>{&m1, &m2, &m4})
+                )
+            })
+        },
+        TestArgs{
+            "String 'abcabcabc' into regex '/(abc){3}/' (12 steps)",
+            "abcabcabc",
+            regex("(abc){3}"),
+            vector<MatchableInterface *>{&a, &b, &c, &a, &b, &c, &a, &b, &c},
+            Oregex(vector<MatcherInterface *>{
+                new ExactlyMatcher(
+                    new GroupMatcher(vector<MatcherInterface *>{&m1, &m2, &m4}),
+                    3
                 )
             })
         },
@@ -181,6 +195,37 @@ TEST_CASE("Given the same set of strings how much faster is regex module")
             regex("abc$"),
             vector<MatchableInterface *>{&a, &b, &c, &c, &d, &e, &d},
             Oregex(vector<MatcherInterface *>{&m1, &m2, &m4, new EndMatcher()})
+        },
+        TestArgs{
+            "String 'aaaaa' into regex '/a{0,5}a{1,5}a{2,5}/' (12 steps)",
+            "aaaaa",
+            regex("a{0,5}a{1,5}a{2,5}"),
+            vector<MatchableInterface *>{&a, &a, &a, &a, &a},
+            Oregex(vector<MatcherInterface *>{
+                new RangeMatcher(&m1, 0, 5),
+                new RangeMatcher(&m1, 1, 5),
+                new RangeMatcher(&m1, 2, 5),
+            })
+        },
+        TestArgs{
+            "String 'abababc' into regex '/(ab){2,3}(abc)/' (18 steps)",
+            "abababc",
+            regex("(ab){2,3}(abc)"),
+            vector<MatchableInterface *>{&a, &b, &a, &b, &a, &b, &c},
+            Oregex(vector<MatcherInterface *>{
+                new RangeMatcher(new GroupMatcher(vector<MatcherInterface *>{&m1, &m2}), 2, 3),
+                new GroupMatcher(vector<MatcherInterface *>{&m1, &m2, &m4}),
+            })
+        },
+        TestArgs{
+            "String 'aaabc' into regex '/(a{1,2}){2}(abc)/' (19 steps)",
+            "aaabc",
+            regex("(a{1,2}){2}(abc)"),
+            vector<MatchableInterface *>{&a, &a, &a, &b, &c},
+            Oregex(vector<MatcherInterface *>{
+                new ExactlyMatcher(new RangeMatcher(&m1, 1, 2), 2),
+                new GroupMatcher(vector<MatcherInterface *>{&m1, &m2, &m4}),
+            })
         },
     };
 

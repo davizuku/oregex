@@ -6,6 +6,8 @@
 #include "../src/Matchers/StartMatcher.hpp"
 #include "../src/Matchers/EndMatcher.hpp"
 #include "../src/Matchers/StarMatcher.hpp"
+#include "../src/Matchers/RangeMatcher.hpp"
+#include "../src/Matchers/ExactlyMatcher.hpp"
 #include "../src/Matchers/GroupMatcher.hpp"
 #include "../src/Matchers/NamedGroupMatcher.hpp"
 #include "../src/Matchers/MatcherInterface.hpp"
@@ -29,6 +31,41 @@ TEST_CASE("Oregex is built from Matchers and is executed on Matchables")
     {
         Oregex r(vector<MatcherInterface *>{&s4});
         REQUIRE(r.match(input) == true);
+    }
+
+    SECTION("Matches exactly 2 in the middle (/c{2}/ -> abccded)")
+    {
+        Oregex r(vector<MatcherInterface *>{new ExactlyMatcher(&m4, 2)});
+        REQUIRE(r.match(input) == true);
+    }
+
+    SECTION("Matches exactly 3 times a group (/(abc){3}/ -> abcabcabc)")
+    {
+        Oregex r(vector<MatcherInterface *>{
+            new ExactlyMatcher(
+                new GroupMatcher(vector<MatcherInterface *>{&m1, &m2, &m4}),
+                3
+            )
+        });
+        vector<MatchableInterface *> in_abc3{&a, &b, &c, &a, &b, &c, &a, &b, &c};
+        REQUIRE(r.match(in_abc3) == true);
+    }
+
+    SECTION("Match needs to backtrack on a RangeMatcher results (/(a{1,2}){2}(abc)/ -> aaabc)")
+    {
+        input = vector<MatchableInterface *>{&a, &a, &a, &b, &c};
+        Oregex r(vector<MatcherInterface *>{
+            new ExactlyMatcher(new RangeMatcher(&m1, 1, 2), 2),
+            new GroupMatcher(vector<MatcherInterface *>{&m1, &m2, &m4}),
+        });
+        REQUIRE(r.match(input) == true);
+    }
+
+    SECTION("Not matches exactly 3 (/a{3}a/ -> aaa)")
+    {
+        Oregex r(vector<MatcherInterface *>{new RangeMatcher(&m1, 3, 3), &m1});
+        vector<MatchableInterface *> in_aaaa{&a, &a, &a};
+        REQUIRE(r.match(in_aaaa) == false);
     }
 
     SECTION("Matches sequence in the end (/ded/ -> abccded)")
