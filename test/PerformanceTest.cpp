@@ -217,6 +217,16 @@ TEST_CASE("Given the same set of strings how much faster is regex module")
                 new GroupMatcher(vector<MatcherInterface *>{&m1, &m2, &m4}),
             })
         },
+        TestArgs{
+            "String 'aaabc' into regex '/(a{1,2}){2}(abc)/' (19 steps)",
+            "aaabc",
+            regex("(a{1,2}){2}(abc)"),
+            vector<MatchableInterface *>{&a, &a, &a, &b, &c},
+            Oregex(vector<MatcherInterface *>{
+                new ExactlyMatcher(new RangeMatcher(&m1, 1, 2), 2),
+                new GroupMatcher(vector<MatcherInterface *>{&m1, &m2, &m4}),
+            })
+        },
     };
 
     for (TestArgs &testCase : testProvider) {
