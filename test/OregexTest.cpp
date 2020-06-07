@@ -10,6 +10,7 @@
 #include "../src/Matchers/ExactlyMatcher.hpp"
 #include "../src/Matchers/GroupMatcher.hpp"
 #include "../src/Matchers/NamedGroupMatcher.hpp"
+#include "../src/Matchers/OrMatcher.hpp"
 #include "../src/Matchers/MatcherInterface.hpp"
 #include "../src/Matchables/StringMatchable.hpp"
 #include "../src/Matchables/MatchableInterface.hpp"
@@ -123,5 +124,21 @@ TEST_CASE("Oregex is built from Matchers and is executed on Matchables")
         });
         REQUIRE(r.match(input, outputs) == true);
         REQUIRE(outputs == expected);
+    }
+
+    SECTION("Maches discarding second element in or (/(a*|abc)(abc)*d/ -> abcd)")
+    {
+        Oregex r(vector<MatcherInterface *>{
+            new OrMatcher(vector<MatcherInterface *>{
+                &sa,
+                new GroupMatcher(vector<MatcherInterface *>{&ma, &mb, &mc}),
+            }),
+            new StarMatcher(
+                new GroupMatcher(vector<MatcherInterface *>{&ma, &mb, &mc})
+            ),
+            &md
+        });
+        vector<MatchableInterface *> input{&a, &b, &c, &d};
+        REQUIRE(r.match(input) == true);
     }
 }
