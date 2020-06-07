@@ -17,7 +17,12 @@ Result* OrMatcher::match(
     if (start >= matchables.size()) {
         return NULL;
     }
-    return NULL;
+    this->start = start;
+    this->matchables = matchables;
+    this->previousResults = previousResults;
+    matcherIndex = 0;
+    matchCalled = false;
+    return next();
 }
 
 Result* OrMatcher::match(
@@ -29,5 +34,21 @@ Result* OrMatcher::match(
 
 Result* OrMatcher::next()
 {
+    if (matchCalled) {
+        Result* r = matchers[matcherIndex]->next();
+        if (r != NULL) {
+            return r;
+        }
+        matchCalled = false;
+        matcherIndex++;
+    }
+    for (int i = matcherIndex; i < matchers.size(); i++) {
+        Result *r = matchers[i]->match(matchables, start, previousResults);
+        matchCalled = true;
+        if (r != NULL) {
+            matcherIndex = i;
+            return r;
+        }
+    }
     return NULL;
 }

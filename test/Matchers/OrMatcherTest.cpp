@@ -16,4 +16,15 @@ TEST_CASE("OrMatcher matches any of the specified submatchers in order")
         REQUIRE(m.match(input, input.size()) == NULL);
         REQUIRE(m.next() == NULL);
     }
+
+    SECTION("Matches with any matcher in the list")
+    {
+        OrMatcher m(vector<MatcherInterface*>{&ma, &mb, &mc});
+        REQUIRE(*(m.match(input, 0)) == Result(0, 0));
+        REQUIRE(m.next() == NULL);
+        REQUIRE(*(m.match(input, 1)) == Result(1, 1));
+        REQUIRE(m.next() == NULL);
+        REQUIRE(*(m.match(input, 2)) == Result(2, 2));
+        REQUIRE(m.next() == NULL);
+    }
 }

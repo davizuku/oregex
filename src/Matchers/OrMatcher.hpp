@@ -26,4 +26,9 @@ class OrMatcher: public MatcherInterface
     protected:
         vector<MatcherInterface*> matchers;
         size_t matcherIndex;
+        bool matchCalled;
+
+        size_t start;
+        vector<MatchableInterface *> matchables;
+        forward_list<Result> previousResults;
 };
