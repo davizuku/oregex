@@ -10,6 +10,7 @@
 #include "../src/Matchers/ExactlyMatcher.hpp"
 #include "../src/Matchers/GroupMatcher.hpp"
 #include "../src/Matchers/NamedGroupMatcher.hpp"
+#include "../src/Matchers/OrMatcher.hpp"
 #include "../src/Matchers/MatcherInterface.hpp"
 #include "../src/Matchables/StringMatchable.hpp"
 #include "../src/Matchables/MatchableInterface.hpp"
@@ -17,25 +18,25 @@
 TEST_CASE("Oregex is built from Matchers and is executed on Matchables")
 {
     StringMatchable a("a"), b("b"), c("c"), d("d"), e("e");
-    StringMatcher m1("a"), m2("b"), m3("x"), m4("c"), m5("d"), m6("e");
-    StarMatcher s1(&m1), s2(&m2), s3(&m3), s4(&m4), s5(&m5);
+    StringMatcher ma("a"), mb("b"), mx("x"), mc("c"), md("d"), me("e");
+    StarMatcher sa(&ma), sb(&mb), sx(&mx), sc(&mc), sd(&md);
     vector<MatchableInterface *> input{&a, &b, &c, &c, &d, &e, &d};
 
     SECTION("Matches sequence in the beginning (/abc/ -> abccded)")
     {
-        Oregex r(vector<MatcherInterface *>{&m1, &m2, &m4});
+        Oregex r(vector<MatcherInterface *>{&ma, &mb, &mc});
         REQUIRE(r.match(input) == true);
     }
 
     SECTION("Matches sequence in the middle (/c*/ -> abccded)")
     {
-        Oregex r(vector<MatcherInterface *>{&s4});
+        Oregex r(vector<MatcherInterface *>{&sc});
         REQUIRE(r.match(input) == true);
     }
 
     SECTION("Matches exactly 2 in the middle (/c{2}/ -> abccded)")
     {
-        Oregex r(vector<MatcherInterface *>{new ExactlyMatcher(&m4, 2)});
+        Oregex r(vector<MatcherInterface *>{new ExactlyMatcher(&mc, 2)});
         REQUIRE(r.match(input) == true);
     }
 
@@ -43,7 +44,7 @@ TEST_CASE("Oregex is built from Matchers and is executed on Matchables")
     {
         Oregex r(vector<MatcherInterface *>{
             new ExactlyMatcher(
-                new GroupMatcher(vector<MatcherInterface *>{&m1, &m2, &m4}),
+                new GroupMatcher(vector<MatcherInterface *>{&ma, &mb, &mc}),
                 3
             )
         });
@@ -55,46 +56,46 @@ TEST_CASE("Oregex is built from Matchers and is executed on Matchables")
     {
         input = vector<MatchableInterface *>{&a, &a, &a, &b, &c};
         Oregex r(vector<MatcherInterface *>{
-            new ExactlyMatcher(new RangeMatcher(&m1, 1, 2), 2),
-            new GroupMatcher(vector<MatcherInterface *>{&m1, &m2, &m4}),
+            new ExactlyMatcher(new RangeMatcher(&ma, 1, 2), 2),
+            new GroupMatcher(vector<MatcherInterface *>{&ma, &mb, &mc}),
         });
         REQUIRE(r.match(input) == true);
     }
 
     SECTION("Not matches exactly 3 (/a{3}a/ -> aaa)")
     {
-        Oregex r(vector<MatcherInterface *>{new RangeMatcher(&m1, 3, 3), &m1});
+        Oregex r(vector<MatcherInterface *>{new RangeMatcher(&ma, 3, 3), &ma});
         vector<MatchableInterface *> in_aaaa{&a, &a, &a};
         REQUIRE(r.match(in_aaaa) == false);
     }
 
     SECTION("Matches sequence in the end (/ded/ -> abccded)")
     {
-        Oregex r(vector<MatcherInterface *>{&m5, &m6, &m5});
+        Oregex r(vector<MatcherInterface *>{&md, &me, &md});
         REQUIRE(r.match(input) == true);
     }
 
     SECTION("Matches sequence in the end (/ded$/ -> abccded)")
     {
-        Oregex r(vector<MatcherInterface *>{&m5, &m6, &m5, new EndMatcher()});
+        Oregex r(vector<MatcherInterface *>{&md, &me, &md, new EndMatcher()});
         REQUIRE(r.match(input) == true);
     }
 
     SECTION("Not matches sequence in the beginning (/^ded/ -> abccded)")
     {
-        Oregex r(vector<MatcherInterface *>{new StartMatcher(), &m5, &m6, &m5});
+        Oregex r(vector<MatcherInterface *>{new StartMatcher(), &md, &me, &md});
         REQUIRE(r.match(input) == false);
     }
 
     SECTION("Not matches sequence in the end (/abc$/ -> abccded)")
     {
-        Oregex r(vector<MatcherInterface *>{&m1, &m2, &m4, new EndMatcher()});
+        Oregex r(vector<MatcherInterface *>{&ma, &mb, &mc, new EndMatcher()});
         REQUIRE(r.match(input) == false);
     }
 
     SECTION("Not matches sequence (/x/ -> abccded)")
     {
-        Oregex r(vector<MatcherInterface *>{&m3});
+        Oregex r(vector<MatcherInterface *>{&mx});
         REQUIRE(r.match(input) == false);
     }
 
@@ -108,14 +109,14 @@ TEST_CASE("Oregex is built from Matchers and is executed on Matchables")
             new NamedGroupMatcher(
                 "all",
                 new GroupMatcher(vector<MatcherInterface *>{
-                    &m1,
-                    &m2,
-                    new NamedGroupMatcher("some", &s4),
-                    &m5,
+                    &ma,
+                    &mb,
+                    new NamedGroupMatcher("some", &sc),
+                    &md,
                     new NamedGroupMatcher(
                         "end",
                         new StarMatcher(
-                            new GroupMatcher(vector<MatcherInterface *>{&m6, &m5})
+                            new GroupMatcher(vector<MatcherInterface *>{&me, &md})
                         )
                     )
                 })
@@ -123,5 +124,21 @@ TEST_CASE("Oregex is built from Matchers and is executed on Matchables")
         });
         REQUIRE(r.match(input, outputs) == true);
         REQUIRE(outputs == expected);
+    }
+
+    SECTION("Maches discarding second element in or (/(a*|abc)(abc)*d/ -> abcd)")
+    {
+        Oregex r(vector<MatcherInterface *>{
+            new OrMatcher(vector<MatcherInterface *>{
+                &sa,
+                new GroupMatcher(vector<MatcherInterface *>{&ma, &mb, &mc}),
+            }),
+            new StarMatcher(
+                new GroupMatcher(vector<MatcherInterface *>{&ma, &mb, &mc})
+            ),
+            &md
+        });
+        vector<MatchableInterface *> input{&a, &b, &c, &d};
+        REQUIRE(r.match(input) == true);
     }
 }
