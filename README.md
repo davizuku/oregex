@@ -2,15 +2,17 @@
 
 C++ Library to create regular expressions with customized elements
 
-# Operators
+## Introduction
 
-## WIP overview
+## Operators
+
+### WIP overview
 
 - :white_check_mark: Implemented: 8
 - :warning: Alternative: 2
 - :x: Not implemented: 11
 
-## Details
+### Details
 
 |Status|Operator|Description|Examples|
 |--------|-----------|--------|------|
