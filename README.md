@@ -87,6 +87,26 @@ new Oregex([
 ]);
 ```
 
+## Efficiency
+
+The main goal of developing this library in C++ is achiving high levels of perfomance. This is why some performance tests have been implemented. You can see the results by executing `make test`.
+
+This command will compile the library, the tests, execute them and print a report of this form:
+
+```
+Test: String 'a' into regex '/a/' (3 steps)
+        Average time std regex: 1.142e-06s
+        Average time oregex: 1.161e-06s
+        Ratio (oregex/std): 101.664%
+
+Test: String 'b' into regex '/a/' (no match)
+        Average time std regex: 1.131e-06s
+        Average time oregex: 7.06002e-07s
+        Ratio (oregex/std): 62.4226%
+```
+
+Using the same conversion as shown in the previous section, each pair of string and regex has been executed multiple times with both libraries and their execution times are compared. While some few cases perform better, other do not. From the various cases analyzed, Oregex usually takes between x2 and x10 times to execute. This is something to improve in the future.
+
 ## Operators
 
 In this section all the operators of this library are presented.
