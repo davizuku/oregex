@@ -4,7 +4,91 @@ C++ Library to create regular expressions with customized elements
 
 ## Introduction
 
+Regular expressions are limited to plain text patterns. Whenever you want to express rules in a sequence of complex objects the code starts to get more complex. This library simplifies this process generalizing the concept or regular expressions to deal with Objects, that is Object-Regex, or simply _oregex_.
+
+### Why do I need _oregex_?
+
+Imagine a regular expression like this one: `/^a(b{1,2}cd)+e*$/`. Every time the regex matches an element of the input it only considers its value. As an extension, it could also ignore upper case. However, more structured elements can be hardly expressed inside a traditional Regular Expression.
+
+Now let's switch from plain text to structured elements. For instance, consider shapes, with background and line colors. In this example we have triangles, squares and circles for shapes; red, blue and green for colors.
+
+In this image you can see three examples of these objects:
+
+![sample-shapes](img/sample-shapes.png)
+
+These objects could be described as the following sequence:
+```json
+[
+    {"shape": "triangle", "background": "red", "line": "blue"},
+    {"shape": "square", "background": "green", "line": "red"},
+    {"shape": "circle", "background": "blue", "line": "green"}
+]
+```
+
+Given a sequence of colored shapes, finding out a sequence of `n` consecutive apparitions of a green shape would look like this pseudo code:
+
+```python
+def findGreenRepetitions(sequence, n):
+    consecutive = 0
+    for shape in sequence:
+        if shape.background == 'green':
+            consecutive += 1
+        else:
+            consecutive = 0
+        if consecutive == n:
+            return True
+    return False
+```
+
+Wouldn't it be awesome if we could just do a regex with those _shapes_? It would look like this:
+
+![semi-oregex-1](img/semi-oregex-1.png)
+
+This is exactly what Oregex does, it models the common regex operators into an abstraction capable of working with any types of `Matchers` and `Matchables`.
+
+### What is a `Matchable`?
+
+A [`Matchable`](src/Matchables/MatchableInterface.hpp) is an abstraction of an object capable of being matched. In the case of traditional regexes, any character would be an instance of `Matchable`. In our previous example, all the possible colored shapes are _matchable_. Since this is an interface, you could combine different types of matchables into the same input sequence.
+
+### What is a `Matcher`?
+
+A [`Matcher`](src/Matchers/MatcherInterface.hpp) is an operator capable of consuming a set of `Matchables` from the input sequence. Depending on their logic they could match different amount of elements.
+
+### Putting all together
+
+In the following image the main concepts are explained using the previous examples:
+
+![sample-oregex-1](img/sample-oregex-1.png)
+
+In the same way that we are using a `ColorMatcher` a `ShapeMatcher` could be implemented. Each Matcher would know how to match specific structured data. As you can see, these matchers can be parameterized.
+
+Oregex is virtually a superset of typical regexes. This concept has been used to develop and test their correctness using the [`StringMatcher`](src/Matchers/StringMatcher.hpp). This way we could assert that the same behavior of common regex operators is replicated with the ones in this library.
+
+For example, the initial regex that we presented in this README, i.e. `/^a(b{1,2}cd)+e*$/` could be converted into the following `Oregex` object:
+
+```c++
+new Oregex([
+    new StartMatcher(),                     // ^
+    new StringMatcher("a"),                 // a
+    new RangeMatcher(
+        new GroupMatcher([                  // (
+            new RangeMatcher(
+                new StringMatcher("b"),     // b
+                1, 2                        // {1, 2}
+            ),
+            new StringMatcher("c"),         // c
+            new StringMatcher("d"),         // d
+        ]),                                 // )
+        1,                                  // +
+    ),
+    new StarMatcher(new StringMatcher("e")),// e*
+    new EndMatcher(),                       // $
+]);
+```
+
 ## Operators
+
+In this section all the operators of this library are presented.
 
 ### WIP overview
 
