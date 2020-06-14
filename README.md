@@ -10,7 +10,7 @@ Regular expressions are limited to plain text patterns. Whenever you want to exp
 
 Imagine a regular expression like this one: `/^a(b{1,2}cd)+e*$/`. Every time the regex matches an element of the input it only considers its value. As an extension, it could also ignore upper case. However, more structured elements can be hardly expressed inside a traditional Regular Expression.
 
-Now let's switch from plain text to structured elements. For instance, consider shapes, with background and line colors. In this example we have triangles, squares and circles for shapes; red, blue and green for colors.
+Now let's switch from plain text to structured elements. For instance, consider shapes, with background and line colors. In this example, there are triangles, squares and circles for shapes; red, blue and green for colors.
 
 In this image you can see three examples of these objects:
 
@@ -40,6 +40,7 @@ def findGreenRepetitions(sequence, n):
     return False
 ```
 
+Checking additional properties and elaborating patterns would result in more complex code.
 Wouldn't it be awesome if we could just do a regex with those _shapes_? It would look like this:
 
 ![semi-oregex-1](img/semi-oregex-1.png)
@@ -60,7 +61,7 @@ In the following image the main concepts are explained using the previous exampl
 
 ![sample-oregex-1](img/sample-oregex-1.png)
 
-In the same way that we are using a `ColorMatcher` a `ShapeMatcher` could be implemented. Each Matcher would know how to match specific structured data. As you can see, these matchers can be parameterized.
+In the same way that `ColorMatcher` is used, a `ShapeMatcher` could be implemented. Each Matcher would know how to match specific structured data totally or partially. As you can see, these matchers can be parameterized.
 
 Oregex is virtually a superset of typical regexes. This concept has been used to develop and test their correctness using the [`StringMatcher`](src/Matchers/StringMatcher.hpp). This way we could assert that the same behavior of common regex operators is replicated with the ones in this library.
 
