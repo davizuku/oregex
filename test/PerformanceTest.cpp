@@ -246,6 +246,13 @@ TEST_CASE("Given the same set of strings how much faster is regex module")
             })
         },
         TestArgs{
+            "String 'a' into regex '/./' (3 steps)",
+            "a",
+            regex("."),
+            vector<MatchableInterface *>{&a},
+            Oregex(vector<MatcherInterface *>{new AnyMatcher()})
+        },
+        TestArgs{
             "String 'abcd' into regex '/a.*/' (4 steps)",
             "abcd",
             regex("a.*"),
