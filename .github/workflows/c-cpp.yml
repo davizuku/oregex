@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: check path
-      run: cd .. && ls -la
+      uses: actions/checkout
+      run: ls -la
     - name: test
       run: make test
