@@ -10,8 +10,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-    - name: check path
-      uses: actions/checkout
-      run: ls -la
+    - name: Checkout code
+      uses: actions/checkout@v2
     - name: test
       run: make test
