@@ -12,6 +12,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: check path
+      run: pwd
     - name: list files
       run: ls -la
     - name: test
