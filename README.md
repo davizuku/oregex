@@ -123,7 +123,7 @@ In this section all the operators of this library are presented.
 |--------|-----------|--------|------|
 |[:white_check_mark:](https://github.com/davizuku/oregex/blob/master/src/Matchers/StarMatcher.hpp)|Start|Matches the start of a sequence|`abc` -> `/^abc/` :white_check_mark:<br>`abc` -> `/^bcd/` :x: |
 |[:white_check_mark:](https://github.com/davizuku/oregex/blob/master/src/Matchers/EndMatcher.hpp)|End|Matches the end of a sequence|`abc` -> `/abc$/` :white_check_mark:<br>`abc` -> `/bcd$/` :x:|
-|:x:|Any|Matches any element|`abc` -> `/./` :white_check_mark:<br>` ` -> `/./` :x:|
+|[:white_check_mark:](https://github.com/davizuku/oregex/blob/master/src/Matchers/AnyMatcher.hpp)|Any|Matches any element|`abc` -> `/./` :white_check_mark:<br>` ` -> `/./` :x:|
 |[:white_check_mark:](https://github.com/davizuku/oregex/blob/master/src/Matchers/GroupMatcher.hpp)|Group|Matches a sequence of elements|`abc` -> `/(abc)/` :white_check_mark:<br>`acb` -> `/(abc)/` :x:|
 |[:white_check_mark:](https://github.com/davizuku/oregex/blob/master/src/Matchers/NamedGroupMatcher.hpp)|NamedGroup|Matches a sequence of elements and outputs it under the given name|`abc` -> `/(?<name>abc)/` :white_check_mark:<br>`acb` -> `/(?<name>abc)/` :x:|
 |[:white_check_mark:](https://github.com/davizuku/oregex/blob/master/src/Matchers/OrMatcher.hpp)|Or|Matches any element from a list|`abc` -> `/(xyz\|abc)/` :white_check_mark:<br>`abc` -> `/(npm\|xyz)/` :x:|
