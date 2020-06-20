@@ -12,5 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: list files
+      run: ls -la
     - name: test
       run: make test
