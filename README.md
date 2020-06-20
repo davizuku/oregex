@@ -113,9 +113,9 @@ In this section all the operators of this library are presented.
 
 ### WIP overview
 
-- :white_check_mark: Implemented: 8
+- :white_check_mark: Implemented: 9
 - :warning: Alternative: 2
-- :x: Not implemented: 11
+- :x: Not implemented: 10
 
 ### Details
 
