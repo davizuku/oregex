@@ -7,14 +7,10 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
-
+  test:
     runs-on: ubuntu-latest
-
     steps:
     - name: check path
-      run: pwd
-    - name: list files
-      run: ls -la
+      run: cd .. && ls -la
     - name: test
       run: make test
