@@ -2,6 +2,7 @@
 #include <vector>
 #include "../src/Result.hpp"
 #include "../src/Oregex.hpp"
+#include "../src/Matchers/AgainMatcher.hpp"
 #include "../src/Matchers/StringMatcher.hpp"
 #include "../src/Matchers/StartMatcher.hpp"
 #include "../src/Matchers/EndMatcher.hpp"
@@ -17,7 +18,7 @@
 
 TEST_CASE("Oregex is built from Matchers and is executed on Matchables")
 {
-    StringMatchable a("a"), b("b"), c("c"), d("d"), e("e");
+    StringMatchable a("a"), b("b"), c("c"), d("d"), e("e"), x("x");
     StringMatcher ma("a"), mb("b"), mx("x"), mc("c"), md("d"), me("e");
     StarMatcher sa(&ma), sb(&mb), sx(&mx), sc(&mc), sd(&md);
     vector<MatchableInterface *> input{&a, &b, &c, &c, &d, &e, &d};
@@ -139,6 +140,17 @@ TEST_CASE("Oregex is built from Matchers and is executed on Matchables")
             &md
         });
         vector<MatchableInterface *> input{&a, &b, &c, &d};
+        REQUIRE(r.match(input) == true);
+    }
+
+    SECTION("Matches using previous results (/(?<first>abc)x(\k<first>)/ -> abcxabc)")
+    {
+        Oregex r(vector<MatcherInterface *>{
+            new NamedGroupMatcher("first", new GroupMatcher(vector<MatcherInterface *>{&ma, &mb, &mc})),
+            &mx,
+            new AgainMatcher("first"),
+        });
+        vector<MatchableInterface *> input{&a, &b, &c, &x, &a, &b, &c};
         REQUIRE(r.match(input) == true);
     }
 }
