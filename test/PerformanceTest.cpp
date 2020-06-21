@@ -3,6 +3,7 @@
 #include <string>
 #include <regex>
 #include "../src/Oregex.hpp"
+#include "../src/Matchers/AgainMatcher.hpp"
 #include "../src/Matchers/AnyMatcher.hpp"
 #include "../src/Matchers/StringMatcher.hpp"
 #include "../src/Matchers/StartMatcher.hpp"
@@ -30,7 +31,7 @@ struct TestArgs
 
 TEST_CASE("Given the same set of strings how much faster is regex module")
 {
-    StringMatchable a("a"), b("b"), c("c"), d("d"), e("e");
+    StringMatchable a("a"), b("b"), c("c"), d("d"), e("e"), x("x");
     StringMatcher ma("a"), mb("b"), mx("x"), mc("c"), md("d"), me("e");
     StarMatcher sa(&ma), sb(&mb), sx(&mx), sc(&mc), sd(&md);
 
@@ -260,6 +261,17 @@ TEST_CASE("Given the same set of strings how much faster is regex module")
             Oregex(vector<MatcherInterface *>{
                 &ma,
                 new StarMatcher(new AnyMatcher()),
+            })
+        },
+        TestArgs{
+            "String 'aaaaxaaa' into regex '/(a*)x(\\k<1>)/' (14 steps)",
+            "aaaaxaaa",
+            regex("(a*)x(\\1)"),
+            vector<MatchableInterface *>{&a, &a, &a, &a, &x, &a, &a, &a},
+            Oregex(vector<MatcherInterface *>{
+                new NamedGroupMatcher("1", &sa),
+                &mx,
+                new AgainMatcher("1"),
             })
         },
     };
