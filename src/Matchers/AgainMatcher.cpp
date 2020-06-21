@@ -44,14 +44,17 @@ Result* AgainMatcher::next()
     if (repeatOutput != outputs.end()) {
         auto repeatMatchables = repeatOutput->second;
         size_t k = start;
-        for (auto j = repeatMatchables.begin(); j != repeatMatchables.end() && k < matchables.size(); ++j) {
+        forward_list<MatchableInterface*>::iterator j;
+        for (j = repeatMatchables.begin(); j != repeatMatchables.end() && k < matchables.size(); ++j) {
             MatchableInterface *m1 = matchables[k++];
             MatchableInterface *m2 = *j;
             if (m1->getValue() != m2->getValue()) {
-                return next();
+                break;
             }
         }
-        return new Result(start, max(start, k - 1));
+        if (j == repeatMatchables.end()) {
+            return new Result(start, max(start, k - 1));
+        }
     }
     return next();
 }

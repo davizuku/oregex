@@ -153,4 +153,17 @@ TEST_CASE("Oregex is built from Matchers and is executed on Matchables")
         vector<MatchableInterface *> input{&a, &b, &c, &x, &a, &b, &c};
         REQUIRE(r.match(input) == true);
     }
+
+    SECTION("Again matcher does not reproduce the logic") // , but only the results (/^(?<first>a*)x(\k<first>)$/ -> aaaxa)")
+    {
+        Oregex r(vector<MatcherInterface *>{
+            new StartMatcher(),
+            new NamedGroupMatcher("first", &sa),
+            &mx,
+            new AgainMatcher("first"),
+            new EndMatcher(),
+        });
+        vector<MatchableInterface *> input{&a, &a, &a, &x, &a};
+        REQUIRE(r.match(input) == false);
+    }
 }
