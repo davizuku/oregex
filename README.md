@@ -144,7 +144,7 @@ In this section all the operators of this library are presented.
 |:x:|Lazy/Ungreedy|Makes an operator consume as few input as possible|`aaa` -> `/a*?/` :white_check_mark: (will only match first 'a')|
 
 
-Source: regex101.com
+Source: https://regex101.com/
 
 ## Useful commands
 
