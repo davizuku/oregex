@@ -63,6 +63,7 @@ POSTCOMPILE = mv -f $(DEPDIR)/$*.Td $(DEPDIR)/$*.d
 all: $(DISTFILES)
 
 test: $(BIN)
+	# $(BIN) <testName> -c <sectionName>
 	$(BIN)
 
 clean:
