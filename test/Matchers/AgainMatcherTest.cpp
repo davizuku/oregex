@@ -17,4 +17,17 @@ TEST_CASE("AgainMatcher matches only with same strings")
     {
         REQUIRE(m.match(input, input.size() + 1) == NULL);
     }
+
+    SECTION("Matches if a result exists with the same sequence")
+    {
+        forward_list<Result> prevResults = {
+            Result(0, 2, unordered_map<string, forward_list<MatchableInterface*>>{
+                {"repeat", forward_list<MatchableInterface*>{&a, &b, &c}}
+            })
+        };
+        REQUIRE(*(m.match(input, 0, prevResults)) == Result(0, 2));
+        REQUIRE(m.next() == NULL);
+        REQUIRE(*(m.match(input, 3, prevResults)) == Result(3, 5));
+        REQUIRE(m.next() == NULL);
+    }
 }
