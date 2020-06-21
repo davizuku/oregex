@@ -17,24 +17,11 @@ Result* AgainMatcher::match(
     if (start >= matchables.size()) {
         return NULL;
     }
-    for (auto i = previousResults.begin(); i != previousResults.end(); ++i) {
-        auto outputs = i->getOutputs();
-        auto repeatOutput = outputs.find(outputName);
-        if (repeatOutput != outputs.end()) {
-            auto repeatMatchables = repeatOutput->second;
-            size_t k = start;
-            for (auto j = repeatMatchables.begin(); j != repeatMatchables.end() && k < matchables.size(); ++j) {
-                MatchableInterface* m1 = matchables[k++];
-                MatchableInterface* m2 = *j;
-                if (m1->getValue() != m2->getValue()) {
-                    // TODO: edit this for next()
-                    return NULL;
-                }
-            }
-            return new Result(start, max(start, k-1));
-        }
-    }
-    return NULL;
+    this->matchables = matchables;
+    this->start = start;
+    this->previousResults = previousResults;
+    this->curResult = previousResults.before_begin();
+    return next();
 }
 
 Result* AgainMatcher::match(
@@ -46,5 +33,25 @@ Result* AgainMatcher::match(
 
 Result* AgainMatcher::next()
 {
-    return NULL;
+    if (curResult != previousResults.end()) {
+        curResult++;
+    }
+    if (curResult == previousResults.end()) {
+        return NULL;
+    }
+    auto outputs = curResult->getOutputs();
+    auto repeatOutput = outputs.find(outputName);
+    if (repeatOutput != outputs.end()) {
+        auto repeatMatchables = repeatOutput->second;
+        size_t k = start;
+        for (auto j = repeatMatchables.begin(); j != repeatMatchables.end() && k < matchables.size(); ++j) {
+            MatchableInterface *m1 = matchables[k++];
+            MatchableInterface *m2 = *j;
+            if (m1->getValue() != m2->getValue()) {
+                return next();
+            }
+        }
+        return new Result(start, max(start, k - 1));
+    }
+    return next();
 }

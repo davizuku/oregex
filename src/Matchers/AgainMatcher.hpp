@@ -26,4 +26,9 @@ class AgainMatcher: public MatcherInterface
 
     protected:
         string outputName;
+        size_t start;
+        MatcherInterface *matcher;
+        vector<MatchableInterface *> matchables;
+        forward_list<Result> previousResults;
+        forward_list<Result>::const_iterator curResult;
 };

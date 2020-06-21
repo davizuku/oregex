@@ -27,10 +27,15 @@ TEST_CASE("AgainMatcher matches only with same strings")
             Result(0, 2, unordered_map<string, forward_list<MatchableInterface*>>{
                 {"repeat", forward_list<MatchableInterface*>{&a, &b, &c}}
             }),
+            Result(0, 1, unordered_map<string, forward_list<MatchableInterface*>>{
+                {"repeat", forward_list<MatchableInterface*>{&a, &b}}
+            }),
         };
         REQUIRE(*(m.match(input, 0, prevResults)) == Result(0, 2));
+        REQUIRE(*(m.next()) == Result(0, 1));
         REQUIRE(m.next() == NULL);
         REQUIRE(*(m.match(input, 3, prevResults)) == Result(3, 5));
+        REQUIRE(*(m.next()) == Result(3, 4));
         REQUIRE(m.next() == NULL);
     }
 }
