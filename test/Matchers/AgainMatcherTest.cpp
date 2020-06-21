@@ -26,7 +26,7 @@ TEST_CASE("AgainMatcher matches only with same strings")
             }),
             Result(0, 2, unordered_map<string, forward_list<MatchableInterface*>>{
                 {"repeat", forward_list<MatchableInterface*>{&a, &b, &c}}
-            })
+            }),
         };
         REQUIRE(*(m.match(input, 0, prevResults)) == Result(0, 2));
         REQUIRE(m.next() == NULL);
