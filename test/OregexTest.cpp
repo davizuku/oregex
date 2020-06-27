@@ -5,6 +5,7 @@
 #include "../src/Matchers/AgainMatcher.hpp"
 #include "../src/Matchers/StringMatcher.hpp"
 #include "../src/Matchers/StartMatcher.hpp"
+#include "../src/Matchers/ConditionMatcher.hpp"
 #include "../src/Matchers/EndMatcher.hpp"
 #include "../src/Matchers/StarMatcher.hpp"
 #include "../src/Matchers/RangeMatcher.hpp"
@@ -18,8 +19,10 @@
 
 TEST_CASE("Oregex is built from Matchers and is executed on Matchables")
 {
-    StringMatchable a("a"), b("b"), c("c"), d("d"), e("e"), x("x");
-    StringMatcher ma("a"), mb("b"), mx("x"), mc("c"), md("d"), me("e");
+    StringMatchable a("a"), b("b"), c("c"), d("d"), e("e"),
+        o("o"), p("p"), q("q"), x("x"), y("y"), z("z");
+    StringMatcher ma("a"), mb("b"), mc("c"), md("d"), me("e"),
+        mo("o"), mp("p"), mq("q"), mx("x"), my("y"), mz("z");
     StarMatcher sa(&ma), sb(&mb), sx(&mx), sc(&mc), sd(&md);
     vector<MatchableInterface *> input{&a, &b, &c, &c, &d, &e, &d};
 
@@ -164,6 +167,69 @@ TEST_CASE("Oregex is built from Matchers and is executed on Matchables")
             new EndMatcher(),
         });
         vector<MatchableInterface *> input{&a, &a, &a, &x, &a};
+        REQUIRE(r.match(input) == false);
+    }
+
+    SECTION("Condition matches given previous group match") // , but only the results (/^(?<first>a*)x(\k<first>)$/ -> aaaxa)")
+    {
+        Oregex r(vector<MatcherInterface *>{
+            new RangeMatcher(
+                new NamedGroupMatcher(
+                    "1",
+                    new GroupMatcher(vector<MatcherInterface*>{&ma, &mb, &mc})
+                ),
+                0,
+                1
+            ),
+            new ConditionMatcher(
+                "1",
+                new GroupMatcher(vector<MatcherInterface*>{&mx, &my, &mz}),
+                new GroupMatcher(vector<MatcherInterface*>{&mo, &mp, &mq})
+            ),
+        });
+        vector<MatchableInterface *> input{&a, &b, &c, &x, &y, &z};
+        REQUIRE(r.match(input) == true);
+    }
+
+    SECTION("Condition matches given previous group not match") // , but only the results (/^(?<first>a*)x(\k<first>)$/ -> aaaxa)")
+    {
+        Oregex r(vector<MatcherInterface *>{
+            new RangeMatcher(
+                new NamedGroupMatcher(
+                    "1",
+                    new GroupMatcher(vector<MatcherInterface*>{&ma, &mb, &mc})
+                ),
+                0,
+                1
+            ),
+            new ConditionMatcher(
+                "1",
+                new GroupMatcher(vector<MatcherInterface*>{&mx, &my, &mz}),
+                new GroupMatcher(vector<MatcherInterface*>{&mo, &mp, &mq})
+            ),
+        });
+        vector<MatchableInterface *> input{&a, &c, &b, &o, &p, &q};
+        REQUIRE(r.match(input) == true);
+    }
+
+    SECTION("Condition not matches given previous group not match") // , but only the results (/^(?<first>a*)x(\k<first>)$/ -> aaaxa)")
+    {
+        Oregex r(vector<MatcherInterface *>{
+            new RangeMatcher(
+                new NamedGroupMatcher(
+                    "1",
+                    new GroupMatcher(vector<MatcherInterface*>{&ma, &mb, &mc})
+                ),
+                0,
+                1
+            ),
+            new ConditionMatcher(
+                "1",
+                new GroupMatcher(vector<MatcherInterface*>{&mx, &my, &mz}),
+                new GroupMatcher(vector<MatcherInterface*>{&mo, &mp, &mq})
+            ),
+        });
+        vector<MatchableInterface *> input{&a, &c, &b, &x, &y, &z};
         REQUIRE(r.match(input) == false);
     }
 }
