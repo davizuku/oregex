@@ -15,6 +15,8 @@
 #include "../src/Matchers/GroupMatcher.hpp"
 #include "../src/Matchers/NamedGroupMatcher.hpp"
 #include "../src/Matchers/OrMatcher.hpp"
+#include "../src/Matchers/NegativeLookAheadMatcher.hpp"
+#include "../src/Matchers/PositiveLookAheadMatcher.hpp"
 #include "../src/Matchers/MatcherInterface.hpp"
 #include "../src/Matchables/StringMatchable.hpp"
 #include "../src/Matchables/MatchableInterface.hpp"
@@ -301,6 +303,66 @@ TEST_CASE("Given the same set of strings how much faster is regex module")
                     new ExceptMatcher(vector<MatcherInterface*>{&ma, &mb}),
                     1
                 ),
+            })
+        },
+        TestArgs{
+            "String 'abc' into regex '/a(?=bc)bc/' (8 steps)",
+            "abc",
+            regex("a(?=bc)bc"),
+            vector<MatchableInterface *>{&a, &b, &c},
+            Oregex(vector<MatcherInterface *>{
+                &ma,
+                new PositiveLookAheadMatcher(new GroupMatcher(vector<MatcherInterface*>{
+                    &mb,
+                    &mc
+                })),
+                &mb,
+                &mc,
+            })
+        },
+        TestArgs{
+            "String 'acb' into regex '/a(?=bc)bc/' (3 steps)",
+            "acb",
+            regex("a(?=bc)bc"),
+            vector<MatchableInterface *>{&a, &c, &b},
+            Oregex(vector<MatcherInterface *>{
+                &ma,
+                new PositiveLookAheadMatcher(new GroupMatcher(vector<MatcherInterface*>{
+                    &mb,
+                    &mc
+                })),
+                &mb,
+                &mc,
+            })
+        },
+        TestArgs{
+            "String 'abc' into regex '/a(?!cb)bc/' (6 steps)",
+            "abc",
+            regex("a(?!cb)bc"),
+            vector<MatchableInterface *>{&a, &b, &c},
+            Oregex(vector<MatcherInterface *>{
+                &ma,
+                new NegativeLookAheadMatcher(new GroupMatcher(vector<MatcherInterface*>{
+                    &mc,
+                    &mb
+                })),
+                &mb,
+                &mc,
+            })
+        },
+        TestArgs{
+            "String 'acb' into regex '/a(?!cb)bc/' (5 steps)",
+            "acb",
+            regex("a(?!cb)bc"),
+            vector<MatchableInterface *>{&a, &c, &b},
+            Oregex(vector<MatcherInterface *>{
+                &ma,
+                new NegativeLookAheadMatcher(new GroupMatcher(vector<MatcherInterface*>{
+                    &mc,
+                    &mb
+                })),
+                &mb,
+                &mc,
             })
         },
     };

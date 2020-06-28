@@ -113,9 +113,9 @@ In this section all the operators of this library are presented.
 
 ### WIP overview
 
-- :white_check_mark: Implemented: 12
+- :white_check_mark: Implemented: 14
 - :warning: Alternative: 2
-- :x: Not implemented: 7
+- :x: Not implemented: 5
 
 ### Details
 
@@ -129,8 +129,8 @@ In this section all the operators of this library are presented.
 |[:white_check_mark:](https://github.com/davizuku/oregex/blob/master/src/Matchers/OrMatcher.hpp)|Or|Matches any element from a list|`abc` -> `/(xyz\|abc)/` :white_check_mark:<br>`abc` -> `/(npm\|xyz)/` :x:|
 |[:white_check_mark:](https://github.com/davizuku/oregex/blob/master/src/Matchers/ExceptMatcher.hpp)|Except|Matches any element except for those in a list|`abc` -> `/[^xyz]+/` :white_check_mark:<br>`abc` -> `/[^abc]+/` :x:|
 |[:white_check_mark:](https://github.com/davizuku/oregex/blob/master/src/Matchers/AgainMatcher.hpp)|Again|Matches the elements previously matched in a group|`abc abc` -> `/(?<first>abc) (\k<first>)/` :white_check_mark:<br>`abc efg` -> `/(?<first>abc) (\k<first>)/` :x:<br>`abc abc` -> `/(abc) (\g<1>)/` :white_check_mark:<br>`abc efg` -> `/(abc) (\g<1>)/` :x:|
-|:x:|PositiveLookAhead|Matches the elements in list without consuming the input.| `abc` -> `/a(?=bc)bc/` :white_check_mark:<br>`acb` -> `/a(?=bc)bc/` :x:|
-|:x:|NegativeLookAhead|Checks not match with the elements in list without consuming the input.| `abc` -> `/a(?!cb)bc/` :white_check_mark:<br>`acb` -> `/a(?!cb)cb/` :x:|
+|[:white_check_mark:](https://github.com/davizuku/oregex/blob/master/src/Matchers/PositiveLookAheadMatcher.hpp)|PositiveLookAhead|Matches the elements in list without consuming the input.| `abc` -> `/a(?=bc)bc/` :white_check_mark:<br>`acb` -> `/a(?=bc)bc/` :x:|
+|[:white_check_mark:](https://github.com/davizuku/oregex/blob/master/src/Matchers/NegativeLookAheadMatcher.hpp)|NegativeLookAhead|Checks not match with the elements in list without consuming the input.| `abc` -> `/a(?!cb)bc/` :white_check_mark:<br>`acb` -> `/a(?!cb)cb/` :x:|
 |:x:|PositiveLookBehind|Matches the elements in list without consuming the input.| `abc` -> `/(?<=bc)abc/` :white_check_mark:<br>`abc` -> `/(?<=a)abc/` :x:|
 |:x:|NegativeLookBehind|Checks not match with the elements in list without consuming the input.| `abc` -> `/(?<!cb)abc/` :white_check_mark:<br>`abc` -> `/(?<!bc)abc/` :x:|
 |[:white_check_mark:](https://github.com/davizuku/oregex/blob/master/src/Matchers/ConditionMatcher.hpp)|Condition|Matches the elements in seqTrue if group was matched, seqFalse otherwise.| `abc xyz` -> `/(abc)? (?(1)xyz\|opq)/` :white_check_mark:<br>`acb opq` -> `/(abc)? (?(1)xyz\|opq)/` :white_check_mark:<br>`acb xyz` -> `/(abc)? (?(1)xyz\|opq)/` :x:|
