@@ -55,12 +55,6 @@ A [`Matchable`](src/Matchables/MatchableInterface.hpp) is an abstraction of an o
 
 A [`Matcher`](src/Matchers/MatcherInterface.hpp) is an operator capable of consuming a set of `Matchables` from the input sequence sequence and returning a [`Result`](src/../../Result.hpp). Depending on their logic they could match different amount of elements.
 
-An [`Oregex`](src/Oregex.hpp) consists on an ordered list of `Matchers` and contains the logic of iterating through the input sequence until the specified `Matchers` start to match.
-
-![oregex-vs-matcher](img/oregex-vs-matcher.png)
-
-For example, in the previous image, the whole `Matchable[]` sequence does not match any of the specified `Matchers`. However, the subsequence `Matchable[1:2]` does match the whole `Oregex`. Consuming non-matched input is the main responsibility of the `Oregex` class.
-
 ### Putting all together
 
 In the following image the main concepts are explained using the previous examples:
@@ -68,6 +62,12 @@ In the following image the main concepts are explained using the previous exampl
 ![sample-oregex-1](img/sample-oregex-1.png)
 
 In the same way that `ColorMatcher` is used, a `ShapeMatcher` could be implemented. Each Matcher would know how to match specific structured data totally or partially. As you can see, these matchers can be parameterized.
+
+An [`Oregex`](src/Oregex.hpp) consists on an ordered list of `Matchers` and contains the logic of iterating through the input sequence until the specified `Matchers` start to match.
+
+![oregex-vs-matcher](img/oregex-vs-matcher.png)
+
+For example, in the previous image, the whole `Matchable[]` sequence does not match any of the specified `Matchers`. However, the subsequence `Matchable[1:2]` does match the whole `Oregex`. Consuming non-matched input is the main responsibility of the `Oregex` class.
 
 Oregex is virtually a superset of typical regexes. This concept has been used to develop and test their correctness using the [`StringMatcher`](src/Matchers/StringMatcher.hpp). This way we could assert that the same behavior of common regex operators is replicated with the ones in this library.
 
