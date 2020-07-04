@@ -69,7 +69,7 @@ An [`Oregex`](src/Oregex.hpp) consists on an ordered list of `Matchers` and cont
 
 ![oregex-vs-matcher](img/oregex-vs-matcher.png)
 
-For example, in the previous image, the whole `Matchable[]` sequence does not match any of the specified `Matchers`. However, the subsequence `Matchable[1:2]` does match the whole `Oregex`. Consuming non-matched input is the main responsibility of the `Oregex` class.
+For example, in the previous image, the whole `Matchable[]` sequence does not match any of the specified `Matchers`. However, the subsequence `Matchable[1:2]` _does_ match the whole `Oregex`. Consuming non-matched input is the main responsibility of the `Oregex` class.
 
 Oregex is virtually a superset of typical regexes. This concept has been used to develop and test their correctness using the [`StringMatcher`](src/Matchers/StringMatcher.hpp). This way we could assert that the same behavior of common regex operators is replicated with the ones in this library.
 
