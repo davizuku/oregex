@@ -63,6 +63,8 @@ In the following image the main concepts are explained using the previous exampl
 
 In the same way that `ColorMatcher` is used, a `ShapeMatcher` could be implemented. Each Matcher would know how to match specific structured data totally or partially. As you can see, these matchers can be parameterized.
 
+### What is an `Oregex`?
+
 An [`Oregex`](src/Oregex.hpp) consists on an ordered list of `Matchers` and contains the logic of iterating through the input sequence until the specified `Matchers` start to match.
 
 ![oregex-vs-matcher](img/oregex-vs-matcher.png)
