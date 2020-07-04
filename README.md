@@ -55,6 +55,8 @@ A [`Matchable`](src/Matchables/MatchableInterface.hpp) is an abstraction of an o
 
 A [`Matcher`](src/Matchers/MatcherInterface.hpp) is an operator capable of consuming a set of `Matchables` from the input sequence sequence and returning a [`Result`](src/../../Result.hpp). Depending on their logic they could match different amount of elements.
 
+For more information about matchers and their implementation, see [Matcher's README](src/Matchers/README.md)
+
 ### Putting all together
 
 In the following image the main concepts are explained using the previous examples:
