@@ -157,7 +157,7 @@ TEST_CASE("Oregex is built from Matchers and is executed on Matchables")
         REQUIRE(r.match(input) == true);
     }
 
-    SECTION("Again matcher does not reproduce the logic") // , but only the results (/^(?<first>a*)x(\k<first>)$/ -> aaaxa)")
+    SECTION("Again matcher does not reproduce the logic , but only the results (/^(?<first>a*)x(\k<first>)$/ -> aaaxa)")
     {
         Oregex r(vector<MatcherInterface *>{
             new StartMatcher(),
@@ -170,7 +170,7 @@ TEST_CASE("Oregex is built from Matchers and is executed on Matchables")
         REQUIRE(r.match(input) == false);
     }
 
-    SECTION("Condition matches given previous group match") // , but only the results (/^(?<first>a*)x(\k<first>)$/ -> aaaxa)")
+    SECTION("Condition matches given previous group match")
     {
         Oregex r(vector<MatcherInterface *>{
             new RangeMatcher(
@@ -191,7 +191,7 @@ TEST_CASE("Oregex is built from Matchers and is executed on Matchables")
         REQUIRE(r.match(input) == true);
     }
 
-    SECTION("Condition matches given previous group not match") // , but only the results (/^(?<first>a*)x(\k<first>)$/ -> aaaxa)")
+    SECTION("Condition matches given previous group not match")
     {
         Oregex r(vector<MatcherInterface *>{
             new RangeMatcher(
@@ -212,7 +212,7 @@ TEST_CASE("Oregex is built from Matchers and is executed on Matchables")
         REQUIRE(r.match(input) == true);
     }
 
-    SECTION("Condition not matches given previous group not match") // , but only the results (/^(?<first>a*)x(\k<first>)$/ -> aaaxa)")
+    SECTION("Condition not matches given previous group not match")
     {
         Oregex r(vector<MatcherInterface *>{
             new RangeMatcher(
