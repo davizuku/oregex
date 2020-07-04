@@ -97,7 +97,7 @@ new Oregex([
 
 ## Efficiency
 
-The main goal of developing this library in C++ is achiving high levels of perfomance. This is why some performance tests have been implemented. You can see the results by executing `make test`.
+The main goal of developing this library in C++ is achieving high levels of perfomance. This is why some [performance tests](test/PerformanceTest.cpp) have been implemented. You can see the results by executing `make test`.
 
 This command will compile the library, the tests, execute them and print a report of this form:
 
