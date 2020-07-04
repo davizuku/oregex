@@ -53,7 +53,13 @@ A [`Matchable`](src/Matchables/MatchableInterface.hpp) is an abstraction of an o
 
 ### What is a `Matcher`?
 
-A [`Matcher`](src/Matchers/MatcherInterface.hpp) is an operator capable of consuming a set of `Matchables` from the input sequence. Depending on their logic they could match different amount of elements.
+A [`Matcher`](src/Matchers/MatcherInterface.hpp) is an operator capable of consuming a set of `Matchables` from the input sequence sequence and returning a [`Result`](src/../../Result.hpp). Depending on their logic they could match different amount of elements.
+
+An [`Oregex`](src/Oregex.hpp) consists on an ordered list of `Matchers` and contains the logic of iterating through the input sequence until the specified `Matchers` start to match.
+
+![oregex-vs-matcher](img/oregex-vs-matcher.png)
+
+For example, in the previous image, the whole `Matchable[]` sequence does not match any of the specified `Matchers`. However, the subsequence `Matchable[1:2]` does match the whole `Oregex`. Consuming non-matched input is the main responsibility of the `Oregex` class.
 
 ### Putting all together
 
