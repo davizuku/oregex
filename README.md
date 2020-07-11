@@ -14,7 +14,7 @@ Now let's switch from plain text to structured elements. For instance, consider 
 
 In this image you can see three examples of these objects:
 
-![sample-shapes](img/sample-shapes.png)
+![sample-shapes](./img/sample-shapes.png)
 
 These objects could be described as the following sequence:
 ```json
@@ -43,37 +43,37 @@ def findGreenRepetitions(sequence, n):
 Checking additional properties and elaborating patterns would result in more complex code.
 Wouldn't it be awesome if we could just do a regex with those _shapes_? It would look like this:
 
-![semi-oregex-1](img/semi-oregex-1.png)
+![semi-oregex-1](./img/semi-oregex-1.png)
 
 This is exactly what Oregex does, it models the common regex operators into an abstraction capable of working with any types of `Matchers` and `Matchables`.
 
 ### What is a `Matchable`?
 
-A [`Matchable`](src/Matchables/MatchableInterface.hpp) is an abstraction of an object capable of being matched. In the case of traditional regexes, any character would be an instance of `Matchable`. In our previous example, all the possible colored shapes are _matchable_. Since this is an interface, you could combine different types of matchables into the same input sequence.
+A [`Matchable`](./src/Matchables/MatchableInterface.hpp) is an abstraction of an object capable of being matched. In the case of traditional regexes, any character would be an instance of `Matchable`. In our previous example, all the possible colored shapes are _matchable_. Since this is an interface, you could combine different types of matchables into the same input sequence.
 
 ### What is a `Matcher`?
 
-A [`Matcher`](src/Matchers/MatcherInterface.hpp) is an operator capable of consuming a set of `Matchables` from the input sequence sequence and returning a [`Result`](src/../../Result.hpp). Depending on their logic they could match different amount of elements.
+A [`Matcher`](./src/Matchers/MatcherInterface.hpp) is an operator capable of consuming a set of `Matchables` from the input sequence sequence and returning a [`Result`](./src/../../Result.hpp). Depending on their logic they could match different amount of elements.
 
-For more information about matchers and their implementation, see [Matcher's README](src/Matchers/README.md)
+For more information about matchers and their implementation, see [Matcher's README](./src/Matchers/README.md)
 
 ### Putting all together
 
 In the following image the main concepts are explained using the previous examples:
 
-![sample-oregex-1](img/sample-oregex-1.png)
+![sample-oregex-1](./img/sample-oregex-1.png)
 
 In the same way that `ColorMatcher` is used, a `ShapeMatcher` could be implemented. Each Matcher would know how to match specific structured data totally or partially. As you can see, these matchers can be parameterized.
 
 ### What is an `Oregex`?
 
-An [`Oregex`](src/Oregex.hpp) consists on an ordered list of `Matchers` and contains the logic of iterating through the input sequence until the specified `Matchers` start to match.
+An [`Oregex`](./src/Oregex.hpp) consists on an ordered list of `Matchers` and contains the logic of iterating through the input sequence until the specified `Matchers` start to match.
 
-![oregex-vs-matcher](img/oregex-vs-matcher.png)
+![oregex-vs-matcher](./img/oregex-vs-matcher.png)
 
 For example, in the previous image, the whole `Matchable[]` sequence does not match any of the specified `Matchers`. However, the subsequence `Matchable[1:2]` _does_ match the whole `Oregex`. Consuming non-matched input is the main responsibility of the `Oregex` class.
 
-Oregex is virtually a superset of typical regexes. This concept has been used to develop and test their correctness using the [`StringMatcher`](src/Matchers/StringMatcher.hpp). This way we could assert that the same behavior of common regex operators is replicated with the ones in this library.
+Oregex is virtually a superset of typical regexes. This concept has been used to develop and test their correctness using the [`StringMatcher`](./src/Matchers/StringMatcher.hpp). This way we could assert that the same behavior of common regex operators is replicated with the ones in this library.
 
 For example, the initial regex that we presented in this README, i.e. `/^a(b{1,2}cd)+e*$/` could be converted into the following `Oregex` object:
 
