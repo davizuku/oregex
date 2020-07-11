@@ -123,9 +123,9 @@ In this section all the operators of this library are presented.
 
 ### WIP overview
 
-- :white_check_mark: Implemented: 16
+- :white_check_mark: Implemented: 17
 - :warning: Alternative: 2
-- :x: Not implemented: 3
+- :x: Not implemented: 2
 
 ### Details
 
@@ -142,7 +142,7 @@ In this section all the operators of this library are presented.
 |[:white_check_mark:](https://github.com/davizuku/oregex/blob/master/src/Matchers/PositiveLookAheadMatcher.hpp)|PositiveLookAhead|Matches the elements in list without consuming the input.| `abc` -> `/a(?=bc)bc/` :white_check_mark:<br>`acb` -> `/a(?=bc)bc/` :x:|
 |[:white_check_mark:](https://github.com/davizuku/oregex/blob/master/src/Matchers/NegativeLookAheadMatcher.hpp)|NegativeLookAhead|Checks not match with the elements in list without consuming the input.| `abc` -> `/a(?!cb)bc/` :white_check_mark:<br>`acb` -> `/a(?!cb)cb/` :x:|
 |[:white_check_mark:](https://github.com/davizuku/oregex/blob/master/src/Matchers/PositiveLookBehindMatcher.hpp)|PositiveLookBehind|Matches the elements in list without consuming the input.| `aabc` -> `/a(?<=a)abc/` :white_check_mark:<br>`abbc` -> `/a(?<=a)abc/` :x:|
-|:x:|NegativeLookBehind|Checks not match with the elements in list without consuming the input.| `babc` -> `/(?<!a)abc/` :white_check_mark:<br>`aabc` -> `/(?<!a)abc/` :x:|
+|[:white_check_mark:](https://github.com/davizuku/oregex/blob/master/src/Matchers/NegativeLookBehindMatcher.hpp)|NegativeLookBehind|Checks not match with the elements in list without consuming the input.| `babc` -> `/(?<!a)abc/` :white_check_mark:<br>`aabc` -> `/(?<!a)abc/` :x:|
 |[:white_check_mark:](https://github.com/davizuku/oregex/blob/master/src/Matchers/ConditionMatcher.hpp)|Condition|Matches the elements in seqTrue if group was matched, seqFalse otherwise.| `abc xyz` -> `/(abc)? (?(1)xyz\|opq)/` :white_check_mark:<br>`acb opq` -> `/(abc)? (?(1)xyz\|opq)/` :white_check_mark:<br>`acb xyz` -> `/(abc)? (?(1)xyz\|opq)/` :x:|
 |[:white_check_mark:](https://github.com/davizuku/oregex/blob/master/src/Matchers/ConditionalLookAheadMatcher.hpp)|ConditionalLookAhead|Matches the elements in seqTrue if seqLook matches, seqFalse otherwise.| `abc` -> `/(?(?=a)(abc)\|(cba))/` :white_check_mark:<br>`cba` -> `/(?(?=a)(abc)\|(cba))/` :white_check_mark:<br>`acb` -> `/(?(?=a)(abc)\|(cba))/` :x:|
 |:x:|ConditionalLookBehind|Matches the elements in seqTrue if seqLook matches, seqFalse otherwise.| `abc xyz` -> `/(?(?<=abc )(xyz)\|(cba))/` :white_check_mark:<br>`xyz cba` -> `/(?(?<=abc )(xyz)\|(cba))/` :x:|
