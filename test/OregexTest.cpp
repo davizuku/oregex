@@ -8,6 +8,7 @@
 #include "../src/Matchers/ConditionMatcher.hpp"
 #include "../src/Matchers/ConditionalLookAheadMatcher.hpp"
 #include "../src/Matchers/PositiveLookBehindMatcher.hpp"
+#include "../src/Matchers/NegativeLookBehindMatcher.hpp"
 #include "../src/Matchers/EndMatcher.hpp"
 #include "../src/Matchers/StarMatcher.hpp"
 #include "../src/Matchers/RangeMatcher.hpp"
@@ -282,6 +283,30 @@ TEST_CASE("Oregex is built from Matchers and is executed on Matchables")
             &mc,
         });
         vector<MatchableInterface *> input{&a, &b, &b, &c};
+        REQUIRE(r.match(input) == false);
+    }
+
+    SECTION("NegativeLookBehind matches given lookbehind matches")
+    {
+        Oregex r(vector<MatcherInterface *>{
+            new NegativeLookBehindMatcher(&ma),
+            &ma,
+            &mb,
+            &mc,
+        });
+        vector<MatchableInterface *> input{&b, &a, &b, &c};
+        REQUIRE(r.match(input) == true);
+    }
+
+    SECTION("NegativeLookBehind not matches given lookbehind not matches")
+    {
+        Oregex r(vector<MatcherInterface *>{
+            new NegativeLookBehindMatcher(&ma),
+            &ma,
+            &mb,
+            &mc,
+        });
+        vector<MatchableInterface *> input{&a, &a, &b, &c};
         REQUIRE(r.match(input) == false);
     }
 }
