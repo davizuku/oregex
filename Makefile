@@ -1,7 +1,7 @@
 # output binary
 BIN := bin/oregex
 
-LIBRARY_PATH := bin/
+LIBRARY_PATH := bin
 LIBRARY_NAME := oregex
 LIBRARY := $(LIBRARY_PATH)/lib$(LIBRARY_NAME).so
 
