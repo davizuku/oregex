@@ -14,7 +14,7 @@ Now let's switch from plain text to structured elements. For instance, consider 
 
 In this image you can see three examples of these objects:
 
-![sample-shapes](img/sample-shapes.png)
+![sample-shapes](./img/sample-shapes.png)
 
 These objects could be described as the following sequence:
 ```json
@@ -43,37 +43,37 @@ def findGreenRepetitions(sequence, n):
 Checking additional properties and elaborating patterns would result in more complex code.
 Wouldn't it be awesome if we could just do a regex with those _shapes_? It would look like this:
 
-![semi-oregex-1](img/semi-oregex-1.png)
+![semi-oregex-1](./img/semi-oregex-1.png)
 
 This is exactly what Oregex does, it models the common regex operators into an abstraction capable of working with any types of `Matchers` and `Matchables`.
 
 ### What is a `Matchable`?
 
-A [`Matchable`](src/Matchables/MatchableInterface.hpp) is an abstraction of an object capable of being matched. In the case of traditional regexes, any character would be an instance of `Matchable`. In our previous example, all the possible colored shapes are _matchable_. Since this is an interface, you could combine different types of matchables into the same input sequence.
+A [`Matchable`](./src/Matchables/MatchableInterface.hpp) is an abstraction of an object capable of being matched. In the case of traditional regexes, any character would be an instance of `Matchable`. In our previous example, all the possible colored shapes are _matchable_. Since this is an interface, you could combine different types of matchables into the same input sequence.
 
 ### What is a `Matcher`?
 
-A [`Matcher`](src/Matchers/MatcherInterface.hpp) is an operator capable of consuming a set of `Matchables` from the input sequence sequence and returning a [`Result`](src/../../Result.hpp). Depending on their logic they could match different amount of elements.
+A [`Matcher`](./src/Matchers/MatcherInterface.hpp) is an operator capable of consuming a set of `Matchables` from the input sequence sequence and returning a [`Result`](./src/../../Result.hpp). Depending on their logic they could match different amount of elements.
 
-For more information about matchers and their implementation, see [Matcher's README](src/Matchers/README.md)
+For more information about matchers and their implementation, see [Matcher's README](./src/Matchers/README.md)
 
 ### Putting all together
 
 In the following image the main concepts are explained using the previous examples:
 
-![sample-oregex-1](img/sample-oregex-1.png)
+![sample-oregex-1](./img/sample-oregex-1.png)
 
 In the same way that `ColorMatcher` is used, a `ShapeMatcher` could be implemented. Each Matcher would know how to match specific structured data totally or partially. As you can see, these matchers can be parameterized.
 
 ### What is an `Oregex`?
 
-An [`Oregex`](src/Oregex.hpp) consists on an ordered list of `Matchers` and contains the logic of iterating through the input sequence until the specified `Matchers` start to match.
+An [`Oregex`](./src/Oregex.hpp) consists on an ordered list of `Matchers` and contains the logic of iterating through the input sequence until the specified `Matchers` start to match.
 
-![oregex-vs-matcher](img/oregex-vs-matcher.png)
+![oregex-vs-matcher](./img/oregex-vs-matcher.png)
 
 For example, in the previous image, the whole `Matchable[]` sequence does not match any of the specified `Matchers`. However, the subsequence `Matchable[1:2]` _does_ match the whole `Oregex`. Consuming non-matched input is the main responsibility of the `Oregex` class.
 
-Oregex is virtually a superset of typical regexes. This concept has been used to develop and test their correctness using the [`StringMatcher`](src/Matchers/StringMatcher.hpp). This way we could assert that the same behavior of common regex operators is replicated with the ones in this library.
+Oregex is virtually a superset of typical regexes. This concept has been used to develop and test their correctness using the [`StringMatcher`](./src/Matchers/StringMatcher.hpp). This way we could assert that the same behavior of common regex operators is replicated with the ones in this library.
 
 For example, the initial regex that we presented in this README, i.e. `/^a(b{1,2}cd)+e*$/` could be converted into the following `Oregex` object:
 
@@ -123,14 +123,14 @@ In this section all the operators of this library are presented.
 
 ### WIP overview
 
-- :white_check_mark: Implemented: 15
+- :white_check_mark: Implemented: 18
 - :warning: Alternative: 2
-- :x: Not implemented: 4
+- :x: Not implemented: 1
 
 ### Details
 
 |Status|Operator|Description|Examples|
-|--------|-----------|--------|------|
+|------|--------|-----------|--------|
 |[:white_check_mark:](https://github.com/davizuku/oregex/blob/master/src/Matchers/StarMatcher.hpp)|Start|Matches the start of a sequence|`abc` -> `/^abc/` :white_check_mark:<br>`abc` -> `/^bcd/` :x: |
 |[:white_check_mark:](https://github.com/davizuku/oregex/blob/master/src/Matchers/EndMatcher.hpp)|End|Matches the end of a sequence|`abc` -> `/abc$/` :white_check_mark:<br>`abc` -> `/bcd$/` :x:|
 |[:white_check_mark:](https://github.com/davizuku/oregex/blob/master/src/Matchers/AnyMatcher.hpp)|Any|Matches any element|`abc` -> `/./` :white_check_mark:<br>` ` -> `/./` :x:|
@@ -141,11 +141,11 @@ In this section all the operators of this library are presented.
 |[:white_check_mark:](https://github.com/davizuku/oregex/blob/master/src/Matchers/AgainMatcher.hpp)|Again|Matches the elements previously matched in a group|`abc abc` -> `/(?<first>abc) (\k<first>)/` :white_check_mark:<br>`abc efg` -> `/(?<first>abc) (\k<first>)/` :x:<br>`abc abc` -> `/(abc) (\g<1>)/` :white_check_mark:<br>`abc efg` -> `/(abc) (\g<1>)/` :x:|
 |[:white_check_mark:](https://github.com/davizuku/oregex/blob/master/src/Matchers/PositiveLookAheadMatcher.hpp)|PositiveLookAhead|Matches the elements in list without consuming the input.| `abc` -> `/a(?=bc)bc/` :white_check_mark:<br>`acb` -> `/a(?=bc)bc/` :x:|
 |[:white_check_mark:](https://github.com/davizuku/oregex/blob/master/src/Matchers/NegativeLookAheadMatcher.hpp)|NegativeLookAhead|Checks not match with the elements in list without consuming the input.| `abc` -> `/a(?!cb)bc/` :white_check_mark:<br>`acb` -> `/a(?!cb)cb/` :x:|
-|:x:|PositiveLookBehind|Matches the elements in list without consuming the input.| `abc` -> `/(?<=bc)abc/` :white_check_mark:<br>`abc` -> `/(?<=a)abc/` :x:|
-|:x:|NegativeLookBehind|Checks not match with the elements in list without consuming the input.| `abc` -> `/(?<!cb)abc/` :white_check_mark:<br>`abc` -> `/(?<!bc)abc/` :x:|
+|[:white_check_mark:](https://github.com/davizuku/oregex/blob/master/src/Matchers/PositiveLookBehindMatcher.hpp)|PositiveLookBehind|Matches the elements in list without consuming the input.| `aabc` -> `/a(?<=a)abc/` :white_check_mark:<br>`abbc` -> `/a(?<=a)abc/` :x:|
+|[:white_check_mark:](https://github.com/davizuku/oregex/blob/master/src/Matchers/NegativeLookBehindMatcher.hpp)|NegativeLookBehind|Checks not match with the elements in list without consuming the input.| `babc` -> `/(?<!a)abc/` :white_check_mark:<br>`aabc` -> `/(?<!a)abc/` :x:|
 |[:white_check_mark:](https://github.com/davizuku/oregex/blob/master/src/Matchers/ConditionMatcher.hpp)|Condition|Matches the elements in seqTrue if group was matched, seqFalse otherwise.| `abc xyz` -> `/(abc)? (?(1)xyz\|opq)/` :white_check_mark:<br>`acb opq` -> `/(abc)? (?(1)xyz\|opq)/` :white_check_mark:<br>`acb xyz` -> `/(abc)? (?(1)xyz\|opq)/` :x:|
 |[:white_check_mark:](https://github.com/davizuku/oregex/blob/master/src/Matchers/ConditionalLookAheadMatcher.hpp)|ConditionalLookAhead|Matches the elements in seqTrue if seqLook matches, seqFalse otherwise.| `abc` -> `/(?(?=a)(abc)\|(cba))/` :white_check_mark:<br>`cba` -> `/(?(?=a)(abc)\|(cba))/` :white_check_mark:<br>`acb` -> `/(?(?=a)(abc)\|(cba))/` :x:|
-|:x:|ConditionalLookBehind|Matches the elements in seqTrue if seqLook matches, seqFalse otherwise.| `abc xyz` -> `/(?(?<=abc )(xyz)\|(cba))/` :white_check_mark:<br>`xyz cba` -> `/(?(?<=abc )(xyz)\|(cba))/` :x:|
+|[:white_check_mark:](https://github.com/davizuku/oregex/blob/master/src/Matchers/ConditionalLookBehindMatcher.hpp)|ConditionalLookBehind|Matches the elements in seqTrue if seqLook matches, seqFalse otherwise.| `abc xyz` -> `/(?(?<=abc )(xyz)\|(cba))/` :white_check_mark:<br>`xyz cba` -> `/(?(?<=abc )(xyz)\|(cba))/` :white_check_mark:<br>`abc cba` -> `/(?(?<=abc )(xyz)\|(cba))/` :x:|
 |[:warning:](https://github.com/davizuku/oregex/blob/master/src/Matchers/RangeMatcher.hpp)|Optional|Matches zero or one occurrence of an element| `a` -> `/ab?/` :white_check_mark:|
 |[:white_check_mark:](https://github.com/davizuku/oregex/blob/master/src/Matchers/StarMatcher.hpp)|Star|Matches zero or more occurences of an element|`aaaaa` -> `/a*/` :white_check_mark:|
 |[:warning:](https://github.com/davizuku/oregex/blob/master/src/Matchers/RangeMatcher.hpp)|Plus|Matches one or more occurences of an element|`aaaaa` -> `/a+/` :white_check_mark:<br>`bbbb` -> `/a+/` :x:|
