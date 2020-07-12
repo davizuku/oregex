@@ -15,6 +15,7 @@
 #include "../src/Matchers/ExactlyMatcher.hpp"
 #include "../src/Matchers/GroupMatcher.hpp"
 #include "../src/Matchers/NamedGroupMatcher.hpp"
+#include "../src/Matchers/OptionalMatcher.hpp"
 #include "../src/Matchers/OrMatcher.hpp"
 #include "../src/Matchers/NegativeLookAheadMatcher.hpp"
 #include "../src/Matchers/PositiveLookAheadMatcher.hpp"
@@ -375,6 +376,17 @@ TEST_CASE("Given the same set of strings how much faster is regex module")
                 new UngreedyMatcher(&sa),
                 &ma,
                 new EndMatcher(),
+            })
+        },
+        TestArgs{
+            "String 'aa' into regex '/aa?a/' (5 steps)",
+            "aa",
+            regex("aa?a"),
+            vector<MatchableInterface *>{&a, &a},
+            Oregex(vector<MatcherInterface *>{
+                &ma,
+                new OptionalMatcher(&ma),
+                &ma,
             })
         },
     };
