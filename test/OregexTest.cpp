@@ -16,6 +16,7 @@
 #include "../src/Matchers/ExactlyMatcher.hpp"
 #include "../src/Matchers/GroupMatcher.hpp"
 #include "../src/Matchers/NamedGroupMatcher.hpp"
+#include "../src/Matchers/OptionalMatcher.hpp"
 #include "../src/Matchers/OrMatcher.hpp"
 #include "../src/Matchers/MatcherInterface.hpp"
 #include "../src/Matchables/StringMatchable.hpp"
@@ -72,7 +73,7 @@ TEST_CASE("Oregex is built from Matchers and is executed on Matchables")
 
     SECTION("Not matches exactly 3 (/a{3}a/ -> aaa)")
     {
-        Oregex r(vector<MatcherInterface *>{new RangeMatcher(&ma, 3, 3), &ma});
+        Oregex r(vector<MatcherInterface *>{new ExactlyMatcher(&ma, 3), &ma});
         vector<MatchableInterface *> in_aaaa{&a, &a, &a};
         REQUIRE(r.match(in_aaaa) == false);
     }
@@ -177,13 +178,11 @@ TEST_CASE("Oregex is built from Matchers and is executed on Matchables")
     SECTION("Condition matches given previous group match")
     {
         Oregex r(vector<MatcherInterface *>{
-            new RangeMatcher(
+            new OptionalMatcher(
                 new NamedGroupMatcher(
                     "1",
                     new GroupMatcher(vector<MatcherInterface*>{&ma, &mb, &mc})
-                ),
-                0,
-                1
+                )
             ),
             new ConditionMatcher(
                 "1",
@@ -198,13 +197,11 @@ TEST_CASE("Oregex is built from Matchers and is executed on Matchables")
     SECTION("Condition matches given previous group not match")
     {
         Oregex r(vector<MatcherInterface *>{
-            new RangeMatcher(
+            new OptionalMatcher(
                 new NamedGroupMatcher(
                     "1",
                     new GroupMatcher(vector<MatcherInterface*>{&ma, &mb, &mc})
-                ),
-                0,
-                1
+                )
             ),
             new ConditionMatcher(
                 "1",
@@ -219,13 +216,11 @@ TEST_CASE("Oregex is built from Matchers and is executed on Matchables")
     SECTION("Condition not matches given previous group not match")
     {
         Oregex r(vector<MatcherInterface *>{
-            new RangeMatcher(
+            new OptionalMatcher(
                 new NamedGroupMatcher(
                     "1",
                     new GroupMatcher(vector<MatcherInterface*>{&ma, &mb, &mc})
-                ),
-                0,
-                1
+                )
             ),
             new ConditionMatcher(
                 "1",
