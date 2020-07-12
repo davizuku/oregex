@@ -17,6 +17,7 @@
 #include "../src/Matchers/OrMatcher.hpp"
 #include "../src/Matchers/NegativeLookAheadMatcher.hpp"
 #include "../src/Matchers/PositiveLookAheadMatcher.hpp"
+#include "../src/Matchers/UngreedyMatcher.hpp"
 #include "../src/Matchers/MatcherInterface.hpp"
 #include "../src/Matchables/StringMatchable.hpp"
 #include "../src/Matchables/MatchableInterface.hpp"
@@ -363,6 +364,18 @@ TEST_CASE("Given the same set of strings how much faster is regex module")
                 })),
                 &mb,
                 &mc,
+            })
+        },
+        TestArgs{
+            "String 'aaa' into regex '/^a*?a$/' (13 steps)",
+            "aaaaa",
+            regex("^a*?a$"),
+            vector<MatchableInterface *>{&a, &a, &a, &a, &a},
+            Oregex(vector<MatcherInterface *>{
+                new StartMatcher(),
+                new UngreedyMatcher(&sa),
+                &ma,
+                new EndMatcher(),
             })
         },
     };
