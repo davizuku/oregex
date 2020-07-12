@@ -9,6 +9,7 @@
 #include "../src/Matchers/StartMatcher.hpp"
 #include "../src/Matchers/EndMatcher.hpp"
 #include "../src/Matchers/ExceptMatcher.hpp"
+#include "../src/Matchers/PlusMatcher.hpp"
 #include "../src/Matchers/StarMatcher.hpp"
 #include "../src/Matchers/RangeMatcher.hpp"
 #include "../src/Matchers/ExactlyMatcher.hpp"
@@ -286,9 +287,8 @@ TEST_CASE("Given the same set of strings how much faster is regex module")
             Oregex(vector<MatcherInterface *>{
                 &ma,
                 &mb,
-                new RangeMatcher(
-                    new ExceptMatcher(vector<MatcherInterface*>{&ma, &mb}),
-                    1
+                new PlusMatcher(
+                    new ExceptMatcher(vector<MatcherInterface*>{&ma, &mb})
                 ),
             })
         },
@@ -300,9 +300,8 @@ TEST_CASE("Given the same set of strings how much faster is regex module")
             Oregex(vector<MatcherInterface *>{
                 &ma,
                 &mb,
-                new RangeMatcher(
-                    new ExceptMatcher(vector<MatcherInterface*>{&ma, &mb}),
-                    1
+                new PlusMatcher(
+                    new ExceptMatcher(vector<MatcherInterface*>{&ma, &mb})
                 ),
             })
         },
