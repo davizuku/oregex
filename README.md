@@ -121,12 +121,6 @@ Using the same conversion as shown in the previous section, each pair of string 
 
 In this section all the operators of this library are presented.
 
-### WIP overview
-
-- :white_check_mark: Implemented: 21
-- :warning: Alternative: 0
-- :x: Not implemented: 0
-
 ### Details
 
 |Status|Operator|Description|Examples|
