@@ -123,8 +123,8 @@ In this section all the operators of this library are presented.
 
 ### WIP overview
 
-- :white_check_mark: Implemented: 19
-- :warning: Alternative: 2
+- :white_check_mark: Implemented: 20
+- :warning: Alternative: 1
 - :x: Not implemented: 0
 
 ### Details
@@ -148,7 +148,7 @@ In this section all the operators of this library are presented.
 |[:white_check_mark:](https://github.com/davizuku/oregex/blob/master/src/Matchers/ConditionalLookBehindMatcher.hpp)|ConditionalLookBehind|Matches the elements in seqTrue if seqLook matches, seqFalse otherwise.| `abc xyz` -> `/(?(?<=abc )(xyz)\|(cba))/` :white_check_mark:<br>`xyz cba` -> `/(?(?<=abc )(xyz)\|(cba))/` :white_check_mark:<br>`abc cba` -> `/(?(?<=abc )(xyz)\|(cba))/` :x:|
 |[:warning:](https://github.com/davizuku/oregex/blob/master/src/Matchers/RangeMatcher.hpp)|Optional|Matches zero or one occurrence of an element| `a` -> `/ab?/` :white_check_mark:|
 |[:white_check_mark:](https://github.com/davizuku/oregex/blob/master/src/Matchers/StarMatcher.hpp)|Star|Matches zero or more occurences of an element|`aaaaa` -> `/a*/` :white_check_mark:|
-|[:warning:](https://github.com/davizuku/oregex/blob/master/src/Matchers/RangeMatcher.hpp)|Plus|Matches one or more occurences of an element|`aaaaa` -> `/a+/` :white_check_mark:<br>`bbbb` -> `/a+/` :x:|
+|[:white_check_mark:](https://github.com/davizuku/oregex/blob/master/src/Matchers/PlusMatcher.hpp)|Plus|Matches one or more occurences of an element|`aaaaa` -> `/a+/` :white_check_mark:<br>`bbbb` -> `/a+/` :x:|
 |[:white_check_mark:](https://github.com/davizuku/oregex/blob/master/src/Matchers/ExactlyMatcher.hpp)|Exactly|Matches exact number of occurrences of an element|`aaa` -> `/a{3}/` :white_check_mark:<br>`aa` -> `/a{3}/` :x:|
 |[:white_check_mark:](https://github.com/davizuku/oregex/blob/master/src/Matchers/RangeMatcher.hpp)|Range|Matches a number of occurrences of an element between min and max|`aaa` -> `/a{1,3}/` :white_check_mark:<br>`aa` -> `/a{3, 5}/` :x:|
 |[:white_check_mark:](https://github.com/davizuku/oregex/blob/master/src/Matchers/UngreedyMatcher.hpp)|Lazy/Ungreedy|Makes an operator consume as few input as possible|`aaa` -> `/a*?/` :white_check_mark: (will only match first 'a')|
