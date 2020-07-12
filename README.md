@@ -123,8 +123,8 @@ In this section all the operators of this library are presented.
 
 ### WIP overview
 
-- :white_check_mark: Implemented: 20
-- :warning: Alternative: 1
+- :white_check_mark: Implemented: 21
+- :warning: Alternative: 0
 - :x: Not implemented: 0
 
 ### Details
@@ -146,7 +146,7 @@ In this section all the operators of this library are presented.
 |[:white_check_mark:](https://github.com/davizuku/oregex/blob/master/src/Matchers/ConditionMatcher.hpp)|Condition|Matches the elements in seqTrue if group was matched, seqFalse otherwise.| `abc xyz` -> `/(abc)? (?(1)xyz\|opq)/` :white_check_mark:<br>`acb opq` -> `/(abc)? (?(1)xyz\|opq)/` :white_check_mark:<br>`acb xyz` -> `/(abc)? (?(1)xyz\|opq)/` :x:|
 |[:white_check_mark:](https://github.com/davizuku/oregex/blob/master/src/Matchers/ConditionalLookAheadMatcher.hpp)|ConditionalLookAhead|Matches the elements in seqTrue if seqLook matches, seqFalse otherwise.| `abc` -> `/(?(?=a)(abc)\|(cba))/` :white_check_mark:<br>`cba` -> `/(?(?=a)(abc)\|(cba))/` :white_check_mark:<br>`acb` -> `/(?(?=a)(abc)\|(cba))/` :x:|
 |[:white_check_mark:](https://github.com/davizuku/oregex/blob/master/src/Matchers/ConditionalLookBehindMatcher.hpp)|ConditionalLookBehind|Matches the elements in seqTrue if seqLook matches, seqFalse otherwise.| `abc xyz` -> `/(?(?<=abc )(xyz)\|(cba))/` :white_check_mark:<br>`xyz cba` -> `/(?(?<=abc )(xyz)\|(cba))/` :white_check_mark:<br>`abc cba` -> `/(?(?<=abc )(xyz)\|(cba))/` :x:|
-|[:warning:](https://github.com/davizuku/oregex/blob/master/src/Matchers/RangeMatcher.hpp)|Optional|Matches zero or one occurrence of an element| `a` -> `/ab?/` :white_check_mark:|
+|[:white_check_mark:](https://github.com/davizuku/oregex/blob/master/src/Matchers/OptionalMatcher.hpp)|Optional|Matches zero or one occurrence of an element| `a` -> `/ab?/` :white_check_mark:|
 |[:white_check_mark:](https://github.com/davizuku/oregex/blob/master/src/Matchers/StarMatcher.hpp)|Star|Matches zero or more occurences of an element|`aaaaa` -> `/a*/` :white_check_mark:|
 |[:white_check_mark:](https://github.com/davizuku/oregex/blob/master/src/Matchers/PlusMatcher.hpp)|Plus|Matches one or more occurences of an element|`aaaaa` -> `/a+/` :white_check_mark:<br>`bbbb` -> `/a+/` :x:|
 |[:white_check_mark:](https://github.com/davizuku/oregex/blob/master/src/Matchers/ExactlyMatcher.hpp)|Exactly|Matches exact number of occurrences of an element|`aaa` -> `/a{3}/` :white_check_mark:<br>`aa` -> `/a{3}/` :x:|
