@@ -145,7 +145,7 @@ In this section all the operators of this library are presented.
 |[:white_check_mark:](https://github.com/davizuku/oregex/blob/master/src/Matchers/PlusMatcher.hpp)|Plus|Matches one or more occurences of an element|`aaaaa` -> `/a+/` :white_check_mark:<br>`bbbb` -> `/a+/` :x:|
 |[:white_check_mark:](https://github.com/davizuku/oregex/blob/master/src/Matchers/ExactlyMatcher.hpp)|Exactly|Matches exact number of occurrences of an element|`aaa` -> `/a{3}/` :white_check_mark:<br>`aa` -> `/a{3}/` :x:|
 |[:white_check_mark:](https://github.com/davizuku/oregex/blob/master/src/Matchers/RangeMatcher.hpp)|Range|Matches a number of occurrences of an element between min and max|`aaa` -> `/a{1,3}/` :white_check_mark:<br>`aa` -> `/a{3, 5}/` :x:|
-|[:white_check_mark:](https://github.com/davizuku/oregex/blob/master/src/Matchers/UngreedyMatcher.hpp)|Lazy/Ungreedy|Makes an operator consume as few input as possible|`aaa` -> `/a*?/` :white_check_mark: (will only match first 'a')|
+|[:white_check_mark:](https://github.com/davizuku/oregex/blob/master/src/Matchers/UngreedyMatcher.hpp)|Lazy/Ungreedy|Makes an operator consume as few input as possible|`aaa` -> `/a*?/` :white_check_mark: (not matches any 'a')|
 
 
 Source: https://regex101.com/
