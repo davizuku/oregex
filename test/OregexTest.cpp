@@ -7,6 +7,7 @@
 #include "../src/Matchers/StartMatcher.hpp"
 #include "../src/Matchers/ConditionMatcher.hpp"
 #include "../src/Matchers/ConditionalLookAheadMatcher.hpp"
+#include "../src/Matchers/ConditionalLookBehindMatcher.hpp"
 #include "../src/Matchers/PositiveLookBehindMatcher.hpp"
 #include "../src/Matchers/NegativeLookBehindMatcher.hpp"
 #include "../src/Matchers/EndMatcher.hpp"
@@ -259,6 +260,32 @@ TEST_CASE("Oregex is built from Matchers and is executed on Matchables")
             )
         });
         vector<MatchableInterface *> input{&a, &c, &b};
+        REQUIRE(r.match(input) == false);
+    }
+
+    SECTION("ConditionalLookBehind matches given lookahead matches")
+    {
+        Oregex r(vector<MatcherInterface *>{
+            new ConditionalLookBehindMatcher(
+                new GroupMatcher(vector<MatcherInterface*>{&ma, &mb, &mc}),
+                new GroupMatcher(vector<MatcherInterface*>{&mx, &my, &mz}),
+                new GroupMatcher(vector<MatcherInterface*>{&mc, &mb, &ma})
+            )
+        });
+        vector<MatchableInterface *> input{&a, &b, &c, &x, &y, &z};
+        REQUIRE(r.match(input) == true);
+    }
+
+    SECTION("ConditionalLookBehind not matches given lookahead matches")
+    {
+        Oregex r(vector<MatcherInterface *>{
+            new ConditionalLookBehindMatcher(
+                new GroupMatcher(vector<MatcherInterface*>{&ma, &mb, &mc}),
+                new GroupMatcher(vector<MatcherInterface*>{&mx, &my, &mz}),
+                new GroupMatcher(vector<MatcherInterface*>{&mc, &mb, &ma})
+            )
+        });
+        vector<MatchableInterface *> input{&a, &b, &c, &c, &b, &a};
         REQUIRE(r.match(input) == false);
     }
 
