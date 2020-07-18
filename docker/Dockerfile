@@ -1,6 +1,6 @@
 FROM gcc:10
 
-ENV LD_LIBRARY_PATH=/usr/local/bin:./bin
+ENV LD_LIBRARY_PATH=/usr/local/bin:/oregex/bin/:./bin
 
 RUN apt-get update -y
 
