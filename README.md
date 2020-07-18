@@ -152,6 +152,8 @@ Source: https://regex101.com/
 
 ## Useful commands
 
+You'll need the [Docker](https://www.docker.com/)
+
 ```
 make test
 ```
