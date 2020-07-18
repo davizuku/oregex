@@ -23,10 +23,10 @@ RangeMatcher::RangeMatcher(MatcherInterface *m)
 
 RangeMatcher::~RangeMatcher()
 {
-    while (!matchingStack.empty()) {
+    while (not matchingStack.empty()) {
         auto top = matchingStack.top();
         matchingStack.pop();
-        while (!top.empty()) {
+        while (not top.empty()) {
             Result* r = top.front();
             top.pop();
             delete r;
