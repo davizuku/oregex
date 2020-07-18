@@ -18,7 +18,9 @@ Result* ExceptMatcher::match(
         return NULL;
     }
     for (MatcherInterface* m : matchers) {
-        if (m->match(matchables, start, previousResults) != NULL) {
+        Result *r = m->match(matchables, start, previousResults);
+        if (r != NULL) {
+            delete r;
             return NULL;
         }
     }
