@@ -68,6 +68,7 @@ test: $(BIN)
 	$(BIN)
 
 memcheck: $(BIN)
+	# valgrind --leak-check=yes $(BIN) <testName> -c <sectionName>
 	valgrind --leak-check=yes $(BIN)
 
 clean:
