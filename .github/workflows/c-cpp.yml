@@ -12,7 +12,5 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-    - name: Install dependencies
-      run: bash ./docker/install-dependencies.sh
     - name: test
-      run: make -f ./docker/Makefile test
+      run: make test
