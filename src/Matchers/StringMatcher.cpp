@@ -10,6 +10,7 @@ StringMatcher::StringMatcher(string s)
 
 StringMatcher::~StringMatcher()
 {
+    delete[] value;
 }
 
 Result* StringMatcher::match(
