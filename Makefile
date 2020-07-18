@@ -21,7 +21,7 @@ test: build	## Execute library tests
 
 .PHONY: memcheck	## Execute valgrind leak check on binary
 memcheck: clean
-	@docker-compose run --rm oregex make -f ./docker/Makefile memcheck OPTIMIZATION_FLAG='-O0'
+	@docker-compose run --rm oregex make -f ./docker/Makefile memcheck OPTIMIZATION_FLAG='-O0' 2>&1 | tee memcheck.log
 
 .PHONY: clean
 clean: build	## Clean all the created data

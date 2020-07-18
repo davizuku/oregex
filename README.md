@@ -166,7 +166,7 @@ make memcheck
 
 This command cleans any previous compilation data to compile `./bin/oregex` with `-O0` flag. Then it executes: `valgrind --leak-check=yes ./bin/oregex`
 
-After tests are executed, a valgrind report is shown.
+After tests are executed, a valgrind report is shown and saved to `memcheck.log` file.
 
 ## Similar libraries
 
