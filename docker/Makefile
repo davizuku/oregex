@@ -42,7 +42,8 @@ CFLAGS := -std=c17
 # C++ flags
 CXXFLAGS := -std=c++17
 # C/C++ flags
-CPPFLAGS := -g -O3 -Wall -Wextra -pedantic -fPIC
+OPTIMIZATION_FLAG := -O3
+CPPFLAGS := -g $(OPTIMIZATION_FLAG) -Wall -Wextra -pedantic -fPIC
 # linker flags
 LDFLAGS :=-L$(LIBRARY_PATH) -l$(LIBRARY_NAME)
 # flags required for dependency generation; passed to compilers
@@ -65,6 +66,9 @@ all: $(DISTFILES)
 test: $(BIN)
 	# $(BIN) <testName> -c <sectionName>
 	$(BIN)
+
+memcheck: $(BIN)
+	valgrind --leak-check=yes $(BIN)
 
 clean:
 	$(RM) -r $(OBJDIR) $(DEPDIR) $(DISTFILES)

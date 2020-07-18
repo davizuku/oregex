@@ -158,10 +158,18 @@ You'll need the [Docker](https://www.docker.com/)
 make test
 ```
 
-## Help links
+### Checking memory leaks
 
-- http://www.cplusplus.com/reference/
-- https://renenyffenegger.ch/notes/development/languages/C-C-plus-plus/GCC/create-libraries/index
+```
+make memcheck
+```
+
+This command cleans any previous compilation data to compile `./bin/oregex` with `-O0` flag. Then it executes: `valgrind --leak-check=yes ./bin/oregex`
+
+After tests are executed, a valgrind report is shown.
+
+## Similar libraries
+
 - https://github.com/eocron/ORegex
 - https://www.npmjs.com/package/oregex/v/1.0.2
 
@@ -171,3 +179,8 @@ make test
 - https://code.visualstudio.com/docs/cpp/config-clang-mac
 - https://stackoverflow.com/questions/2481269/how-to-make-a-simple-c-makefile
 - https://github.com/catchorg/Catch2
+- http://www.cplusplus.com/reference/
+- https://renenyffenegger.ch/notes/development/languages/C-C-plus-plus/GCC/create-libraries/index
+- https://www.valgrind.org/docs/manual/quick-start.html
+- https://www.gungorbudak.com/blog/2018/04/28/how-to-install-valgrind-on-macos-high-sierra/
+- https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on

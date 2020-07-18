@@ -19,6 +19,10 @@ build:		## Builds oregex docker
 test: build	## Execute library tests
 	@docker-compose run --rm oregex make -f ./docker/Makefile test
 
+.PHONY: memcheck	## Execute valgrind leak check on binary
+memcheck: clean
+	@docker-compose run --rm oregex make -f ./docker/Makefile memcheck OPTIMIZATION_FLAG='-O0'
+
 .PHONY: clean
 clean: build	## Clean all the created data
 	@docker-compose run --rm oregex make -f ./docker/Makefile clean
