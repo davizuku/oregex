@@ -1,4 +1,5 @@
 #include "StringMatcher.hpp"
+#include <cstring>
 
 StringMatcher::StringMatcher(string s)
 {
