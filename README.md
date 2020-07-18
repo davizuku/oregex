@@ -168,6 +168,8 @@ This command cleans any previous compilation data to compile `./bin/oregex` with
 
 After tests are executed, a valgrind report is shown and saved to `memcheck.log` file.
 
+Check error messages here: https://www.valgrind.org/docs/manual/mc-manual.html
+
 ## Similar libraries
 
 - https://github.com/eocron/ORegex
