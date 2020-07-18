@@ -25,6 +25,7 @@ bool Oregex::match(
         Result* r = matcher->match(matchables, i);
         if (r != NULL) {
             outputs = r->getOutputs();
+            delete r;
             return true;
         }
     }
