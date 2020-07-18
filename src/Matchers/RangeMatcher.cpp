@@ -23,6 +23,15 @@ RangeMatcher::RangeMatcher(MatcherInterface *m)
 
 RangeMatcher::~RangeMatcher()
 {
+    while (!matchingStack.empty()) {
+        auto top = matchingStack.top();
+        matchingStack.pop();
+        while (!top.empty()) {
+            Result* r = top.front();
+            top.pop();
+            delete r;
+        }
+    }
 }
 
 Result* RangeMatcher::match(

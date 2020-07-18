@@ -8,6 +8,9 @@ NamedGroupMatcher::NamedGroupMatcher(string n, MatcherInterface *m)
 
 NamedGroupMatcher::~NamedGroupMatcher()
 {
+    for (auto it = results.begin(); it != results.end(); ++it) {
+        delete *it;
+    }
 }
 
 Result* NamedGroupMatcher::match(

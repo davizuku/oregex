@@ -8,6 +8,9 @@ GroupMatcher::GroupMatcher(const vector<MatcherInterface *> &m)
 
 GroupMatcher::~GroupMatcher()
 {
+    for (auto it = results.begin(); it != results.end(); ++it) {
+        delete *it;
+    }
 }
 
 Result* GroupMatcher::match(
