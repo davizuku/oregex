@@ -45,14 +45,16 @@ CXXFLAGS := -std=c++17
 OPTIMIZATION_FLAG := -O3
 CPPFLAGS := -g $(OPTIMIZATION_FLAG) -Wall -Wextra -pedantic -fPIC
 # linker flags
-LDFLAGS :=-L$(LIBRARY_PATH) -l$(LIBRARY_NAME)
+LDFLAGS :=-L$(LIBRARY_PATH) -l$(LIBRARY_NAME) -ldl
+# include paths
+INCLUDEPATHS :=-Ivendor/boost_1_73_0
 # flags required for dependency generation; passed to compilers
 DEPFLAGS = -MT $@ -MD -MP -MF $(DEPDIR)/$*.Td
 
 # compile C source files
 COMPILE.c = $(CC) $(DEPFLAGS) $(CFLAGS) $(CPPFLAGS) -c -o $@
 # compile C++ source files
-COMPILE.cc = $(CXX) $(DEPFLAGS) $(CXXFLAGS) $(CPPFLAGS) -c -o $@
+COMPILE.cc = $(CXX) $(INCLUDEPATHS) $(DEPFLAGS) $(CXXFLAGS) $(CPPFLAGS) -c -o $@
 # link object files to binary
 LINK.so = $(LD) -shared -o $@
 LINK.o = $(LD) $(LDFLAGS) $(LDLIBS) -o $@

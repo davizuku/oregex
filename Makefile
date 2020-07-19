@@ -15,12 +15,16 @@ bash: build	## Enter oregex docker
 build:		## Builds oregex docker
 	@docker-compose build
 
+.PHONY: install
+install: build	## Install vendor dependencies
+	@docker-compose run --rm oregex bash ./docker/install-vendor.sh
+
 .PHONY: test
-test: build	## Execute library tests
+test: install	## Execute library tests
 	@docker-compose run --rm oregex make -f ./docker/Makefile test
 
 .PHONY: memcheck	## Execute valgrind leak check on binary
-memcheck: clean
+memcheck: clean install
 	@docker-compose run --rm oregex make -f ./docker/Makefile memcheck OPTIMIZATION_FLAG='-O0' 2>&1 | tee memcheck.log
 
 .PHONY: clean
