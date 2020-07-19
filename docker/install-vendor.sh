@@ -14,6 +14,4 @@ rm -rf boost_1_73_0.tar.bz2
 echo "... Boost library installed successfully!"
 
 cd ..
-pwd
-ls -la
 chown -R vendor --reference=test
