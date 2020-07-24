@@ -17,7 +17,7 @@ build:		## Builds oregex docker
 
 .PHONY: install
 install: build	## Install vendor dependencies
-	@docker-compose run --rm oregex bash ./docker/install-vendor.sh
+	@docker-compose run oregex bash ./docker/install-vendor.sh
 
 .PHONY: test
 test: install	## Execute library tests
