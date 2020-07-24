@@ -11,7 +11,6 @@ RUN apt-get install -y clang
 RUN apt-get install -y valgrind
 
 # Boost library
-
 RUN echo "Installing Boost library (https://www.boost.org) ..." && \
     mkdir -p /vendor && \
     cd /vendor && \
