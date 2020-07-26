@@ -27,14 +27,14 @@ class GroupMatcher: public MatcherInterface
     protected:
         size_t start;
         vector<MatcherInterface *> matchers;
-        queue<Result*> results;
-        Result* mergeResults(Result* a, Result* b);
+        queue<Result> results;
+        Result mergeResults(Result& a, Result& b);
 
         void recursiveMatch(
             size_t matcherIndex,
             const vector<MatchableInterface *> &matchables,
             size_t matchableIndex,
             forward_list<Result> &previousResults,
-            Result* accResult
+            Result& accResult
         );
 };
