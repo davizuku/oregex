@@ -5,19 +5,22 @@
 
 TEST_CASE("AnyMatcher matches only with beginning of sequence")
 {
+    Result *r;
     StringMatchable a("a"), b("b"), c("c");
     AnyMatcher m;
     vector<MatchableInterface *> input{&a, &b, &c, &c};
 
     SECTION("Result an element from the beginning")
     {
-        REQUIRE(*(m.match(input, 0)) == Result(0, 0));
+        REQUIRE(*(r = m.match(input, 0)) == Result(0, 0));
+        delete r;
         REQUIRE(m.next() == NULL);
     }
 
     SECTION("Result of matching the second element")
     {
-        REQUIRE(*(m.match(input, 1)) == Result(1, 1));
+        REQUIRE(*(r = m.match(input, 1)) == Result(1, 1));
+        delete r;
         REQUIRE(m.next() == NULL);
     }
 

@@ -6,6 +6,7 @@
 
 TEST_CASE("NegativeLookBehindMatcher matches without consuming the input")
 {
+    Result *r;
     StringMatchable a("a"), b("b"), c("c");
     StringMatcher ma("a"), mb("b"), mc("c");
     NegativeLookBehindMatcher m(&ma);
@@ -23,13 +24,15 @@ TEST_CASE("NegativeLookBehindMatcher matches without consuming the input")
 
     SECTION("Result of matching the first element")
     {
-        REQUIRE(*(m.match(input, 0)) == Result(-1, -1));
+        REQUIRE(*(r = m.match(input, 0)) == Result(-1, -1));
+        delete r;
         REQUIRE(m.next() == NULL);
     }
 
     SECTION("Result of matching in middle positions")
     {
-        REQUIRE(*(m.match(input, 3)) == Result(2, 2));
+        REQUIRE(*(r = m.match(input, 3)) == Result(2, 2));
+        delete r;
         REQUIRE(m.next() == NULL);
     }
 

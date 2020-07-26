@@ -4,6 +4,7 @@
 
 TEST_CASE("StringMatcher matches only with same strings")
 {
+    Result *r;
     StringMatchable a("a"), b("b"), c("c");
     StringMatcher m1("a"), m2("b"), m3("x"), m4("c");
     vector<MatchableInterface *> input{&a, &b, &c, &c};
@@ -20,7 +21,8 @@ TEST_CASE("StringMatcher matches only with same strings")
 
     SECTION("Result of matching the first element")
     {
-        REQUIRE(*(m1.match(input, 0)) == Result(0, 0));
+        REQUIRE(*(r = m1.match(input, 0)) == Result(0, 0));
+        delete r;
     }
 
     SECTION("Result of matching the second element from the beginning")
@@ -30,7 +32,8 @@ TEST_CASE("StringMatcher matches only with same strings")
 
     SECTION("Result of matching the second element from the element")
     {
-        REQUIRE(*(m2.match(input, 1)) == Result(1, 1));
+        REQUIRE(*(r = m2.match(input, 1)) == Result(1, 1));
+        delete r;
     }
 
     SECTION("Result of not matching any element")
@@ -40,6 +43,7 @@ TEST_CASE("StringMatcher matches only with same strings")
 
     SECTION("Result of matching only first of repeated elements")
     {
-        REQUIRE(*(m4.match(input, 2)) == Result(2, 2));
+        REQUIRE(*(r = m4.match(input, 2)) == Result(2, 2));
+        delete r;
     }
 }

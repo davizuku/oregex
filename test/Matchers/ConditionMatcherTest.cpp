@@ -6,6 +6,7 @@
 
 TEST_CASE("ConditionMatcher matches the elements of trueMatcher if the specified group was matched, falseMatcher otherwise")
 {
+    Result *r;
     StringMatchable a("a"), b("b");
     StringMatcher ma("a"), mb("b");
     ConditionMatcher m("check", &ma, &mb);
@@ -31,7 +32,8 @@ TEST_CASE("ConditionMatcher matches the elements of trueMatcher if the specified
                 {"check", forward_list<MatchableInterface*>{&a, &b}}
             }),
         };
-        REQUIRE(*(m.match(input, 0, prevResults)) == Result(0, 0));
+        REQUIRE(*(r = m.match(input, 0, prevResults)) == Result(0, 0));
+        delete r;
         REQUIRE(m.next() == NULL);
         REQUIRE(m.match(input, 1, prevResults) == NULL);
         REQUIRE(m.next() == NULL);
@@ -41,7 +43,8 @@ TEST_CASE("ConditionMatcher matches the elements of trueMatcher if the specified
     {
         REQUIRE(m.match(input, 0) == NULL);
         REQUIRE(m.next() == NULL);
-        REQUIRE(*(m.match(input, 1)) == Result(1, 1));
+        REQUIRE(*(r = m.match(input, 1)) == Result(1, 1));
+        delete r;
         REQUIRE(m.next() == NULL);
     }
 }

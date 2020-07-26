@@ -5,13 +5,15 @@
 
 TEST_CASE("StartMatcher matches only with beginning of sequence")
 {
+    Result *r;
     StringMatchable a("a"), b("b"), c("c");
     StartMatcher m;
     vector<MatchableInterface *> input{&a, &b, &c, &c};
 
     SECTION("Result of matching the first element")
     {
-        REQUIRE(*(m.match(input, 0)) == Result(-1, -1));
+        REQUIRE(*(r = m.match(input, 0)) == Result(-1, -1));
+        delete r;
         REQUIRE(m.next() == NULL);
     }
 

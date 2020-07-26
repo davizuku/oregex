@@ -6,6 +6,7 @@
 
 TEST_CASE("OptionalMatcher matches zero or one element")
 {
+    Result *r;
     StringMatchable a("a"), b("b");
     StringMatcher ma("a"), mb("b");
     OptionalMatcher m(&ma);
@@ -23,7 +24,8 @@ TEST_CASE("OptionalMatcher matches zero or one element")
 
     SECTION("Result of matching elements from the beginning")
     {
-        REQUIRE(*(m.match(input, 0)) == Result(0, 0));
+        REQUIRE(*(r = m.match(input, 0)) == Result(0, 0));
+        delete r;
         REQUIRE(*(m.next()) == Result(-1, -1));
         REQUIRE(m.next() == NULL);
     }
@@ -31,7 +33,8 @@ TEST_CASE("OptionalMatcher matches zero or one element")
     SECTION("Result of not matching any element from the beginning")
     {
         m = OptionalMatcher(&mb);
-        REQUIRE(*(m.match(input, 0)) == Result(-1, -1));
+        REQUIRE(*(r = m.match(input, 0)) == Result(-1, -1));
+        delete r;
         REQUIRE(m.next() == NULL);
     }
 }

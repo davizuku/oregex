@@ -7,6 +7,7 @@
 
 TEST_CASE("NamedGroupMatcher returns the elements matched grouped as outputs")
 {
+    Result *r;
     StringMatchable a("a"), b("b"), c("c"), d("d"), e("e");
     StringMatcher m1("a"), m2("b"), m3("x"), m4("c"), m5("d");
     StarMatcher s1(&m1), s2(&m2), s3(&m3), s4(&m4), s5(&m5);
@@ -32,7 +33,8 @@ TEST_CASE("NamedGroupMatcher returns the elements matched grouped as outputs")
         r1.setOutputs(unordered_map<string, forward_list<MatchableInterface *>>{
             {"one", {}},
         });
-        REQUIRE(*(g1.match(input, 0)) == r0);
+        REQUIRE(*(r = g1.match(input, 0)) == r0);
+        delete r;
         REQUIRE(*(g1.next()) == r1);
     }
 
@@ -42,7 +44,8 @@ TEST_CASE("NamedGroupMatcher returns the elements matched grouped as outputs")
         r0.setOutputs(unordered_map<string, forward_list<MatchableInterface *>>{
             {"two", {}},
         });
-        REQUIRE(*(g2.match(input, 0)) == r0);
+        REQUIRE(*(r = g2.match(input, 0)) == r0);
+        delete r;
     }
 
     SECTION("Result of matching the multiple elements")
@@ -57,7 +60,8 @@ TEST_CASE("NamedGroupMatcher returns the elements matched grouped as outputs")
         r2.setOutputs(unordered_map<string, forward_list<MatchableInterface *>>{
             {"two", {}},
         });
-        REQUIRE(*(g2.match(input, 2)) == r0);
+        REQUIRE(*(r = g2.match(input, 2)) == r0);
+        delete r;
         REQUIRE(*(g2.next()) == r1);
         REQUIRE(*(g2.next()) == r2);
     }
@@ -71,13 +75,15 @@ TEST_CASE("NamedGroupMatcher returns the elements matched grouped as outputs")
         r1.setOutputs(unordered_map<string, forward_list<MatchableInterface *>>{
             {"three", {}},
         });
-        REQUIRE(*(g3.match(input, 6)) == r0);
+        REQUIRE(*(r = g3.match(input, 6)) == r0);
+        delete r;
         REQUIRE(*(g3.next()) == r1);
     }
 }
 
 TEST_CASE("NamedGroupMatcher propagates the outputs of internal matcher")
 {
+    Result *r;
     StringMatchable a("a");
     StringMatcher m1("a");
     NamedGroupMatcher n1("one", &m1), n2("two", &n1);
@@ -90,5 +96,6 @@ TEST_CASE("NamedGroupMatcher propagates the outputs of internal matcher")
             {"two", forward_list<MatchableInterface *>{&a}},
         }
     );
-    REQUIRE(*(n2.match(input, 0)) == expected);
+    REQUIRE(*(r = n2.match(input, 0)) == expected);
+    delete r;
 }
