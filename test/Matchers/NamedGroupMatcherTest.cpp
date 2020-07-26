@@ -88,7 +88,7 @@ TEST_CASE("NamedGroupMatcher propagates the outputs of internal matcher")
     StringMatcher m1("a");
     NamedGroupMatcher n1("one", &m1), n2("two", &n1);
     vector<MatchableInterface *> input{&a};
-    Result expected = Result(
+    Result expected(
         0,
         0,
         unordered_map<string, forward_list<MatchableInterface *>>{
