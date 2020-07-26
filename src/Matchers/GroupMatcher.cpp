@@ -3,6 +3,7 @@
 GroupMatcher::GroupMatcher(const vector<MatcherInterface *> &m)
 {
     matchers = m;
+    results = queue<Result*>();
 }
 
 GroupMatcher::~GroupMatcher()
