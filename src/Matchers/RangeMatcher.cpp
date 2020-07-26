@@ -104,6 +104,7 @@ void RangeMatcher::stackNewMatching(size_t index)
         auto newLevel = queue<Result*>();
         while (r != NULL) {
             newLevel.push(new Result(start, r->getLastMatchedIndex(), r->getOutputs()));
+            delete r;
             r = matcher->next();
         }
         matchingStack.push(newLevel);
