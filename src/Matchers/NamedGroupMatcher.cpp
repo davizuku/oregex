@@ -4,12 +4,15 @@ NamedGroupMatcher::NamedGroupMatcher(string n, MatcherInterface *m)
 {
     name = n;
     matcher = m;
+    results = queue<Result*>();
 }
 
 NamedGroupMatcher::~NamedGroupMatcher()
 {
-    for (auto it = results.begin(); it != results.end(); ++it) {
-        delete *it;
+    while (not results.empty()) {
+        Result* r = results.front();
+        results.pop();
+        delete r;
     }
 }
 
@@ -18,7 +21,7 @@ Result* NamedGroupMatcher::match(
     size_t start,
     const forward_list<Result> &previousResults
 ) {
-    results = list<Result*>{};
+    results = queue<Result*>();
     Result* r = matcher->match(matchables, start, previousResults);
     while (r != NULL) {
         size_t end = r->getLastMatchedIndex();
@@ -30,14 +33,13 @@ Result* NamedGroupMatcher::match(
             matchables.begin() + end + 1
         );
         subOutputs[name] = outputList;
-        results.push_back(new Result(
+        results.push(new Result(
             r->getFirstMatchedIndex(),
             end,
             subOutputs
         ));
         r = matcher->next();
     }
-    resultIt = results.begin();
     return next();
 }
 
@@ -50,10 +52,10 @@ Result* NamedGroupMatcher::match(
 
 Result* NamedGroupMatcher::next()
 {
-    if (resultIt == results.end()) {
+    if (results.empty()) {
         return NULL;
     }
-    Result* r = *resultIt;
-    resultIt++;
+    Result* r = results.front();
+    results.pop();
     return r;
 }
