@@ -26,7 +26,8 @@ TEST_CASE("StarMatcher matches zero or more elements")
     {
         REQUIRE(*(r = s1.match(input, 0)) == Result(0, 0));
         delete r;
-        REQUIRE(*(s1.next()) == Result(-1, -1));
+        REQUIRE(*(r = s1.next()) == Result(-1, -1));
+        delete r;
     }
 
     SECTION("Result of matching the second element from the beginning")
@@ -39,7 +40,8 @@ TEST_CASE("StarMatcher matches zero or more elements")
     {
         REQUIRE(*(r = s2.match(input, 1)) == Result(1, 1));
         delete r;
-        REQUIRE(*(s2.next()) == Result(0, 0));
+        REQUIRE(*(r = s2.next()) == Result(0, 0));
+        delete r;
     }
 
     SECTION("Result of not matching any element from the beginning")
@@ -58,8 +60,10 @@ TEST_CASE("StarMatcher matches zero or more elements")
     {
         REQUIRE(*(r = s4.match(input, 2)) == Result(2, 3));
         delete r;
-        REQUIRE(*(s4.next()) == Result(2, 2));
-        REQUIRE(*(s4.next()) == Result(1, 1));
+        REQUIRE(*(r = s4.next()) == Result(2, 2));
+        delete r;
+        REQUIRE(*(r = s4.next()) == Result(1, 1));
+        delete r;
     }
 
     SECTION("Result of matching separated elements from beginning")
@@ -72,6 +76,7 @@ TEST_CASE("StarMatcher matches zero or more elements")
     {
         REQUIRE(*(r = s5.match(input, 4)) == Result(4, 4));
         delete r;
-        REQUIRE(*(s5.next()) == Result(3, 3));
+        REQUIRE(*(r = s5.next()) == Result(3, 3));
+        delete r;
     }
 }

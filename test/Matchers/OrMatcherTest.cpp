@@ -39,11 +39,16 @@ TEST_CASE("OrMatcher matches any of the specified submatchers in order")
         OrMatcher m(vector<MatcherInterface*>{&sc, &sc});
         REQUIRE(*(r = m.match(input, 2)) == Result(2, 3));
         delete r;
-        REQUIRE(*(m.next()) == Result(2, 2));
-        REQUIRE(*(m.next()) == Result(1, 1));
-        REQUIRE(*(m.next()) == Result(2, 3));
-        REQUIRE(*(m.next()) == Result(2, 2));
-        REQUIRE(*(m.next()) == Result(1, 1));
+        REQUIRE(*(r = m.next()) == Result(2, 2));
+        delete r;
+        REQUIRE(*(r = m.next()) == Result(1, 1));
+        delete r;
+        REQUIRE(*(r = m.next()) == Result(2, 3));
+        delete r;
+        REQUIRE(*(r = m.next()) == Result(2, 2));
+        delete r;
+        REQUIRE(*(r = m.next()) == Result(1, 1));
+        delete r;
         REQUIRE(m.next() == NULL);
     }
 }

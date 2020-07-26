@@ -34,11 +34,13 @@ TEST_CASE("AgainMatcher matches only with same strings")
         };
         REQUIRE(*(r = m.match(input, 0, prevResults)) == Result(0, 2));
         delete r;
-        REQUIRE(*(m.next()) == Result(0, 1));
+        REQUIRE(*(r = m.next()) == Result(0, 1));
+        delete r;
         REQUIRE(m.next() == NULL);
         REQUIRE(*(r = m.match(input, 3, prevResults)) == Result(3, 5));
         delete r;
-        REQUIRE(*(m.next()) == Result(3, 4));
+        REQUIRE(*(r = m.next()) == Result(3, 4));
+        delete r;
         REQUIRE(m.next() == NULL);
     }
 }

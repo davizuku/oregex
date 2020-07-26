@@ -18,9 +18,12 @@ TEST_CASE("UngreedyMatcher matches with as few elements as possible")
     {
         REQUIRE(*(r = m.match(input, 0)) == Result(-1, -1));
         delete r;
-        REQUIRE(*(m.next()) == Result(0, 0));
-        REQUIRE(*(m.next()) == Result(0, 1));
-        REQUIRE(*(m.next()) == Result(0, 2));
+        REQUIRE(*(r = m.next()) == Result(0, 0));
+        delete r;
+        REQUIRE(*(r = m.next()) == Result(0, 1));
+        delete r;
+        REQUIRE(*(r = m.next()) == Result(0, 2));
+        delete r;
         REQUIRE(m.next() == NULL);
     }
 
@@ -28,8 +31,10 @@ TEST_CASE("UngreedyMatcher matches with as few elements as possible")
     {
         REQUIRE(*(r = m.match(input, 1)) == Result(0, 0));
         delete r;
-        REQUIRE(*(m.next()) == Result(1, 1));
-        REQUIRE(*(m.next()) == Result(1, 2));
+        REQUIRE(*(r = m.next()) == Result(1, 1));
+        delete r;
+        REQUIRE(*(r = m.next()) == Result(1, 2));
+        delete r;
         REQUIRE(m.next() == NULL);
     }
 

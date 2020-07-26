@@ -26,10 +26,14 @@ TEST_CASE("RangeMatcher matches from MIN to MAX elements")
     {
         REQUIRE(*(r = sa.match(input, 0)) == Result(0, 3));
         delete r;
-        REQUIRE(*(sa.next()) == Result(0, 2));
-        REQUIRE(*(sa.next()) == Result(0, 1));
-        REQUIRE(*(sa.next()) == Result(0, 0));
-        REQUIRE(*(sa.next()) == Result(-1, -1));
+        REQUIRE(*(r = sa.next()) == Result(0, 2));
+        delete r;
+        REQUIRE(*(r = sa.next()) == Result(0, 1));
+        delete r;
+        REQUIRE(*(r = sa.next()) == Result(0, 0));
+        delete r;
+        REQUIRE(*(r = sa.next()) == Result(-1, -1));
+        delete r;
         REQUIRE(sa.next() == NULL);
     }
 
@@ -38,9 +42,12 @@ TEST_CASE("RangeMatcher matches from MIN to MAX elements")
         RangeMatcher ra1(&ma, 1);
         REQUIRE(*(r = ra1.match(input, 0)) == Result(0, 3));
         delete r;
-        REQUIRE(*(ra1.next()) == Result(0, 2));
-        REQUIRE(*(ra1.next()) == Result(0, 1));
-        REQUIRE(*(ra1.next()) == Result(0, 0));
+        REQUIRE(*(r = ra1.next()) == Result(0, 2));
+        delete r;
+        REQUIRE(*(r = ra1.next()) == Result(0, 1));
+        delete r;
+        REQUIRE(*(r = ra1.next()) == Result(0, 0));
+        delete r;
         REQUIRE(ra1.next() == NULL);
     }
 
@@ -49,8 +56,10 @@ TEST_CASE("RangeMatcher matches from MIN to MAX elements")
         RangeMatcher ra24(&ma, 2, 4);
         REQUIRE(*(r = ra24.match(input, 0)) == Result(0, 3));
         delete r;
-        REQUIRE(*(ra24.next()) == Result(0, 2));
-        REQUIRE(*(ra24.next()) == Result(0, 1));
+        REQUIRE(*(r = ra24.next()) == Result(0, 2));
+        delete r;
+        REQUIRE(*(r = ra24.next()) == Result(0, 1));
+        delete r;
         REQUIRE(ra24.next() == NULL);
     }
 

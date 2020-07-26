@@ -55,7 +55,8 @@ TEST_CASE("PlusMatcher matches one or more elements")
     {
         REQUIRE(*(r = pc.match(input, 2)) == Result(2, 3));
         delete r;
-        REQUIRE(*(pc.next()) == Result(2, 2));
+        REQUIRE(*(r = pc.next()) == Result(2, 2));
+        delete r;
         REQUIRE(pc.next() == NULL);
     }
 

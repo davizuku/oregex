@@ -41,8 +41,10 @@ TEST_CASE("GroupMatcher is built from Matchers and is executed on Matchables")
         GroupMatcher gm(vector<MatcherInterface *>{&s4});
         REQUIRE(*(r = gm.match(input, 2)) == Result(2, 3));
         delete r;
-        REQUIRE(*(gm.next()) == Result(2, 2));
-        REQUIRE(*(gm.next()) == Result(1, 1));
+        REQUIRE(*(r = gm.next()) == Result(2, 2));
+        delete r;
+        REQUIRE(*(r = gm.next()) == Result(1, 1));
+        delete r;
     }
 
     SECTION("Matches sequence in the middle (/cc/ -> abccded)")
@@ -110,7 +112,8 @@ TEST_CASE("GroupMatcher joins the results of the specified elements")
         vector<MatchableInterface *> input{&o1, &o2, &o3};
         REQUIRE(*(r = matcher.match(input, 0)) == r1);
         delete r;
-        REQUIRE(*(matcher.next()) == r2);
+        REQUIRE(*(r = matcher.next()) == r2);
+        delete r;
     }
 
     SECTION("Greediness from optional part")
@@ -153,9 +156,13 @@ TEST_CASE("GroupMatcher joins the results of the specified elements")
         vector<MatchableInterface *> input{&o1, &o2, &o3, &o4, &o5, &o6};
         REQUIRE(*(r = matcher.match(input, 0)) == r1);
         delete r;
-        REQUIRE(*(matcher.next()) == r2);
-        REQUIRE(*(matcher.next()) == r3);
-        REQUIRE(*(matcher.next()) == r4);
-        REQUIRE(*(matcher.next()) == r5);
+        REQUIRE(*(r = matcher.next()) == r2);
+        delete r;
+        REQUIRE(*(r = matcher.next()) == r3);
+        delete r;
+        REQUIRE(*(r = matcher.next()) == r4);
+        delete r;
+        REQUIRE(*(r = matcher.next()) == r5);
+        delete r;
     }
 }

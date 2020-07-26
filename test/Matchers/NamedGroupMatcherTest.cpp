@@ -35,7 +35,8 @@ TEST_CASE("NamedGroupMatcher returns the elements matched grouped as outputs")
         });
         REQUIRE(*(r = g1.match(input, 0)) == r0);
         delete r;
-        REQUIRE(*(g1.next()) == r1);
+        REQUIRE(*(r = g1.next()) == r1);
+        delete r;
     }
 
     SECTION("Result of matching the second element from the beginning")
@@ -62,8 +63,10 @@ TEST_CASE("NamedGroupMatcher returns the elements matched grouped as outputs")
         });
         REQUIRE(*(r = g2.match(input, 2)) == r0);
         delete r;
-        REQUIRE(*(g2.next()) == r1);
-        REQUIRE(*(g2.next()) == r2);
+        REQUIRE(*(r = g2.next()) == r1);
+        delete r;
+        REQUIRE(*(r = g2.next()) == r2);
+        delete r;
     }
 
     SECTION("Result of matching last element")
@@ -77,7 +80,8 @@ TEST_CASE("NamedGroupMatcher returns the elements matched grouped as outputs")
         });
         REQUIRE(*(r = g3.match(input, 6)) == r0);
         delete r;
-        REQUIRE(*(g3.next()) == r1);
+        REQUIRE(*(r = g3.next()) == r1);
+        delete r;
     }
 }
 

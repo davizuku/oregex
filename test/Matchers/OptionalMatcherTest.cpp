@@ -26,7 +26,8 @@ TEST_CASE("OptionalMatcher matches zero or one element")
     {
         REQUIRE(*(r = m.match(input, 0)) == Result(0, 0));
         delete r;
-        REQUIRE(*(m.next()) == Result(-1, -1));
+        REQUIRE(*(r = m.next()) == Result(-1, -1));
+        delete r;
         REQUIRE(m.next() == NULL);
     }
 
