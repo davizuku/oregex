@@ -18,7 +18,7 @@ Result *NegativeLookBehindMatcher::match(
         for (int i = start - 1; i >= 0; --i) {
             Result *r = this->matcher->match(matchables, i, previousResults);
             while (r != NULL) {
-                if (r->getLastMatchedIndex() == start - 1) {
+                if (r->getLastMatchedIndex() == (int)(start - 1)) {
                     return NULL;
                 }
                 r = this->matcher->next();

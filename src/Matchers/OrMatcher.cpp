@@ -47,7 +47,7 @@ Result* OrMatcher::next()
         matchCalled = false;
         matcherIndex++;
     }
-    for (int i = matcherIndex; i < matchers.size(); i++) {
+    for (size_t i = matcherIndex; i < matchers.size(); i++) {
         Result *r = matchers[i]->match(matchables, start, previousResults);
         matchCalled = true;
         if (r != NULL) {
