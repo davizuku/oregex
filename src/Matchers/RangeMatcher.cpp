@@ -80,6 +80,7 @@ Result *RangeMatcher::next()
     } else if (stackSize < min) {
         matchingStack.top().pop();
         stackNewMatching(topFront->getLastMatchedIndex() + 1);
+        delete topFront;
         return next();
     } else if (stackSize < max) {
         stackNewMatching(topFront->getLastMatchedIndex() + 1);
