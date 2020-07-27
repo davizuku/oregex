@@ -14,9 +14,11 @@ Result *PositiveLookAheadMatcher::match(
     size_t start,
     const forward_list<Result> &previousResults)
 {
+    Result* r;
     if (start < matchables.size() and
-        this->matcher->match(matchables, start, previousResults) != NULL
+        (r = this->matcher->match(matchables, start, previousResults)) != NULL
     ) {
+        delete r;
         return new Result(start - 1, start - 1);
     }
     return NULL;
