@@ -38,6 +38,7 @@ Result* NamedGroupMatcher::match(
             end,
             subOutputs
         ));
+        delete r;
         r = matcher->next();
     }
     return next();
