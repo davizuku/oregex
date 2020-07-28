@@ -72,11 +72,9 @@ TEST_CASE("GroupMatcher joins the results of the specified elements")
 {
     Result *r;
     StringMatcher o("o");
-    GroupMatcher matcher(vector<MatcherInterface *>{
-        new NamedGroupMatcher("outputs", new StarMatcher(&o)),
-        &o,
-        &o
-    });
+    StarMatcher so(&o);
+    NamedGroupMatcher ngm("outputs", &so);
+    GroupMatcher matcher(vector<MatcherInterface *>{&ngm, &o, &o});
     StringMatchable o1("o"), o2("o"), o3("o"), o4("o"), o5("o"), o6("o");
 
     SECTION("Only mandatory input does not return output")
