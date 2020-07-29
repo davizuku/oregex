@@ -258,7 +258,7 @@ TEST_CASE("Oregex is built from Matchers and is executed on Matchables")
         REQUIRE(r.match(input) == false);
     }
 
-    SECTION("ConditionalLookBehind matches given lookahead matches")
+    SECTION("ConditionalLookBehind matches given lookbehind matches")
     {
         Oregex r(vector<MatcherInterface *>{
             new ConditionalLookBehindMatcher(
@@ -271,7 +271,7 @@ TEST_CASE("Oregex is built from Matchers and is executed on Matchables")
         REQUIRE(r.match(input) == true);
     }
 
-    SECTION("ConditionalLookBehind not matches given lookahead matches")
+    SECTION("ConditionalLookBehind not matches given lookbehind matches")
     {
         Oregex r(vector<MatcherInterface *>{
             new ConditionalLookBehindMatcher(
