@@ -5,6 +5,7 @@
 
 TEST_CASE("ExceptMatcher matches any element except for those in a list")
 {
+    Result *r;
     StringMatchable a("a"), b("b"), c("c");
     StringMatcher ma("a"), mb("b"), mc("c");
     ExceptMatcher m(vector<MatcherInterface*>{&ma, &mb});
@@ -22,7 +23,8 @@ TEST_CASE("ExceptMatcher matches any element except for those in a list")
 
     SECTION("Matches if the matchable matches none of the specified matchers")
     {
-        REQUIRE(*(m.match(input, 2)) == Result(2, 2));
+        REQUIRE(*(r = m.match(input, 2)) == Result(2, 2));
+        delete r;
         REQUIRE(m.next() == NULL);
     }
 

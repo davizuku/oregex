@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include <forward_list>
-#include <list>
+#include <queue>
 #include "../Result.hpp"
 #include "../Matchables/MatchableInterface.hpp"
 #include "MatcherInterface.hpp"
@@ -27,7 +27,6 @@ class NamedGroupMatcher: public MatcherInterface
 
     protected:
         MatcherInterface *matcher;
-        list<Result*> results;
-        list<Result*>::iterator resultIt;
+        queue<Result*> results;
         string name;
 };

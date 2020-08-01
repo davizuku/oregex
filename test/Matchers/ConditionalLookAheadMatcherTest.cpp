@@ -7,6 +7,7 @@
 
 TEST_CASE("ConditionalLookAheadMatcher matches the elements in trueMatcher if condMatcher matches, falseMatcher otherwise.")
 {
+    Result *r;
     StringMatchable a("a"), b("b"), c("c");
     StringMatcher ma("a"), mb("b"), mc("c");
     GroupMatcher gabc(vector<MatcherInterface *>{&ma, &mb, &mc}),
@@ -26,7 +27,8 @@ TEST_CASE("ConditionalLookAheadMatcher matches the elements in trueMatcher if co
 
     SECTION("Matches with trueMatch if condMatch matches")
     {
-        REQUIRE(*(m.match(vector<MatchableInterface *>{&a, &b, &c}, 0)) == Result(0, 2));
+        REQUIRE(*(r = m.match(vector<MatchableInterface *>{&a, &b, &c}, 0)) == Result(0, 2));
+        delete r;
         REQUIRE(m.next() == NULL);
     }
 
@@ -38,7 +40,8 @@ TEST_CASE("ConditionalLookAheadMatcher matches the elements in trueMatcher if co
 
     SECTION("Matches with falseMatch if condMatch not matches")
     {
-        REQUIRE(*(m.match(vector<MatchableInterface *>{&c, &b, &a}, 0)) == Result(0, 2));
+        REQUIRE(*(r = m.match(vector<MatchableInterface *>{&c, &b, &a}, 0)) == Result(0, 2));
+        delete r;
         REQUIRE(m.next() == NULL);
     }
 

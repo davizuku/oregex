@@ -1,9 +1,9 @@
 #include "GroupMatcher.hpp"
-#include <list>
 
 GroupMatcher::GroupMatcher(const vector<MatcherInterface *> &m)
 {
     matchers = m;
+    results = queue<Result>();
 }
 
 GroupMatcher::~GroupMatcher()
@@ -15,17 +15,35 @@ Result* GroupMatcher::match(
     size_t start,
     const forward_list<Result> &previousResults
 ) {
+    if (matchers.empty()) {
+        return NULL;
+    }
     this->start = start;
+    results = queue<Result>();
     auto copyPrevResults = previousResults;
-    results = list<Result*>();
-    recursiveMatch(
-        0,
+    Result *r = matchers[0]->match(
         matchables,
         start,
-        copyPrevResults,
-        NULL
+        copyPrevResults
     );
-    resultIt = results.begin();
+    while (r != NULL) {
+        Result curRes(*r);
+        delete r;
+        if (matchers.size() == 1) {
+            results.push(curRes);
+        } else {
+            copyPrevResults.push_front(curRes);
+            recursiveMatch(
+                1,
+                matchables,
+                curRes.getLastMatchedIndex() + 1,
+                copyPrevResults,
+                curRes
+            );
+            copyPrevResults.pop_front();
+        }
+        r = matchers[0]->next();
+    }
     return next();
 }
 
@@ -38,24 +56,21 @@ Result* GroupMatcher::match(
 
 Result* GroupMatcher::next()
 {
-    if (resultIt == results.end()) {
+    if (results.empty()) {
         return NULL;
     }
-    Result* r = *resultIt;
-    resultIt++;
-    return r;
+    Result r = results.front();
+    results.pop();
+    return new Result(r);
 }
 
-Result* GroupMatcher::mergeResults(Result* a, Result* b)
+Result GroupMatcher::mergeResults(Result& a, Result& b)
 {
-    if (a != NULL and b != NULL) {
-        unordered_map<string, forward_list<MatchableInterface *>> outputs{a->getOutputs()};
-        auto outB = b->getOutputs();
-        outputs.insert(outB.begin(), outB.end());
-        size_t end = max(a->getLastMatchedIndex(), b->getLastMatchedIndex());
-        return new Result(start, end, outputs);
-    }
-    return a == NULL ? b : a;
+    unordered_map<string, forward_list<MatchableInterface *>> outputs{a.getOutputs()};
+    auto outB = b.getOutputs();
+    outputs.insert(outB.begin(), outB.end());
+    size_t end = max(a.getLastMatchedIndex(), b.getLastMatchedIndex());
+    return Result(start, end, outputs);
 }
 
 void GroupMatcher::recursiveMatch(
@@ -63,7 +78,7 @@ void GroupMatcher::recursiveMatch(
     const vector<MatchableInterface *> &matchables,
     size_t matchableIndex,
     forward_list<Result> &previousResults,
-    Result* accResult
+    Result& accResult
 ) {
     if (matcherIndex >= matchers.size() or
         matchableIndex > matchables.size() // > strict due to EndMatcher
@@ -76,15 +91,17 @@ void GroupMatcher::recursiveMatch(
         previousResults
     );
     while (r != NULL) {
-        previousResults.push_front(*r);
-        Result* finalRes = mergeResults(accResult, r);
+        Result curRes(*r);
+        delete r;
+        previousResults.push_front(curRes);
+        Result finalRes = mergeResults(accResult, curRes);
         if (matcherIndex == matchers.size() - 1) {
-            results.push_back(finalRes);
+            results.push(finalRes);
         } else {
             recursiveMatch(
                 matcherIndex + 1,
                 matchables,
-                r->getLastMatchedIndex() + 1,
+                curRes.getLastMatchedIndex() + 1,
                 previousResults,
                 finalRes
             );

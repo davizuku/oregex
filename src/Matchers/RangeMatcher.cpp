@@ -23,6 +23,15 @@ RangeMatcher::RangeMatcher(MatcherInterface *m)
 
 RangeMatcher::~RangeMatcher()
 {
+    while (not matchingStack.empty()) {
+        auto top = matchingStack.top();
+        matchingStack.pop();
+        while (not top.empty()) {
+            Result* r = top.front();
+            top.pop();
+            delete r;
+        }
+    }
 }
 
 Result* RangeMatcher::match(
@@ -71,6 +80,7 @@ Result *RangeMatcher::next()
     } else if (stackSize < min) {
         matchingStack.top().pop();
         stackNewMatching(topFront->getLastMatchedIndex() + 1);
+        delete topFront;
         return next();
     } else if (stackSize < max) {
         stackNewMatching(topFront->getLastMatchedIndex() + 1);
@@ -95,6 +105,7 @@ void RangeMatcher::stackNewMatching(size_t index)
         auto newLevel = queue<Result*>();
         while (r != NULL) {
             newLevel.push(new Result(start, r->getLastMatchedIndex(), r->getOutputs()));
+            delete r;
             r = matcher->next();
         }
         matchingStack.push(newLevel);

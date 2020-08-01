@@ -6,6 +6,7 @@
 
 TEST_CASE("NegativeLookAheadMatcher matches without consuming the input")
 {
+    Result *r;
     StringMatchable a("a"), b("b"), c("c");
     StringMatcher ma("a");
     NegativeLookAheadMatcher m(&ma);
@@ -29,7 +30,8 @@ TEST_CASE("NegativeLookAheadMatcher matches without consuming the input")
 
     SECTION("Result of matching the second element from the beginning")
     {
-        REQUIRE(*(m.match(input, 1)) == Result(0, 0));
+        REQUIRE(*(r = m.match(input, 1)) == Result(0, 0));
+        delete r;
         REQUIRE(m.next() == NULL);
     }
 }

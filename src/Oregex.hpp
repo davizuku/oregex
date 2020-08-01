@@ -16,5 +16,5 @@ public:
     );
 
 protected:
-    MatcherInterface* matcher;
+    vector<MatcherInterface*> matchers;
 };

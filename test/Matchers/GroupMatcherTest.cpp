@@ -11,6 +11,7 @@
 
 TEST_CASE("GroupMatcher is built from Matchers and is executed on Matchables")
 {
+    Result *r;
     StringMatchable a("a"), b("b"), c("c"), d("d"), e("e");
     StringMatcher m1("a"), m2("b"), m3("x"), m4("c"), m5("d"), m6("e");
     StarMatcher s1(&m1), s2(&m2), s3(&m3), s4(&m4), s5(&m5);
@@ -31,27 +32,33 @@ TEST_CASE("GroupMatcher is built from Matchers and is executed on Matchables")
     SECTION("Matches sequence in the beginning (/abc/ -> abccded)")
     {
         GroupMatcher gm(vector<MatcherInterface *>{&m1, &m2, &m4});
-        REQUIRE(*(gm.match(input, 0)) == Result(0, 2));
+        REQUIRE(*(r = gm.match(input, 0)) == Result(0, 2));
+        delete r;
     }
 
     SECTION("Matches sequence in the middle (/c*/ -> abccded)")
     {
         GroupMatcher gm(vector<MatcherInterface *>{&s4});
-        REQUIRE(*(gm.match(input, 2)) == Result(2, 3));
-        REQUIRE(*(gm.next()) == Result(2, 2));
-        REQUIRE(*(gm.next()) == Result(1, 1));
+        REQUIRE(*(r = gm.match(input, 2)) == Result(2, 3));
+        delete r;
+        REQUIRE(*(r = gm.next()) == Result(2, 2));
+        delete r;
+        REQUIRE(*(r = gm.next()) == Result(1, 1));
+        delete r;
     }
 
     SECTION("Matches sequence in the middle (/cc/ -> abccded)")
     {
         GroupMatcher gm(vector<MatcherInterface *>{&m4, &m4});
-        REQUIRE(*(gm.match(input, 2)) == Result(2, 3));
+        REQUIRE(*(r = gm.match(input, 2)) == Result(2, 3));
+        delete r;
     }
 
     SECTION("Matches sequence in the end (/ded/ -> abccded)")
     {
         GroupMatcher gm(vector<MatcherInterface *>{&m5, &m6, &m5});
-        REQUIRE(*(gm.match(input, 4)) == Result(4, 6));
+        REQUIRE(*(r = gm.match(input, 4)) == Result(4, 6));
+        delete r;
     }
 
     SECTION("Not matches sequence (/x/ -> abccded)")
@@ -63,12 +70,11 @@ TEST_CASE("GroupMatcher is built from Matchers and is executed on Matchables")
 
 TEST_CASE("GroupMatcher joins the results of the specified elements")
 {
+    Result *r;
     StringMatcher o("o");
-    GroupMatcher matcher(vector<MatcherInterface *>{
-        new NamedGroupMatcher("outputs", new StarMatcher(&o)),
-        &o,
-        &o
-    });
+    StarMatcher so(&o);
+    NamedGroupMatcher ngm("outputs", &so);
+    GroupMatcher matcher(vector<MatcherInterface *>{&ngm, &o, &o});
     StringMatchable o1("o"), o2("o"), o3("o"), o4("o"), o5("o"), o6("o");
 
     SECTION("Only mandatory input does not return output")
@@ -81,7 +87,8 @@ TEST_CASE("GroupMatcher joins the results of the specified elements")
             }
         );
         vector<MatchableInterface *> input{&o1, &o2};
-        REQUIRE(*(matcher.match(input, 0)) == expected);
+        REQUIRE(*(r = matcher.match(input, 0)) == expected);
+        delete r;
     }
 
     SECTION("Not mandatory input is returned as output")
@@ -101,8 +108,10 @@ TEST_CASE("GroupMatcher joins the results of the specified elements")
             }
         );
         vector<MatchableInterface *> input{&o1, &o2, &o3};
-        REQUIRE(*(matcher.match(input, 0)) == r1);
-        REQUIRE(*(matcher.next()) == r2);
+        REQUIRE(*(r = matcher.match(input, 0)) == r1);
+        delete r;
+        REQUIRE(*(r = matcher.next()) == r2);
+        delete r;
     }
 
     SECTION("Greediness from optional part")
@@ -143,10 +152,15 @@ TEST_CASE("GroupMatcher joins the results of the specified elements")
             }
         );
         vector<MatchableInterface *> input{&o1, &o2, &o3, &o4, &o5, &o6};
-        REQUIRE(*(matcher.match(input, 0)) == r1);
-        REQUIRE(*(matcher.next()) == r2);
-        REQUIRE(*(matcher.next()) == r3);
-        REQUIRE(*(matcher.next()) == r4);
-        REQUIRE(*(matcher.next()) == r5);
+        REQUIRE(*(r = matcher.match(input, 0)) == r1);
+        delete r;
+        REQUIRE(*(r = matcher.next()) == r2);
+        delete r;
+        REQUIRE(*(r = matcher.next()) == r3);
+        delete r;
+        REQUIRE(*(r = matcher.next()) == r4);
+        delete r;
+        REQUIRE(*(r = matcher.next()) == r5);
+        delete r;
     }
 }

@@ -6,6 +6,7 @@
 
 TEST_CASE("PositiveLookBehindMatcher matches without consuming the input")
 {
+    Result *r;
     StringMatchable a("a"), b("b"), c("c");
     StringMatcher ma("a"), mb("b"), mc("c");
     PositiveLookBehindMatcher m(&ma);
@@ -29,9 +30,11 @@ TEST_CASE("PositiveLookBehindMatcher matches without consuming the input")
 
     SECTION("Result of matching in middle positions")
     {
-        REQUIRE(*(m.match(input, 1)) == Result(0, 0));
+        REQUIRE(*(r = m.match(input, 1)) == Result(0, 0));
+        delete r;
         REQUIRE(m.next() == NULL);
-        REQUIRE(*(m.match(input, 2)) == Result(1, 1));
+        REQUIRE(*(r = m.match(input, 2)) == Result(1, 1));
+        delete r;
         REQUIRE(m.next() == NULL);
     }
 

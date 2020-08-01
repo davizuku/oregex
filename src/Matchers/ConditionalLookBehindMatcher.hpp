@@ -8,6 +8,16 @@ class ConditionalLookBehindMatcher: public ConditionalLookAheadMatcher
             MatcherInterface *condMatcher,
             MatcherInterface *trueMatcher,
             MatcherInterface *falseMatcher
+        ) : ConditionalLookAheadMatcher(condMatcher, trueMatcher, falseMatcher){};
+
+        Result *match(
+            const vector<MatchableInterface *> &matchables,
+            size_t start,
+            const forward_list<Result> &previousResults
         );
-        ~ConditionalLookBehindMatcher();
+
+        Result *match(
+            const vector<MatchableInterface *> &matchables,
+            size_t start
+        );
 };

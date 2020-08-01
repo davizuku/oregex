@@ -3,6 +3,11 @@
 OrMatcher::OrMatcher(const vector<MatcherInterface *> &m)
 {
     matchers = m;
+    matcherIndex = 0;
+    matchCalled = false;
+    start = 0;
+    matchables = vector<MatchableInterface*>();
+    previousResults = forward_list<Result>();
 }
 
 OrMatcher::~OrMatcher()
@@ -42,7 +47,7 @@ Result* OrMatcher::next()
         matchCalled = false;
         matcherIndex++;
     }
-    for (int i = matcherIndex; i < matchers.size(); i++) {
+    for (size_t i = matcherIndex; i < matchers.size(); i++) {
         Result *r = matchers[i]->match(matchables, start, previousResults);
         matchCalled = true;
         if (r != NULL) {

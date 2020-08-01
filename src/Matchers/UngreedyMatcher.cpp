@@ -7,6 +7,11 @@ UngreedyMatcher::UngreedyMatcher(MatcherInterface* m)
 
 UngreedyMatcher::~UngreedyMatcher()
 {
+    while (not results.empty()) {
+        Result* r = results.top();
+        results.pop();
+        delete r;
+    }
 }
 
 Result* UngreedyMatcher::match(

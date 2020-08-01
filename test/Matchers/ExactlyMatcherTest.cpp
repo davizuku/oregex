@@ -6,6 +6,7 @@
 
 TEST_CASE("ExactlyMatcher matches exactly N elements")
 {
+    Result *r;
     StringMatchable a("a"), b("b");
     StringMatcher ma("a"), mb("b");
     ExactlyMatcher m1(&ma, 1);
@@ -24,7 +25,8 @@ TEST_CASE("ExactlyMatcher matches exactly N elements")
     SECTION("Result of matching exactly 3 elements from the beginning")
     {
         ExactlyMatcher m3(&ma, 3);
-        REQUIRE(*(m3.match(input, 0)) == Result(0, 2));
+        REQUIRE(*(r = m3.match(input, 0)) == Result(0, 2));
+        delete r;
         REQUIRE(m3.next() == NULL);
     }
 

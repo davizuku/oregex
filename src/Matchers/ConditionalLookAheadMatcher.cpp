@@ -22,9 +22,9 @@ Result* ConditionalLookAheadMatcher::match(
     if (start >= matchables.size()) {
         return NULL;
     }
-    useMatcher = condMatcher->match(matchables, start, previousResults) != NULL ?
-        trueMatcher :
-        falseMatcher;
+    Result *r = condMatcher->match(matchables, start, previousResults);
+    useMatcher = (r != NULL) ? trueMatcher : falseMatcher;
+    delete r;
     return useMatcher->match(matchables, start, previousResults);
 }
 

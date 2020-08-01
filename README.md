@@ -152,14 +152,51 @@ Source: https://regex101.com/
 
 ## Useful commands
 
+[Docker](https://www.docker.com/) is required to execute the following commands.
+
 ```
 make test
 ```
 
-## Help links
+### Checking memory leaks
 
-- http://www.cplusplus.com/reference/
-- https://renenyffenegger.ch/notes/development/languages/C-C-plus-plus/GCC/create-libraries/index
+```
+make memcheck
+```
+
+This command cleans any previous compilation data to compile `./bin/oregex_valgrind` with `-O0` flag. Then it executes: `valgrind --leak-check=yes ./bin/oregex_valgrind`
+
+After tests are executed, a valgrind report is shown and saved to `memcheck.log` file.
+
+Check error messages here: https://www.valgrind.org/docs/manual/mc-manual.html
+
+There are some known leaks, but all of them are due to elements created (and not deleted) in tests. I prefer to leave them as they are to improve readability.
+
+For example:
+```
+    SECTION("Matches exactly 3 times a group (/(abc){3}/ -> abcabcabc)")
+    {
+        Oregex r(vector<MatcherInterface *>{
+            new ExactlyMatcher(
+                new GroupMatcher(vector<MatcherInterface *>{&ma, &mb, &mc}),
+                3
+            )
+        });
+        vector<MatchableInterface *> in_abc3{&a, &b, &c, &a, &b, &c, &a, &b, &c};
+        REQUIRE(r.match(in_abc3) == true);
+    }
+```
+
+This test will never delete the pointers to ExactlyMatcher and GroupMatcher, but it is far easier to read than having many intermediate variables.
+
+#### References & good practices
+
+- https://www.modernescpp.com/index.php/c-core-guidelines-constructors-assignments-and-desctructors
+- https://www.modernescpp.com/index.php/c-core-guidelines-destructor-rules
+- https://www.modernescpp.com/index.php/c-core-guidelines-rules-to-smart-pointers
+
+## Similar libraries
+
 - https://github.com/eocron/ORegex
 - https://www.npmjs.com/package/oregex/v/1.0.2
 
@@ -169,3 +206,9 @@ make test
 - https://code.visualstudio.com/docs/cpp/config-clang-mac
 - https://stackoverflow.com/questions/2481269/how-to-make-a-simple-c-makefile
 - https://github.com/catchorg/Catch2
+- http://www.cplusplus.com/reference/
+- https://renenyffenegger.ch/notes/development/languages/C-C-plus-plus/GCC/create-libraries/index
+- https://www.valgrind.org/docs/manual/quick-start.html
+- https://www.gungorbudak.com/blog/2018/04/28/how-to-install-valgrind-on-macos-high-sierra/
+- https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
+- https://www.boost.org/

@@ -5,6 +5,7 @@
 
 TEST_CASE("EndMatcher matches only with end of sequence")
 {
+    Result *r;
     StringMatchable a("a"), b("b"), c("c");
     EndMatcher m;
     vector<MatchableInterface *> input{&a, &b, &c, &c};
@@ -23,7 +24,8 @@ TEST_CASE("EndMatcher matches only with end of sequence")
 
     SECTION("Result of matching the the last")
     {
-        REQUIRE(*(m.match(input, 4)) == Result(4, 4));
+        REQUIRE(*(r = m.match(input, 4)) == Result(4, 4));
+        delete r;
         REQUIRE(m.next() == NULL);
     }
 }

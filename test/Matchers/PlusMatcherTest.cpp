@@ -6,6 +6,7 @@
 
 TEST_CASE("PlusMatcher matches one or more elements")
 {
+    Result *r;
     StringMatchable a("a"), b("b"), c("c"), d("d"), e("e");
     StringMatcher ma("a"), mb("b"), mx("x"), mc("c"), md("d");
     PlusMatcher pa(&ma), pb(&mb), px(&mx), pc(&mc), pd(&md);
@@ -23,7 +24,8 @@ TEST_CASE("PlusMatcher matches one or more elements")
 
     SECTION("Result of matching the first element")
     {
-        REQUIRE(*(pa.match(input, 0)) == Result(0, 0));
+        REQUIRE(*(r = pa.match(input, 0)) == Result(0, 0));
+        delete r;
         REQUIRE(pa.next() == NULL);
     }
 
@@ -34,7 +36,8 @@ TEST_CASE("PlusMatcher matches one or more elements")
 
     SECTION("Result of matching the second element from the element")
     {
-        REQUIRE(*(pb.match(input, 1)) == Result(1, 1));
+        REQUIRE(*(r = pb.match(input, 1)) == Result(1, 1));
+        delete r;
         REQUIRE(pb.next() == NULL);
     }
 
@@ -50,8 +53,10 @@ TEST_CASE("PlusMatcher matches one or more elements")
 
     SECTION("Result of matching repeated elements from position")
     {
-        REQUIRE(*(pc.match(input, 2)) == Result(2, 3));
-        REQUIRE(*(pc.next()) == Result(2, 2));
+        REQUIRE(*(r = pc.match(input, 2)) == Result(2, 3));
+        delete r;
+        REQUIRE(*(r = pc.next()) == Result(2, 2));
+        delete r;
         REQUIRE(pc.next() == NULL);
     }
 
@@ -62,7 +67,8 @@ TEST_CASE("PlusMatcher matches one or more elements")
 
     SECTION("Result of matching separated elements from position")
     {
-        REQUIRE(*(pd.match(input, 4)) == Result(4, 4));
+        REQUIRE(*(r = pd.match(input, 4)) == Result(4, 4));
+        delete r;
         REQUIRE(pd.next() == NULL);
     }
 }
