@@ -44,9 +44,10 @@ CFLAGS := -std=c17
 CXXFLAGS := -std=c++17
 # C/C++ flags
 OPTIMIZATION_FLAG := -O3
-CPPFLAGS := -g $(OPTIMIZATION_FLAG) -Wall -Wextra -pedantic -fPIC
+CPPFLAGS := -g $(OPTIMIZATION_FLAG) -Wall -Wextra -pedantic -fPIC -DBOOST_STACKTRACE_USE_ADDR2LINE
 # linker flags
-LDFLAGS :=-L$(LIBRARY_PATH) -l$(LIBRARY_NAME) -ldl
+LDFLAGS :=-L$(LIBRARY_PATH) -l$(LIBRARY_NAME)
+LDLIBS :=-ldl
 # include paths
 INCLUDEPATHS :=-Ivendor/boost_1_73_0
 # flags required for dependency generation; passed to compilers
