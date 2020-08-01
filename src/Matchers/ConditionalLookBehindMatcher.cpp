@@ -6,9 +6,12 @@ Result *ConditionalLookBehindMatcher::match(
     size_t start,
     const forward_list<Result> &previousResults)
 {
-    PositiveLookBehindMatcher pbm(condMatcher);
-    condMatcher = &pbm;
-    return ConditionalLookAheadMatcher::match(matchables, start, previousResults);
+    MatcherInterface* subMatcher = condMatcher;
+    condMatcher = new PositiveLookBehindMatcher(subMatcher);
+    Result* r = ConditionalLookAheadMatcher::match(matchables, start, previousResults);
+    delete (PositiveLookBehindMatcher*)condMatcher;
+    condMatcher = subMatcher;
+    return r;
 }
 
 Result *ConditionalLookBehindMatcher::match(
