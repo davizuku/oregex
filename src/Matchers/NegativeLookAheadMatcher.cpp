@@ -6,9 +6,12 @@ Result *NegativeLookAheadMatcher::match(
     size_t start,
     const forward_list<Result> &previousResults
 ) {
-    ExceptMatcher em(vector<MatcherInterface *>{this->matcher});
-    this->matcher = &em;
-    return PositiveLookAheadMatcher::match(matchables, start, previousResults);
+    MatcherInterface* subMatcher = matcher;
+    matcher = new ExceptMatcher(vector<MatcherInterface *>{subMatcher});
+    Result* r = PositiveLookAheadMatcher::match(matchables, start, previousResults);
+    delete (ExceptMatcher*)matcher;
+    matcher = subMatcher;
+    return r;
 }
 
 Result *NegativeLookAheadMatcher::match(
