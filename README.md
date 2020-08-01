@@ -152,7 +152,7 @@ Source: https://regex101.com/
 
 ## Useful commands
 
-You'll need the [Docker](https://www.docker.com/)
+[Docker](https://www.docker.com/) is required to execute the following commands.
 
 ```
 make test
