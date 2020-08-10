@@ -1,6 +1,6 @@
 # oregex
 
-C++ Library to create regular expressions with customized elements
+C++ Library to create regular expressions with complex objects
 
 ## Introduction
 
